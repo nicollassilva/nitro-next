@@ -9,15 +9,17 @@ import { RoomObjectInfoNameBubble } from "./RoomObjectInfoNameBubble";
 type RoomObjectInfoBubblesProps = {
     activeBubble: IRoomObjectNameData | undefined;
     activeData: IRoomObjectData | undefined;
+    isMenuClosed: boolean;
+    onClose: () => void;
 }
 
 export const RoomObjectInfoActiveBubble = (props: RoomObjectInfoBubblesProps) => {
-    const { activeBubble, activeData } = props;
+    const { activeBubble, activeData, isMenuClosed, onClose } = props;
     const ownUserId = useOwnUserId();
 
     if (activeBubble) return <RoomObjectInfoNameBubble nameData={activeBubble} />;
 
-    if (!activeData) return null;
+    if (!activeData || isMenuClosed) return null;
 
     switch (activeData.category) {
         case RoomObjectCategoryEnum.Floor:
@@ -34,7 +36,7 @@ export const RoomObjectInfoActiveBubble = (props: RoomObjectInfoBubblesProps) =>
                 case RoomObjectUserType.User: {
                     if (userData.webID === ownUserId) return (
                         <RoomObjectInfoBubble objectData={userData}>
-                            <InfoBubbleOwnAvatarView activeData={userData} />
+                            <InfoBubbleOwnAvatarView activeData={userData} onClose={onClose} />
                         </RoomObjectInfoBubble>);
 
                     return null;

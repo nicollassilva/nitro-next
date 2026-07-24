@@ -4,13 +4,14 @@ import { AvatarActionStateType, AvatarFigurePartType, AvatarGenderType, PetType,
 import type { IRoomAvatar, IRoomAvatarBot, IRoomAvatarPet, IRoomAvatarRentableBot, IRoomAvatarUser } from "@nitrodevco/nitro-shared";
 import { AvatarEffectMessage, CarryObjectMessage, DanceMessage, ExpressionMessage, SleepMessage, UseObjectMessage, UserChangeMessage, UserRemoveMessage, UsersMessage, UserTypingMessage, UserUpdateMessage } from "@nitrodevco/nitro-shared";
 
-import { useOwnUserId, useRoomSelector, useRoomSessionActions, useRoomUsersActions } from "#base/context";
+import { useOwnRoomObjectId, useOwnUserId, useRoomSelector, useRoomSessionActions, useRoomUsersActions } from "#base/context";
 import { useMessageListener } from "#base/hooks";
 
 export const useRoomUserHandler = () => {
     const room = useRoomSelector();
     const ownUserId = useOwnUserId();
-    const { setOwnRoomIndex } = useRoomSessionActions();
+    const ownRoomObjectId = useOwnRoomObjectId();
+    const { setOwnRoomIndex, setIsOwnDancing } = useRoomSessionActions();
     const { updateUsers, updateUserPartial, removeUser } = useRoomUsersActions();
 
     useMessageListener(UsersMessage, data => {
@@ -293,6 +294,8 @@ export const useRoomUserHandler = () => {
 
     useMessageListener(DanceMessage, data => {
         if (!room) return;
+
+        if (data.objectId === ownRoomObjectId) setIsOwnDancing(data.danceStyle > 0);
 
         room.updateRoomObjectUserAction(data.objectId, RoomObjectVariableEnum.FigureDance, data.danceStyle);
     });

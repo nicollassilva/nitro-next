@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@source "**/*.{ts,tsx}";
 
 @font-face {
     font-family: Ubuntu;
@@ -104,8 +105,10 @@
     --nitro-infostand-width: 190px;
     --nitro-infostand-motto-height: 25px;
 
+    --context-menu-bg: url('./assets/flash/room/context_menu_bg.png');
     --context-menu-name-bg: url('./assets/flash/room/name_bg.png');
-    --context-menu-pointer-after: url('./assets/flash/room/pointer_after.png');
+    --context-menu-name-after: url('./assets/flash/room/pointer_after.png');
+    --content-menu-pointer-after: url('./assets/flash/room/context_pointer_after.png');
 }
 
 @utility pixel-text {
@@ -159,11 +162,67 @@
     }
 
     .contextmenu-container {
+        @apply pointer-events-auto;
+
+        &:not(.name-only):not(.menu-collapsed) {
+            @apply min-w-25;
+        }
+
+        .menu-header {
+            @apply [border-image-source:var(--context-menu-bg)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px] py-1.5 px-4.5 min-w-25 h-7.5 max-h-7.5 text-center -mb-1.5 text-[12px] font-ubuntu-bold text-white;
+
+            > p {
+                @apply mb-0.75;
+            }
+
+            &:hover {
+                @apply text-[#47a3cc];
+            }
+        }
+
         &.name-only {
-            @apply [border-image-source:var(--context-menu-name-bg)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px] px-1.5 py-4.5 w-[unset] text-center text-[14px];
+            @apply [border-image-source:var(--context-menu-name-bg)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px] py-1.5 px-4.5 w-[unset] text-center text-white text-[12px];
 
             &:after {
-                @apply content-[''] [background-image:var(--context-menu-pointer-after)] bg-no-repeat w-2.75 h-2.25 absolute -bottom-1.25 left-0 right-0 m-auto;
+                @apply content-[''] [background-image:var(--context-menu-name-after)] bg-no-repeat w-2.75 h-2.25 absolute -bottom-1.25 left-0 right-0 m-auto;
+            }
+        }
+
+        &:not(.name-only) {
+            &:after {
+                @apply content-[''] [background-image:var(--content-menu-pointer-after)] bg-no-repeat w-2.75 h-2.25 absolute -bottom-1.25 left-0 right-0 m-auto;
+            }
+        }
+
+        .menu-item {
+            @apply relative border-b border-r border-l border-b-[#4f4c48] border-r-black border-l-black overflow-hidden h-6.75 max-h-6.75 p-0.75 cursor-pointer text-[11px] text-white;
+
+            background: repeating-linear-gradient(
+                #2a2725,
+                #2a2725 50%,
+                #262321 50%,
+                #262321 100%
+            );
+
+            &:not(.disabled):hover {
+                background: repeating-linear-gradient(
+                    #60a1c8,
+                    #60a1c8 50%,
+                    #5994b8 50%,
+                    #5994b8 100%
+                );
+            }
+
+            &:has(+ .menu-bottom) {
+                @apply border-b-0;
+            }
+        }
+
+        .menu-bottom {
+            @apply [border-image-source:var(--context-menu-bg)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px] py-1.5 px-4.5 min-w-7.5 h-6.75 -mt-1.5 pt-1 max-h-7.5 text-center text-[12px];
+
+            > i {
+                @apply mt-0.75;
             }
         }
     }

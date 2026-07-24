@@ -10,10 +10,12 @@ import { RoomObjectInfoNameBubble } from "./RoomObjectInfoNameBubble";
 
 type RoomObjectInfoBubblesProps = {
     activeData: IRoomObjectData | undefined;
+    isMenuClosed: boolean;
+    closeMenu: () => void;
 }
 
 export const RoomObjectInfoBubbles = (props: RoomObjectInfoBubblesProps) => {
-    const { activeData } = props;
+    const { activeData, isMenuClosed, closeMenu } = props;
     const [activeBubble, setActiveBubble] = useState<IRoomObjectNameData | undefined>(undefined);
     const [nameBubbles, setNameBubbles] = useState<IRoomObjectNameData[]>([]);
     const room = useRoomSelector();
@@ -109,8 +111,8 @@ export const RoomObjectInfoBubbles = (props: RoomObjectInfoBubblesProps) => {
 
     return (
         <>
-            <RoomObjectInfoActiveBubble activeBubble={activeBubble} activeData={activeData} />
-            {nameBubbles.length && nameBubbles.map((x, i) => <RoomObjectInfoNameBubble key={i} nameData={x} />)}
+            <RoomObjectInfoActiveBubble activeBubble={activeBubble} activeData={activeData} isMenuClosed={isMenuClosed} onClose={closeMenu} />
+            {nameBubbles.length && nameBubbles.map((x, i) => <RoomObjectInfoNameBubble key={i} nameData={x} onClose={() => { nameBubbles.splice(i, 1) }} />)}
         </>
     )
 }

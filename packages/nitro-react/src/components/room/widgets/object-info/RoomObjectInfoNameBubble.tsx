@@ -6,13 +6,14 @@ import { RoomObjectInfoBubble } from "./RoomObjectInfoBubble";
 
 type RoomObjectInfoNameBubbleProps = {
     nameData: IRoomObjectNameData;
+    onClose?: () => void;
 }
 
 export const RoomObjectInfoNameBubble = (props: RoomObjectInfoNameBubbleProps) => {
-    const { nameData } = props;
+    const { nameData, onClose } = props;
 
     return (
-        <RoomObjectInfoBubble objectData={nameData}>
+        <RoomObjectInfoBubble objectData={nameData} fades={true} onClose={onClose}>
             <InfoBubbleNameView nameData={nameData} />
         </RoomObjectInfoBubble>);
 }

@@ -11,6 +11,7 @@ import { RoomObjectInfostand } from "./RoomObjectInfostand";
 export const RoomObjectInfoWidget = () => {
     const [selectedObjectId, setSelectedObjectId] = useState<number>(-1);
     const [selectedObjectCategory, setSelectedObjectCategory] = useState<RoomObjectCategoryEnum>(RoomObjectCategoryEnum.Minimum);
+    const [isMenuClosed, setIsMenuClosed] = useState<boolean>(false);
     const room = useRoomSelector();
     const floorItems = useFurnitureDataStore(x => x.floorItems);
     const wallItems = useFurnitureDataStore(x => x.wallItems);
@@ -117,6 +118,7 @@ export const RoomObjectInfoWidget = () => {
     useRoomObjectSelected(event => {
         setSelectedObjectId(event.objectId);
         setSelectedObjectCategory(event.category);
+        setIsMenuClosed(false);
     });
 
     const activeData = getRoomObjectData(selectedObjectId, selectedObjectCategory);
@@ -126,7 +128,7 @@ export const RoomObjectInfoWidget = () => {
             <div className="absolute right-1 bottom-[calc(var(--spacing-toolbar-h)+7px)] z-30">
                 <RoomObjectInfostand activeData={activeData} onClose={onClose} />
             </div>
-            <RoomObjectInfoBubbles activeData={activeData} />
+            <RoomObjectInfoBubbles activeData={activeData} isMenuClosed={isMenuClosed} closeMenu={() => setIsMenuClosed(true)} />
         </>
     );
 }

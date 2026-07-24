@@ -22,6 +22,8 @@ export const selectIsPlayingGame = (state: RoomStore) => state.isPlayingGame;
 
 export const selectIsMoveBlocked = (state: RoomStore) => state.isMoveBlocked;
 
+export const selectIsOwnDancing = (state: RoomStore) => state.isOwnDancing;
+
 export const selectRoomPermissions = (state: RoomStore) => ({
     controllerLevel: state.controllerLevel,
     isRoomOwner: state.isRoomOwner

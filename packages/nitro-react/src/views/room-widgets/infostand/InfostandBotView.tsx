@@ -6,7 +6,7 @@ type InfostandBotViewProps = {
 }
 
 export const InfostandBotView = (props: InfostandBotViewProps) => {
-    if (!props.data) return null;
+    const { data } = props;
 
     return (
         <div className="infostand-container"></div>

@@ -1,15 +1,12 @@
 import { IRoomObjectData, RoomObjectUserType } from "@nitrodevco/nitro-api";
-import { GetRenderer, GetTicker } from "@nitrodevco/nitro-renderer";
-import { PointData, Rectangle, Ticker } from "pixi.js";
+import { GetRenderer } from "@nitrodevco/nitro-renderer";
+import { RoomRenderedEvent } from "@nitrodevco/nitro-shared";
+import { PointData, Rectangle } from "pixi.js";
 import { ReactNode, useEffect, useRef } from "react";
 
 import { useRoomSelector } from "#base/context";
+import { useRoomEventDispatcher } from "#base/hooks";
 import { FixedSizeStack } from "#base/utils";
-
-type RoomObjectInfoBubbleProps = {
-    objectData: IRoomObjectData;
-    children?: ReactNode;
-}
 
 const LOCATION_STACK_SIZE: number = 25;
 const BUBBLE_DROP_SPEED: number = 3;
@@ -22,11 +19,36 @@ let FIXED_STACK: FixedSizeStack | undefined = undefined;
 let MAX_STACK = -1000000;
 let FADE_TIME = 1;
 
+type RoomObjectInfoBubbleProps = {
+    objectData: IRoomObjectData;
+    fades?: boolean;
+    children?: ReactNode;
+    onClose?: () => void;
+}
+
 export const RoomObjectInfoBubble = (props: RoomObjectInfoBubbleProps) => {
-    const { objectData, children } = props;
+    const { objectData, fades = false, children, onClose = undefined } = props;
     const { objectId, category } = objectData;
     const room = useRoomSelector();
+    const isFading = useRef<boolean>(false);
+    const fadeTime = useRef<number>(1);
     const elementRef = useRef<HTMLDivElement>(null);
+
+    const updateFade = (time: number) => {
+        if (!onClose || !isFading.current || !elementRef?.current) return;
+
+        fadeTime.current += time;
+
+        const newOpacity = ((1 - (fadeTime.current / FADE_LENGTH)) * 1);
+
+        if (newOpacity <= 0) {
+            if (onClose) onClose();
+
+            return;
+        }
+
+        elementRef.current.style.opacity = `${newOpacity ?? 0}`;
+    }
 
     const updatePosition = (bounds: Rectangle, location: PointData) => {
         if (!bounds || !location || !FIXED_STACK || !elementRef?.current) return;
@@ -64,26 +86,28 @@ export const RoomObjectInfoBubble = (props: RoomObjectInfoBubbleProps) => {
         elementRef.current.style.top = `${y}px`;
     }
 
+    useRoomEventDispatcher<RoomRenderedEvent>(RoomRenderedEvent.ROOM_RENDERED, event => {
+        if (!room || !elementRef.current || !objectData) return;
+
+        updateFade(event.time);
+
+        const bounds = room.getRoomObjectBoundingRectangle(objectId, category);
+        const location = room.getRoomObjectScreenLocation(objectId, category);
+
+        if (!bounds || !location) return;
+
+        updatePosition(bounds, location);
+
+        elementRef.current.style.visibility = 'visible';
+    });
+
     useEffect(() => {
-        if (!room || !elementRef.current) return;
+        if (!fades) return;
 
-        const update = (ticker: Ticker) => {
-            if (!elementRef.current) return;
+        const timeout = setTimeout(() => isFading.current = true, FADE_DELAY);
 
-            const bounds = room.getRoomObjectBoundingRectangle(objectId, category);
-            const location = room.getRoomObjectScreenLocation(objectId, category);
-
-            if (!bounds || !location) return;
-
-            updatePosition(bounds, location);
-        }
-
-        GetTicker().add(update);
-
-        return () => {
-            GetTicker().remove(update);
-        }
-    }, [objectId, category, updatePosition]);
+        return () => clearTimeout(timeout);
+    }, [fades]);
 
     useEffect(() => {
         FIXED_STACK = new FixedSizeStack(LOCATION_STACK_SIZE);
@@ -91,5 +115,5 @@ export const RoomObjectInfoBubble = (props: RoomObjectInfoBubbleProps) => {
         FADE_TIME = 1;
     }, []);
 
-    return <div ref={elementRef} className="absolute z-50">{children}</div>
+    return <div ref={elementRef} className="absolute z-50 invisible transition-[top,left] duration-60 ease-out">{children}</div>
 }

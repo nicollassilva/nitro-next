@@ -1,7 +1,7 @@
-import { IOutgoingPacket } from '@nitrodevco/nitro-api';
+import { IOutgoingPacket, PostureTypeEnum } from '@nitrodevco/nitro-api';
 
 export type ChangePostureComposerType = {
-    postureType: 0 | 1;
+    postureType: PostureTypeEnum;
 };
 
 export class ChangePostureComposer implements IOutgoingPacket<ChangePostureComposerType> {

@@ -13,10 +13,12 @@ type InfostandUserViewProps = {
 }
 
 export const InfostandUserView = (props: InfostandUserViewProps) => {
+    const { data } = props;
     const [isEditingMotto, setIsEditingMotto] = useState<boolean>(false);
     const [motto, setMotto] = useState<string>('');
     const ownUserId = useOwnUserId();
     const mottoMaxLength = useConfigValue<number>('motto.max.length', 38) ?? 38;
+    const isOwnUser = data?.webID === ownUserId;
     const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
     const { send } = useWebSocketContext();
 
@@ -37,35 +39,33 @@ export const InfostandUserView = (props: InfostandUserViewProps) => {
     }
 
     useEffect(() => {
-        if (!props.data) return;
+        if (!data) return;
 
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setIsEditingMotto(false);
-        setMotto(props.data?.custom);
+        setMotto(data.custom);
 
         return () => {
             setIsEditingMotto(false);
             setMotto('');
         }
-    }, [props.data]);
+    }, [data]);
 
-    if (!props.data) return null;
-
-    const isOwnUser = props.data.webID === ownUserId;
+    if (!data) return null;
 
     return (
         <div className="infostand-container">
             <div className="infostand-header">
                 <div className="flex items-center gap-2">
                     <i className="cursor-pointer nitro-icon icon-profile-house" />
-                    {props.data.name}
+                    {data.name}
                 </div>
                 <i className="infostand-close" onClick={e => props.onClose()} />
             </div>
             <hr className="infostand-separator" />
             <div className="flex-1 gap-1 p-1 size-full">
                 <div className="infostand-avatar-container">
-                    <AvatarImage figure={props.data.figure} gender={props.data.gender} direction={4} />
+                    <AvatarImage figure={data.figure} gender={data.gender} direction={4} />
                 </div>
             </div>
             <hr className="infostand-separator" />
@@ -81,7 +81,7 @@ export const InfostandUserView = (props: InfostandUserViewProps) => {
             </div>
             <hr className="infostand-separator" />
             <div className="flex w-full gap-1 p-1">
-                <p className="text-[9px] text-white font-goldfish-bold">{getLocalizationValue('infostand.text.achievement_score')}<br />{props.data.activityPoints}</p>
+                <p className="text-[9px] text-white font-goldfish-bold">{getLocalizationValue('infostand.text.achievement_score')}<br />{data.activityPoints}</p>
             </div>
         </div>
     );

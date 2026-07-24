@@ -1,5 +1,6 @@
 import { RoomGeometryScaleType } from '@nitrodevco/nitro-api';
 import { GetRenderer, GetStage, GetTicker } from '@nitrodevco/nitro-renderer';
+import { RoomRenderedEvent } from '@nitrodevco/nitro-shared';
 import type { Ticker } from 'pixi.js';
 import { forwardRef, useEffect } from 'react';
 
@@ -83,6 +84,8 @@ export const RoomCanvas = forwardRef<HTMLDivElement>((props, ref) => {
             if (hasAndResetCursorUpdate()) renderer.canvas.style.cursor = hasCursorOwners() ? 'pointer' : 'auto';
 
             renderer.render(stage);
+
+            room.dispatchEvent(new RoomRenderedEvent(room.roomId, time));
         }
 
         ticker.add(tick);

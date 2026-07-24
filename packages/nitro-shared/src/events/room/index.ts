@@ -31,6 +31,7 @@ export * from './RoomObjectStateChangedEvent';
 export * from './RoomObjectTileMouseEvent';
 export * from './RoomObjectWallMouseEvent';
 export * from './RoomObjectWidgetRequestEvent';
+export * from './RoomRenderedEvent';
 export * from './RoomSpriteMouseEvent';
 export * from './RoomToObjectEvent';
 export * from './RoomToObjectOwnAvatarMoveEvent';

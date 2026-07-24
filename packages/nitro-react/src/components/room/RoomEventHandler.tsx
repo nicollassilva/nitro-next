@@ -1,5 +1,5 @@
 import type { IRoomObject } from "@nitrodevco/nitro-api";
-import { MouseEventType, RoomControllerLevelEnum, RoomObjectCategoryEnum, RoomObjectVariableEnum } from "@nitrodevco/nitro-api";
+import { MouseEventType, NitroLogger, RoomControllerLevelEnum, RoomObjectCategoryEnum, RoomObjectVariableEnum } from "@nitrodevco/nitro-api";
 import { RoomObjectUpdateMessage } from "@nitrodevco/nitro-renderer";
 import type { RoomObjectEvent, RoomSpriteMouseEvent } from "@nitrodevco/nitro-shared";
 import { RoomEngineObjectEvent, RoomObjectFurnitureActionEvent, RoomObjectMouseEvent, RoomObjectMoveEvent, RoomObjectStateChangedEvent, RoomWidgetUpdateRoomObjectEvent } from "@nitrodevco/nitro-shared";
@@ -63,6 +63,10 @@ export const RoomEventHandler = () => {
                     (category !== RoomObjectCategoryEnum.Floor && category !== RoomObjectCategoryEnum.Wall) ||
                     controllerLevel >= RoomControllerLevelEnum.Guest
                 ) addCursorOwner(event.objectId, category);
+                return;
+            }
+            default: {
+                NitroLogger.log(`Unhandled event: ${event.constructor.name} Object ID: ${event.objectId}`);
                 return;
             }
         }

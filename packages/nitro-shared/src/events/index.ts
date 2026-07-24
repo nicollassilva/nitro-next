@@ -1,5 +1,5 @@
-export * from './common/NitroEvent';
 export * from './EventDispatcher';
+export * from './common/NitroEvent';
 export * from './room/RoomBackgroundColorEvent';
 export * from './room/RoomContentLoadedEvent';
 export * from './room/RoomDragEvent';
@@ -33,6 +33,7 @@ export * from './room/RoomObjectStateChangedEvent';
 export * from './room/RoomObjectTileMouseEvent';
 export * from './room/RoomObjectWallMouseEvent';
 export * from './room/RoomObjectWidgetRequestEvent';
+export * from './room/RoomRenderedEvent';
 export * from './room/RoomSpriteMouseEvent';
 export * from './room/RoomToObjectEvent';
 export * from './room/RoomToObjectOwnAvatarMoveEvent';
