@@ -1,4 +1,4 @@
-import type { ClubLevelEnum, IUserInfo, NoobnessLevelEnum, SecurityLevelEnum } from '@nitrodevco/nitro-api';
+import { ClubLevelEnum, IUserInfo, NoobnessLevelEnum, SecurityLevelEnum } from '@nitrodevco/nitro-api';
 import { createStore } from 'zustand';
 
 type State = {
@@ -44,7 +44,7 @@ const initialState: State = {
     nameChangeAllowed: false,
     accountSafetyLocked: false,
     tags: [],
-    clubLevel: 0,
+    clubLevel: ClubLevelEnum.Club,
     securityLevel: 0,
     isAmbassador: false,
     noobnessLevel: -1,

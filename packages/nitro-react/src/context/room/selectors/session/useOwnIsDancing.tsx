@@ -1,4 +1,4 @@
 import { useRoomContext } from "#base/context";
 import { selectIsOwnDancing } from "#base/stores";
 
-export const useIsOwnDancing = () => useRoomContext(selectIsOwnDancing);
+export const useOwnIsDancing = () => useRoomContext(selectIsOwnDancing);
