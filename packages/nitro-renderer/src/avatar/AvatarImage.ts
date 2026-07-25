@@ -89,11 +89,9 @@ export class AvatarImage implements IAvatarImage, IAvatarEffectListener {
     public dispose(): void {
         if (this._disposed) return;
 
-        if (this._image) {
-            TexturePool.releaseTexture(this._image);
+        if (this._image && !this._isCachedImage) TexturePool.releaseTexture(this._image);
 
-            this._image = undefined;
-        }
+        this._image = undefined;
 
         if (this._cache) {
             this._cache.dispose();

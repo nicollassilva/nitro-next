@@ -166,6 +166,8 @@ export class AvatarVisualization
             if (effect !== this._effect) didEffectUpdate = true;
 
             if (didScaleUpdate || !this._avatarImage || didEffectUpdate) {
+                this._avatarImage?.dispose();
+
                 this._avatarImage = this.createAvatarImage(scale, this._effect);
 
                 if (!this._avatarImage) return;
@@ -228,13 +230,11 @@ export class AvatarVisualization
                 this._updatesUntilFrameUpdate--;
             }
 
-            if (this._updatesUntilFrameUpdate <= 0 || didScaleUpdate || updateModel || otherUpdate) {
-                this._avatarImage.updateAnimationByFrames(1);
+            if (!(this._updatesUntilFrameUpdate <= 0 || (shouldUpdateFrame && (didScaleUpdate || updateModel || otherUpdate)))) return;
 
-                this._updatesUntilFrameUpdate = AvatarVisualization.ANIMATION_FRAME_UPDATE_INTERVAL;
-            } else {
-                return;
-            }
+            this._avatarImage.updateAnimationByFrames(1);
+
+            this._updatesUntilFrameUpdate = AvatarVisualization.ANIMATION_FRAME_UPDATE_INTERVAL;
 
             let _local_20 = this._avatarImage.getCanvasOffsets();
 
@@ -436,38 +436,39 @@ export class AvatarVisualization
         )
             return false;
 
-        let direction = object.getDirection().x - geometry.direction.x;
-        let headDirection = this._headDirection - geometry.direction.x;
+        let didUpdate = update;
 
-        if (this._posture === AvatarActionStateType.Float) headDirection = direction;
-
-        direction = ((direction % 360) + 360) % 360;
-        headDirection = ((headDirection % 360) + 360) % 360;
+        let direction = ((object.getDirection().x - geometry.direction.x) % 360 + 360) % 360;
+        let headDirection = this._headDirection;
 
         if (this._posture === AvatarActionStateType.Sit && this._canStandUp) {
             direction -= (direction % 90) - 45;
-            headDirection -= (headDirection % 90) - 45;
         }
 
+        if (this._posture === AvatarActionStateType.Float) headDirection = direction;
+        else headDirection -= geometry.direction.x;
+
+        headDirection = (headDirection % 360 + 360) % 360;
+
+        if (this._posture === AvatarActionStateType.Sit && this._canStandUp || this._posture === AvatarActionStateType.SnowwarDieBack || this._posture === AvatarActionStateType.SnowwarDieFront) headDirection -= headDirection % 90 - 45;
+
         if (direction !== this._angle || _arg_4) {
-            update = true;
+            didUpdate = true;
 
             this._angle = direction;
 
-            direction = direction - (135 - 22.5);
-            direction = (direction + 360) % 360;
+            direction = ((direction - 112.5) + 360) % 360;
 
             this._avatarImage?.setDirectionAngle(AvatarSetType.Full, direction);
         }
 
         if (headDirection !== this._headAngle || _arg_4) {
-            update = true;
+            didUpdate = true;
 
             this._headAngle = headDirection;
 
             if (this._headAngle !== this._angle) {
-                headDirection = headDirection - (135 - 22.5);
-                headDirection = (headDirection + 360) % 360;
+                headDirection = ((headDirection - 112.5) + 360) % 360;
 
                 this._avatarImage?.setDirectionAngle(AvatarSetType.Head, headDirection);
             }
@@ -477,7 +478,7 @@ export class AvatarVisualization
 
         this.updateObjectCounter = this.object.updateCounter;
 
-        return update;
+        return didUpdate;
     }
 
     protected updateModel(model: IRoomObjectModel, scale: RoomGeometryScaleType): boolean {
