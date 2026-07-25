@@ -48,34 +48,36 @@ export const InfostandUserView = (props: InfostandUserViewProps) => {
     if (!userData) return null;
 
     return (
-        <div className="infostand-container">
-            <div className="infostand-header">
-                <div className="flex items-center gap-2">
-                    <i className="cursor-pointer nitro-icon icon-profile-house" />
-                    {userData.name}
+        <div className="flex flex-col items-end gap-2">
+            <div className="infostand-container">
+                <div className="infostand-header">
+                    <div className="flex items-center gap-2">
+                        <i className="cursor-pointer nitro-icon icon-profile-house" />
+                        {userData.name}
+                    </div>
+                    <i className="infostand-close" onClick={onClose} />
                 </div>
-                <i className="infostand-close" onClick={onClose} />
-            </div>
-            <hr className="infostand-separator" />
-            <div className="flex-1 gap-1 p-1 size-full">
-                <div className="infostand-avatar-container">
-                    <AvatarImage figure={userData.figure} gender={userData.gender} direction={4} />
+                <hr className="infostand-separator" />
+                <div className="flex-1 gap-1 p-1 size-full">
+                    <div className="infostand-avatar-container">
+                        <AvatarImage figure={userData.figure} gender={userData.gender} direction={4} />
+                    </div>
                 </div>
-            </div>
-            <hr className="infostand-separator" />
-            <div className="flex w-full p-1">
-                <div className="infostand-motto-container">
-                    {!userData.isOwnUser && <p className="text-[9px] text-white">{motto.length === 0 ? getLocalizationValue('infostand.motto.change') : motto}</p>}
-                    {userData.isOwnUser && <>
-                        <i className="cursor-pointer nitro-icon pencil-icon shrink-0" onClick={e => setIsEditingMotto(true)} />
-                        {!isEditingMotto && <p className="text-[9px] text-white font-goldfish flex-1 min-w-0 overflow-hidden wrap-break-word">{motto}</p>}
-                        {isEditingMotto && <input type="text" className="p-0 border-0 size-full text-[9px] flex-1 min-w-0" maxLength={mottoMaxLength} value={motto} onChange={e => setMotto(e.target.value)} onKeyDown={onMottoKeyDown} autoFocus={true} />}
-                    </>}
+                <hr className="infostand-separator" />
+                <div className="flex w-full p-1">
+                    <div className="infostand-motto-container">
+                        {!userData.isOwnUser && <p className="text-[9px] text-white">{motto.length === 0 ? getLocalizationValue('infostand.motto.change') : motto}</p>}
+                        {userData.isOwnUser && <>
+                            <i className="cursor-pointer nitro-icon pencil-icon shrink-0" onClick={e => setIsEditingMotto(true)} />
+                            {!isEditingMotto && <p className="text-[9px] text-white font-goldfish flex-1 min-w-0 overflow-hidden wrap-break-word">{motto}</p>}
+                            {isEditingMotto && <input type="text" className="p-0 border-0 size-full text-[9px] flex-1 min-w-0" maxLength={mottoMaxLength} value={motto} onChange={e => setMotto(e.target.value)} onKeyDown={onMottoKeyDown} autoFocus={true} />}
+                        </>}
+                    </div>
                 </div>
-            </div>
-            <hr className="infostand-separator" />
-            <div className="flex w-full gap-1 p-1">
-                <p className="text-[9px] text-white font-goldfish-bold">{getLocalizationValue('infostand.text.achievement_score')}<br />{userData.achievementScore}</p>
+                <hr className="infostand-separator" />
+                <div className="flex w-full gap-1 p-1">
+                    <p className="text-[9px] text-white font-goldfish-bold">{getLocalizationValue('infostand.text.achievement_score')}<br />{userData.achievementScore}</p>
+                </div>
             </div>
         </div>
     );
