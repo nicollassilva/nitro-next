@@ -33,6 +33,7 @@ export * from './user/actions/useUserInfoActions';
 export * from './user/selectors/useIsSystemShutdown';
 export * from './user/selectors/useOwnClubLevel';
 export * from './user/selectors/useOwnHasClub';
+export * from './user/selectors/useOwnIsAmbassador';
 export * from './user/selectors/useOwnIsModerator';
 export * from './user/selectors/useOwnRespectData';
 export * from './user/selectors/useOwnSecurityLevel';

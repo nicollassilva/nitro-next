@@ -2,6 +2,7 @@ export * from './actions/useUserInfoActions';
 export * from './selectors/useIsSystemShutdown';
 export * from './selectors/useOwnClubLevel';
 export * from './selectors/useOwnHasClub';
+export * from './selectors/useOwnIsAmbassador';
 export * from './selectors/useOwnIsModerator';
 export * from './selectors/useOwnRespectData';
 export * from './selectors/useOwnSecurityLevel';

@@ -1,6 +1,7 @@
 export * from './useIsSystemShutdown';
 export * from './useOwnClubLevel';
 export * from './useOwnHasClub';
+export * from './useOwnIsAmbassador';
 export * from './useOwnIsModerator';
 export * from './useOwnRespectData';
 export * from './useOwnSecurityLevel';
