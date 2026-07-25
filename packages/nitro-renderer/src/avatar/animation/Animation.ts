@@ -60,7 +60,7 @@ export class Animation implements IAnimation {
         if (data.frames) this.parseFrames(this._frames, data.frames, structure);
     }
 
-    public frameCount(name: string = ''): number {
+    public frameCount(name: string | undefined = undefined): number {
         if (!name || !name.length) return this._frames.length;
 
         return this._overrideFrames.get(name)?.length ?? 0;
@@ -82,7 +82,7 @@ export class Animation implements IAnimation {
         return this._overriddenActions?.get(name);
     }
 
-    public getAnimatedBodyPartIds(frameCount: number, name: string = ''): AvatarBodyPartType[] {
+    public getAnimatedBodyPartIds(frameCount: number, name: string | undefined = undefined): AvatarBodyPartType[] {
         const ids: AvatarBodyPartType[] = [];
 
         for (const layer of this.getFrame(frameCount, name)) {
@@ -96,7 +96,7 @@ export class Animation implements IAnimation {
         return ids;
     }
 
-    public getLayerData(frameCount: number, spriteId: AvatarBodyPartType, name: string = ''): IAnimationLayerData | undefined {
+    public getLayerData(frameCount: number, spriteId: AvatarBodyPartType, name: string | undefined = undefined): IAnimationLayerData | undefined {
         for (const layer of this.getFrame(frameCount, name)) {
             if (layer.id === spriteId as string) return layer;
 
@@ -158,7 +158,7 @@ export class Animation implements IAnimation {
         return this._description;
     }
 
-    private getFrame(frameCount: number, name: string = ''): AvatarAnimationLayerData[] {
+    private getFrame(frameCount: number, name: string | undefined = undefined): AvatarAnimationLayerData[] {
         if (frameCount < 0) frameCount = 0;
 
         let layers: AvatarAnimationLayerData[] = [];

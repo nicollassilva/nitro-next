@@ -101,11 +101,11 @@ export class FurnitureVisualization extends RoomObjectSpriteVisualization {
     }
 
     public override update(geometry: IRoomGeometry, time: number, update: boolean, skipUpdate: boolean): void {
-        if (!geometry || time < this._lastUpdateTime + 41) return;
+        if (!geometry || time < this._lastUpdateTime + RoomObjectSpriteVisualization.UPDATE_TIME_INCREASER) return;
 
-        this._lastUpdateTime += 41;
+        this._lastUpdateTime += RoomObjectSpriteVisualization.UPDATE_TIME_INCREASER;
 
-        if (this._lastUpdateTime + 41 < time) this._lastUpdateTime = time - 41;
+        if (this._lastUpdateTime + RoomObjectSpriteVisualization.UPDATE_TIME_INCREASER < time) this._lastUpdateTime = time - RoomObjectSpriteVisualization.UPDATE_TIME_INCREASER;
 
         const scale = geometry.scale;
         let updateSprites = false;

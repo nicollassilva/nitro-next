@@ -472,6 +472,10 @@ export class AvatarImage implements IAvatarImage, IAvatarEffectListener {
         return true;
     }
 
+    public disposeInactiveActionCache(): void {
+        this._cache?.disposeInactiveActions();
+    }
+
     public getTotalFrameCount(): number {
         const actions = this._sortedActions;
 

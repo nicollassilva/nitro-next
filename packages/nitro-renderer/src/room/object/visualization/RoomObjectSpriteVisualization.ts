@@ -16,6 +16,7 @@ import { RoomObjectSprite } from './RoomObjectSprite';
 
 export class RoomObjectSpriteVisualization implements IRoomObjectSpriteVisualization {
     private static VISUALIZATION_COUNTER: number = 0;
+    protected static UPDATE_TIME_INCREASER: number = 45;
 
     private _id: number = RoomObjectSpriteVisualization.VISUALIZATION_COUNTER++;
     private _object: IRoomObjectController;

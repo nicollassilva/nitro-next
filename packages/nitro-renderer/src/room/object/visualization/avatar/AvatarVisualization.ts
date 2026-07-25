@@ -43,7 +43,6 @@ export class AvatarVisualization
     private static MUTED_BUBBLE_ID: number = 6;
     private static GUIDE_BUBBLE_ID: number = 7;
     private static OWN_USER_ID: number = 4;
-    private static UPDATE_TIME_INCREASER: number = 41;
     private static AVATAR_LAYER_ID: number = 0;
     private static SHADOW_LAYER_ID: number = 1;
     private static SNOWBOARDING_EFFECT: number = 97;
@@ -97,6 +96,7 @@ export class AvatarVisualization
     private _extraSpritesStartIndex: number = 2;
     private _forcedAnimFrames: number = 0;
     private _updatesUntilFrameUpdate: number = 0;
+    private _updatesUntilCleanup: number = Math.random() * 200 + 200;
 
     private _isAvatarReady: boolean = false;
     private _needsUpdate: boolean = false;
@@ -130,12 +130,20 @@ export class AvatarVisualization
     public override update(geometry: IRoomGeometry, time: number, update: boolean, skipUpdate: boolean): void {
         if (!this.object || !geometry || !this._data) return;
 
-        if (time < this._lastUpdate + AvatarVisualization.UPDATE_TIME_INCREASER) return;
+        if (--this._updatesUntilCleanup <= 0 && this._avatarImage) {
+            this._avatarImage.disposeInactiveActionCache();
 
-        this._lastUpdate += AvatarVisualization.UPDATE_TIME_INCREASER;
+            this._updatesUntilCleanup = 500;
+        }
 
-        if (this._lastUpdate + AvatarVisualization.UPDATE_TIME_INCREASER < time)
-            this._lastUpdate = time - AvatarVisualization.UPDATE_TIME_INCREASER;
+        const shouldUpdateFrame = time >= this._lastUpdate + RoomObjectSpriteVisualization.UPDATE_TIME_INCREASER;
+
+        if (shouldUpdateFrame) {
+            this._lastUpdate += RoomObjectSpriteVisualization.UPDATE_TIME_INCREASER;
+
+            if (this._lastUpdate + RoomObjectSpriteVisualization.UPDATE_TIME_INCREASER < time)
+                this._lastUpdate = time - RoomObjectSpriteVisualization.UPDATE_TIME_INCREASER;
+        }
 
         const model = this.object.model;
         const scale = geometry.scale;
@@ -198,7 +206,7 @@ export class AvatarVisualization
             objectUpdate = this.updateObject(this.object, geometry, update);
         }
 
-        if (this._additions) {
+        if (shouldUpdateFrame && this._additions) {
             let index = this._extraSpritesStartIndex;
 
             for (const addition of this._additions.values()) {
@@ -208,15 +216,17 @@ export class AvatarVisualization
         }
 
         const update1 = objectUpdate || updateModel || didScaleUpdate;
-        const update2 = (this._isAnimating || this._forcedAnimFrames > 0) && update;
+        const update2 = (this._isAnimating || this._forcedAnimFrames > 0) && update && shouldUpdateFrame;
 
         if (update1) this._forcedAnimFrames = AvatarVisualization.ANIMATION_FRAME_UPDATE_INTERVAL;
 
         if (update1 || update2) {
             this.updateSpriteCounter++;
 
-            this._forcedAnimFrames--;
-            this._updatesUntilFrameUpdate--;
+            if (shouldUpdateFrame) {
+                this._forcedAnimFrames--;
+                this._updatesUntilFrameUpdate--;
+            }
 
             if (this._updatesUntilFrameUpdate <= 0 || didScaleUpdate || updateModel || otherUpdate) {
                 this._avatarImage.updateAnimationByFrames(1);
@@ -302,8 +312,7 @@ export class AvatarVisualization
                             offsetY += layerData.dy;
                         }
 
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-                        if (scale < 48) {
+                        if (scale < RoomGeometryScaleType.AvatarSizeNormal) {
                             offsetX /= 2;
                             offsetY /= 2;
                         }
@@ -337,8 +346,7 @@ export class AvatarVisualization
                             dd += layerData.dd;
                         }
 
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-                        if (scale < 48) {
+                        if (scale < RoomGeometryScaleType.AvatarSizeNormal) {
                             offsetX /= 2;
                             offsetY /= 2;
                         }
