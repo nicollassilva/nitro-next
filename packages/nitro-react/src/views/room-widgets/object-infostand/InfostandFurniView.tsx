@@ -50,6 +50,8 @@ export const InfostandFurniView = (props: InfostandFurniViewProps) => {
 
     if (furniData.usagePolicy === FurnitureUsagePolicyEnum.Everybody || (furniData.usagePolicy === FurnitureUsagePolicyEnum.Controller && isValidController) || (furniData.extraParam === RoomWidgetEnumItemExtradataParameter.JUKEBOX && isValidController) || (furniData.extraParam === RoomWidgetEnumItemExtradataParameter.USABLE_PRODUCT && isValidController)) canUse = true;
 
+    const hasButtons = canMove || canRotate || pickupMode !== FurniturePickupMode.None || canUse;
+
     return (
         <div className="flex flex-col items-end gap-2">
             <div className="infostand-container">
@@ -69,13 +71,13 @@ export const InfostandFurniView = (props: InfostandFurniViewProps) => {
                     {canSeeFurniId && <p className="text-[9px] text-white font-goldfish-bold">ID: {furniData.id}</p>}
                 </div>
             </div>
-            <div className="flex justify-end gap-2">
+            {hasButtons && <div className="flex justify-end gap-2">
                 {canMove && <Button variant="infostand" size="sm" onClick={() => modifyRoomObject(objectId, category, RoomObjectOperationType.OBJECT_MOVE)}>{getLocalizationValue('infostand.button.move')}</Button>}
                 {canRotate && <Button variant="infostand" size="sm" onClick={() => modifyRoomObject(objectId, category, RoomObjectOperationType.OBJECT_ROTATE_POSITIVE)}>{getLocalizationValue('infostand.button.rotate')}</Button>}
                 {pickupMode === FurniturePickupMode.Eject && <Button variant="infostand" size="sm" onClick={() => modifyRoomObject(objectId, category, RoomObjectOperationType.OBJECT_EJECT)}>{getLocalizationValue(`infostand.button.eject`)}</Button>}
                 {pickupMode === FurniturePickupMode.Full && <Button variant="infostand" size="sm" onClick={() => modifyRoomObject(objectId, category, RoomObjectOperationType.OBJECT_PICKUP)}>{getLocalizationValue(`infostand.button.pickup`)}</Button>}
                 {canUse && <Button variant="infostand" size="sm" onClick={() => changeItemState(objectId, category, 0, false)}>{getLocalizationValue('infostand.button.use')}</Button>}
-            </div>
+            </div>}
         </div>
     );
 }
