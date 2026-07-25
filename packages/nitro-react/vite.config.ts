@@ -1,9 +1,32 @@
 import babel from '@rolldown/plugin-babel';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
+import path from 'node:path';
+import { defineConfig, Plugin } from 'vite';
 
 const r = (p: string) => `${import.meta.dirname}/${p}`;
+
+const tailwindAutoReference = (): Plugin => {
+    const indexCss = path.resolve(r('src/index.css'));
+
+    return {
+        name: 'tailwind-auto-reference',
+        enforce: 'pre',
+        transform(code, id) {
+            const file = path.resolve(id.split('?')[0]);
+
+            if (!file.endsWith('.css')) return;
+            if (file === indexCss) return;
+            if (!file.startsWith(path.resolve(r('src')))) return;
+            if (/@reference\b/.test(code) || /@import\s+['"]tailwindcss['"]/.test(code))
+                return;
+
+            const rel = path.relative(path.dirname(file), indexCss).replace(/\\/g, '/');
+
+            return `@reference '${rel.startsWith('.') ? rel : './' + rel}';\n${code}`;
+        },
+    };
+};
 
 export default defineConfig({
     build: {
@@ -31,20 +54,26 @@ export default defineConfig({
         },
     },
     plugins: [
+        tailwindAutoReference(),
         react(),
         babel({
             plugins: ['babel-plugin-react-compiler'],
         }),
-        tailwindcss()
+        tailwindcss(),
     ],
     resolve: {
         tsconfigPaths: true,
         dedupe: ['pixi.js'],
-        alias: [{ find: /^#base\/(.*)/, replacement: r('src/$1') },
-        { find: /^#themes\/(.*)/, replacement: r('themes/$1') },
-        { find: '@nitrodevco/nitro-api', replacement: r('../nitro-api/src') },
-        { find: '@nitrodevco/nitro-renderer', replacement: r('../nitro-renderer/src') },
-        { find: '@nitrodevco/nitro-shared', replacement: r('../nitro-shared/src') }],
+        alias: [
+            { find: /^#base\/(.*)/, replacement: r('src/$1') },
+            { find: /^#themes\/(.*)/, replacement: r('themes/$1') },
+            { find: '@nitrodevco/nitro-api', replacement: r('../nitro-api/src') },
+            {
+                find: '@nitrodevco/nitro-renderer',
+                replacement: r('../nitro-renderer/src'),
+            },
+            { find: '@nitrodevco/nitro-shared', replacement: r('../nitro-shared/src') },
+        ],
     },
     server: {
         port: 5173,
