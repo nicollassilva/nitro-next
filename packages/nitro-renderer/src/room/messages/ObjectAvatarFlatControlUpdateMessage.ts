@@ -1,18 +1,17 @@
+import { RoomControllerLevelEnum } from '@nitrodevco/nitro-api';
+
 import { ObjectStateUpdateMessage } from './ObjectStateUpdateMessage';
 
-export class ObjectAvatarFlatControlUpdateMessage extends ObjectStateUpdateMessage
-{
-    private _level: number;
+export class ObjectAvatarFlatControlUpdateMessage extends ObjectStateUpdateMessage {
+    private _level: RoomControllerLevelEnum;
 
-    constructor(level: number = 0)
-    {
+    constructor(level: RoomControllerLevelEnum = RoomControllerLevelEnum.None) {
         super();
 
         this._level = level;
     }
 
-    public get level(): number
-    {
+    public get level(): RoomControllerLevelEnum {
         return this._level;
     }
 }

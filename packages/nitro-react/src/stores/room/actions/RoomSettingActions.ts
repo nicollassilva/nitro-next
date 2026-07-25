@@ -5,11 +5,15 @@ export type RoomSettingActions = {
     setTradeMode: RoomStore['setTradeMode'];
     setAllowPets: RoomStore['setAllowPets'];
     setIsGuildRoom: RoomStore['setIsGuildRoom'];
+    setModerationSettings: RoomStore['setModerationSettings'];
+    setChatSettings: RoomStore['setChatSettings'];
 }
 
 export const extractRoomSettingActions = (store: RoomStore) => ({
     setDoorMode: store.setDoorMode,
     setTradeMode: store.setTradeMode,
     setAllowPets: store.setAllowPets,
-    setIsGuildRoom: store.setIsGuildRoom
+    setIsGuildRoom: store.setIsGuildRoom,
+    setModerationSettings: store.setModerationSettings,
+    setChatSettings: store.setChatSettings
 });

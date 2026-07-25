@@ -194,18 +194,24 @@
             }
         }
 
-        .menu-list-split-3 {
-            .menu-item {
-                margin-right: -1px;
+        .menu-content {
+            @apply border-l border-r border-r-black border-l-black overflow-hidden;
+        }
 
-                &:nth-child(3n + 3) {
-                    margin-right: unset;
+        .menu-list-split-3 {
+            @apply border-b border-b-[#4f4c48];
+
+            .menu-item {
+                @apply border-b-0;
+
+                &:nth-child(2) {
+                    @apply border-l border-r border-r-[#4f4c48] border-l-[#4f4c48];
                 }
             }
         }
 
         .menu-item {
-            @apply relative border-b border-r border-l border-b-[#4f4c48] border-r-black border-l-black overflow-hidden h-6.75 max-h-6.75 p-0.75 cursor-pointer text-[11px] text-white;
+            @apply relative border-b border-b-[#4f4c48] h-6.75 max-h-6.75 p-0.75 cursor-pointer text-[11px] text-white overflow-hidden;
 
             background: repeating-linear-gradient(
                 #2a2725,
