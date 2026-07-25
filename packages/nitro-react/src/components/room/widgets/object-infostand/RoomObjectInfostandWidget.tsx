@@ -3,12 +3,11 @@ import { useState } from "react";
 
 import { useRoomSelector } from "#base/context";
 import { useRoomObjectDeselected, useRoomObjectSelected } from "#base/hooks";
-import { InfostandFurniView } from "#base/views/room-widgets/infostand/InfostandFurniView";
-import { InfostandPetView } from "#base/views/room-widgets/infostand/InfostandPetView";
-import { InfostandUserView } from "#base/views/room-widgets/infostand/InfostandUserView";
+import { InfostandFurniView } from "#base/views/room-widgets/object-infostand/InfostandFurniView";
+import { InfostandPetView } from "#base/views/room-widgets/object-infostand/InfostandPetView";
+import { InfostandUserView } from "#base/views/room-widgets/object-infostand/InfostandUserView";
 
 export const RoomObjectInfostandWidget = () => {
-    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     const [selectedData, setSelectedData] = useState<ISimpleRoomObjectData | undefined>(undefined);
     const room = useRoomSelector();
 

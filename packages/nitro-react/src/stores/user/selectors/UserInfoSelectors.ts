@@ -7,3 +7,9 @@ export const selectOwnUserId = (state: UserStore) => state.userId;
 export const selectOwnSecurityLevel = (state: UserStore) => state.securityLevel;
 
 export const selectIsSystemShutdown = (state: UserStore) => state.systemShutdown;
+
+export const selectOwnRespectData = (state: UserStore) => ({
+    respectTotal: state.respectTotal,
+    respectLeft: state.respectLeft,
+    petRespectLeft: state.petRespectLeft
+});

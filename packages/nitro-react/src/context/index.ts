@@ -34,6 +34,7 @@ export * from './user/selectors/useIsSystemShutdown';
 export * from './user/selectors/useOwnClubLevel';
 export * from './user/selectors/useOwnHasClub';
 export * from './user/selectors/useOwnIsModerator';
+export * from './user/selectors/useOwnRespectData';
 export * from './user/selectors/useOwnSecurityLevel';
 export * from './user/selectors/useOwnUserId';
 export * from './user/UserContext';

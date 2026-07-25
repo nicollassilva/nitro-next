@@ -1,7 +1,7 @@
 import { ISimpleRoomObjectData } from "@nitrodevco/nitro-api";
 
 import { useRoomObjectName } from "#base/hooks";
-import { InfoBubbleNameView } from "#base/views/room-widgets/bubbles/InfoBubbleNameView";
+import { InfoBubbleNameView } from "#base/views/room-widgets/object-menu/InfoBubbleNameView";
 
 import { RoomObjectMenuBubble } from "./RoomObjectMenuBubble";
 

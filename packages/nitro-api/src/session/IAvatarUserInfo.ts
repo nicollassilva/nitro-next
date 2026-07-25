@@ -20,4 +20,5 @@ export interface IAvatarUserInfo {
     canBeBanned: boolean;
     canTrade: boolean;
     isOwnUser: boolean;
+    isIgnored: boolean;
 }

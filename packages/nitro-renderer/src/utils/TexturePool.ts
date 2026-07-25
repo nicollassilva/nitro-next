@@ -36,6 +36,7 @@ export class TexturePool {
     }
 
     public static createRenderTexture(width: number, height: number): RenderTexture | undefined {
+        return RenderTexture.create({ width, height });
         if (!this._texturePool[width]) this._texturePool[width] = {};
 
         if (!this._texturePool[width][height]) this._texturePool[width][height] = [];

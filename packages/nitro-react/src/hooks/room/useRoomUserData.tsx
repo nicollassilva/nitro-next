@@ -37,6 +37,7 @@ export const useRoomUserData = (objectId: number) => {
 
     const isOwnUser = userData.webID === ownUserId;
     const controllerLevel = roomObject.model.getValue<RoomControllerLevelEnum>(RoomObjectVariableEnum.FigureFlatControl);
+    const isIgnored = false;
 
     const userInfo: IAvatarUserInfo = {
         objectId: userData.objectId,
@@ -56,7 +57,8 @@ export const useRoomUserData = (objectId: number) => {
         canBeKicked: false,
         canBeBanned: false,
         canTrade: false,
-        isOwnUser
+        isOwnUser,
+        isIgnored
     };
 
     if (!isOwnUser) {

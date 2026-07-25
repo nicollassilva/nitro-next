@@ -3,16 +3,16 @@ import { useState } from "react";
 
 import { useOwnRoomObjectId, useRoomSelector } from "#base/context";
 import { useRoomObjectDeselected, useRoomObjectRollOut, useRoomObjectRollOver, useRoomObjectSelected } from "#base/hooks";
-import { InfoBubbleAvatarView } from "#base/views/room-widgets/bubbles/InfoBubbleAvatarView";
-import { InfoBubbleOwnAvatarView } from "#base/views/room-widgets/bubbles/InfoBubbleOwnAvatarView";
+import { InfoBubbleAvatarView } from "#base/views/room-widgets/object-menu/InfoBubbleAvatarView";
+import { InfoBubbleOwnAvatarView } from "#base/views/room-widgets/object-menu/InfoBubbleOwnAvatarView";
 
 import { RoomObjectMenuBubble } from "./RoomObjectMenuBubble";
 import { RoomObjectMenuNameBubble } from "./RoomObjectMenuNameBubble";
 
 export const RoomObjectMenuWidget = () => {
-    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+
     const [selectedData, setSelectedData] = useState<ISimpleRoomObjectData | undefined>(undefined);
-    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+
     const [hoverData, setHoverData] = useState<ISimpleRoomObjectData | undefined>(undefined);
     const room = useRoomSelector();
     const ownRoomObjectId = useOwnRoomObjectId();
@@ -73,17 +73,10 @@ export const RoomObjectMenuWidget = () => {
                     return null;
                 }
                 case RoomObjectUserType.User: {
-                    if (selectedData.objectId === ownRoomObjectId) {
-                        return (
-                            <RoomObjectMenuBubble objectData={selectedData} userType={userType}>
-                                <InfoBubbleOwnAvatarView objectData={selectedData} onClose={onClose} />
-                            </RoomObjectMenuBubble>
-                        );
-                    }
-
                     return (
                         <RoomObjectMenuBubble objectData={selectedData} userType={userType}>
-                            <InfoBubbleAvatarView objectData={selectedData} onClose={onClose} />
+                            {selectedData.objectId === ownRoomObjectId && <InfoBubbleOwnAvatarView objectData={selectedData} onClose={onClose} />}
+                            {selectedData.objectId !== ownRoomObjectId && <InfoBubbleAvatarView objectData={selectedData} onClose={onClose} />}
                         </RoomObjectMenuBubble>
                     );
                 }
