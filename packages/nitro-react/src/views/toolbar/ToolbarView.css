@@ -17,9 +17,25 @@
         }
 
         &.icon-me-circle {
-            background: url('../../assets/flash/toolbar/icons/me_circle.png');
-            width: 45px;
-            height: 45px;
+            @apply relative rounded-full overflow-hidden w-[45px] h-[45px];
+
+            background-color: #262016;
+
+            &::after {
+                @apply absolute inset-0 pointer-events-none content-[''];
+
+                background: url('../../assets/flash/toolbar/icons/me_circle.png');
+            }
+        }
+
+        &.avatar-image {
+            @apply overflow-hidden rounded-full p-2.5;
+
+            .avatar-image-container {
+                margin-left: -34px;
+                margin-top: -35px;
+                clip-path: circle(21px at 46.5px 47.5px);
+            }
         }
     }
 
@@ -47,8 +63,8 @@
         .icon-rooms,
         .icon-progression {
             transition:
-                opacity 0.1s ease,
-                margin 0.15s ease-out;
+                opacity 50ms ease,
+                margin 100ms ease-out;
         }
 
         &.collapsed {
