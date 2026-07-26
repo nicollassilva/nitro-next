@@ -37,6 +37,8 @@ export * from './user/selectors/useOwnIsAmbassador';
 export * from './user/selectors/useOwnIsModerator';
 export * from './user/selectors/useOwnRespectData';
 export * from './user/selectors/useOwnSecurityLevel';
+export * from './user/selectors/useOwnUserFigure';
+export * from './user/selectors/useOwnUserGender';
 export * from './user/selectors/useOwnUserId';
 export * from './user/UserContext';
 export * from './user/UserContextProvider';

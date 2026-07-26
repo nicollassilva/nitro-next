@@ -1,37 +1,77 @@
-import { AnimatePresence, motion } from "motion/react";
-import { useRef, useState } from "react";
+import { useRef, useState } from 'react';
 
-import { ToolbarMeMenu } from "./ToolbarMeMenu";
+import { ToolbarMeMenu } from './ToolbarMeMenu';
+import { ToolbarProgressionMenu } from './ToolbarProgressionMenu';
+import { cn } from '#base/utils';
+import { useOwnUserFigure, useOwnUserGender } from '#base/context';
+import { AvatarImage } from '#base/components/AvatarImage';
+import { AvatarGenderType } from '@nitrodevco/nitro-api';
 
 export const ToolbarView = () => {
     const [isMeExpanded, setMeExpanded] = useState(false);
-    const [leftSideCollapsed, setLeftSideCollapsed] = useState(true);
-    const [rightSideCollapsed, setRightSideCollapsed] = useState(true);
-    const elementRef = useRef<HTMLDivElement>(null);
+    const [isProgressionExpanded, setProgressionExpanded] = useState(false);
+    const [leftSideCollapsed, setLeftSideCollapsed] = useState(false);
+    const [rightSideCollapsed, setRightSideCollapsed] = useState(false);
+
+    const meElementRef = useRef<HTMLDivElement>(null);
+    const progressionElementRef = useRef<HTMLDivElement>(null);
+
+    const [userFigure, userGender] = [useOwnUserFigure(), useOwnUserGender()];
+
+    const toggleMenu = (menu: string) => {
+        setMeExpanded(menu == 'me' && !isMeExpanded);
+        setProgressionExpanded(menu == 'progression' && !isProgressionExpanded);
+    };
 
     return (
         <>
-            <AnimatePresence>
-                {isMeExpanded && (
-                    <motion.div
-                        ref={elementRef}
-                        key="toolbar-me-menu"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+            {isMeExpanded && <ToolbarMeMenu ref={meElementRef} />}
+            {isProgressionExpanded && (
+                <ToolbarProgressionMenu ref={progressionElementRef} />
+            )}
+            <div className="nitro-toolbar">
+                <div className={cn('toolbar-left', leftSideCollapsed && 'collapsed')}>
+                    <div
+                        className={cn(
+                            'toolbar-collapse',
+                            leftSideCollapsed && 'active',
+                        )}
+                        onClick={_ => setLeftSideCollapsed(prev => !leftSideCollapsed)}
+                    ></div>
+                    <div className="nitro-icon icon-habbo"></div>
+                    <div className="nitro-icon icon-rooms"></div>
+                    <div
+                        className="nitro-icon icon-progression"
+                        onClick={_ => toggleMenu('progression')}
+                    ></div>
+                    <div className="nitro-icon icon-catalog"></div>
+                    <div className="nitro-icon icon-builders-club"></div>
+                    <div className="nitro-icon icon-inventory"></div>
+                    <div
+                        className="nitro-icon icon-me-circle avatar-image"
+                        onClick={_ => toggleMenu('me')}
                     >
-                        <ToolbarMeMenu ref={elementRef} />
-                    </motion.div>
-                )}
-            </AnimatePresence>
-            <div className="absolute bottom-0 left-0 h-(--spacing-toolbar-h) flex items-center justify-center w-full gap-2 bg-[#2e2d2cc2] border-t border-[#0000004d] shadow-[inset_0px_5px_0px_-3px_#53524Ec2,inset_0px_-4px_0px_-3px_#494845c2] pointer-events-auto">
-                <div className="flex gap-2 items-center pl-[10px] pr-[15px] border-r border-[#454442]">
-                    left
+                        <AvatarImage
+                            figure={userFigure}
+                            gender={userGender as AvatarGenderType}
+                            direction={3}
+                        />
+                    </div>
+                    <div className="nitro-icon icon-wired"></div>
+                    <div className="nitro-icon icon-camera"></div>
                 </div>
-                <div className="flex gap-2 items-center pl-[15px] pr-[10px] border-r border-[#454442]">
-                    right
+                <div className="toolbar-right">
+                    <div className="nitro-icon icon-friendall"></div>
+                    <div className="nitro-icon icon-friendsearch"></div>
+                    <div
+                        className={cn(
+                            'toolbar-collapse',
+                            rightSideCollapsed && 'active',
+                        )}
+                        onClick={_ => setRightSideCollapsed(!rightSideCollapsed)}
+                    ></div>
                 </div>
             </div>
         </>
-    )
-}
+    );
+};

@@ -6,6 +6,8 @@ export * from './selectors/useOwnIsAmbassador';
 export * from './selectors/useOwnIsModerator';
 export * from './selectors/useOwnRespectData';
 export * from './selectors/useOwnSecurityLevel';
+export * from './selectors/useOwnUserFigure';
+export * from './selectors/useOwnUserGender';
 export * from './selectors/useOwnUserId';
 export * from './UserContext';
 export * from './UserContextProvider';

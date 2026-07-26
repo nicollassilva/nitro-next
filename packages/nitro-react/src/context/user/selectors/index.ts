@@ -5,4 +5,6 @@ export * from './useOwnIsAmbassador';
 export * from './useOwnIsModerator';
 export * from './useOwnRespectData';
 export * from './useOwnSecurityLevel';
+export * from './useOwnUserFigure';
+export * from './useOwnUserGender';
 export * from './useOwnUserId';
