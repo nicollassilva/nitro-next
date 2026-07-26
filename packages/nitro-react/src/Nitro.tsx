@@ -15,7 +15,7 @@ import { GetPixelRatio } from '#base/utils';
 import { useWebSocketContext } from './context';
 import { useAvatarLoader } from './hooks/logic';
 import { MainView } from './MainView';
-import { LoadingScreenView } from './views/LoadingScreenView';
+import { LoadingScreenView } from './views/loading-screen/LoadingScreenView';
 
 export const Nitro: FC = () => {
     const [isEngineReady, setIsEngineReady] = useState(false);

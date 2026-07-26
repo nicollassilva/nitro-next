@@ -1,5 +1,7 @@
-import { useLocalizationStore } from '#base/stores';
 import { forwardRef } from 'react';
+
+import { NitroIcon } from '#base/components';
+import { useLocalizationStore } from '#base/stores';
 
 export const ToolbarProgressionMenu = forwardRef<HTMLDivElement>((props, ref) => {
     const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
@@ -7,23 +9,23 @@ export const ToolbarProgressionMenu = forwardRef<HTMLDivElement>((props, ref) =>
     return (
         <div className="toolbar-menu" ref={ref}>
             <div className="toolbar-menu-button">
-                <div className="nitro-icon icon-progression-daily-tasks"></div>
+                <NitroIcon icon="icon-progression-daily-tasks" />
                 <span>{getLocalizationValue('widget.progmenu.dailytasks')}</span>
             </div>
             <div className="toolbar-menu-button">
-                <div className="nitro-icon icon-progression-tasks"></div>
+                <NitroIcon icon="icon-progression-tasks" />
                 <span>{getLocalizationValue('widget.progmenu.quests')}</span>
             </div>
             <div className="toolbar-menu-button">
-                <div className="nitro-icon icon-progression-achievements"></div>
+                <NitroIcon icon="icon-progression-achievements" />
                 <span>{getLocalizationValue('widget.progmenu.achievements')}</span>
             </div>
             <div className="toolbar-menu-button">
-                <div className="nitro-icon icon-progression-leaderboard"></div>
+                <NitroIcon icon="icon-progression-leaderboard" />
                 <span>{getLocalizationValue('widget.progmenu.leaderboards')}</span>
             </div>
             <div className="toolbar-menu-button">
-                <div className="nitro-icon icon-progression-introduction"></div>
+                <NitroIcon icon="icon-progression-introduction" />
                 <span>{getLocalizationValue('widget.progmenu.introduction')}</span>
             </div>
         </div>

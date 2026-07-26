@@ -2,6 +2,7 @@ import { AvatarActionStateType, AvatarExpressionEnum, ISimpleRoomObjectData, Pos
 import { AvatarExpressionComposer, ChangePostureComposer, DanceComposer, DropCarryItemComposer, SignComposer } from "@nitrodevco/nitro-shared";
 import { useState } from "react";
 
+import { NitroIcon } from "#base/components";
 import { useOwnHasClub, useOwnIsDancing, useRoomCanDecorate, useWebSocketContext } from "#base/context";
 import { useRoomUserData } from "#base/hooks";
 import { useLocalizationStore } from "#base/stores";
@@ -182,7 +183,10 @@ export const InfoBubbleOwnAvatarView = (props: InfoBubbleOwnAvatarViewProps) => 
                         </div>
                         <div className="flex justify-evenly menu-list-split-3">
                             <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_10')}>10</div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_11')}><i className="nitro-icon icon-sign-heart" /></div>
+                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_11')}>
+                                <NitroIcon icon="icon-sign-heart" />
+                                <i className="nitro-icon icon-sign-heart" />
+                            </div>
                             <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_12')}><i className="nitro-icon icon-sign-skull" /></div>
                         </div>
                         <div className="flex justify-evenly menu-list-split-3">

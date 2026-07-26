@@ -1,4 +1,4 @@
-import type { IIncomingPacket, IMessageDataWrapper, IUserInfo } from "@nitrodevco/nitro-api";
+import type { AvatarGenderType, IIncomingPacket, IMessageDataWrapper, IUserInfo } from "@nitrodevco/nitro-api";
 
 
 export type UserObjectMessageType = {
@@ -12,7 +12,7 @@ export class UserObjectMessage implements IIncomingPacket<UserObjectMessageType>
                 userId: wrapper.readInt(),
                 name: wrapper.readString(),
                 figure: wrapper.readString(),
-                sex: wrapper.readString(),
+                sex: wrapper.readString() as AvatarGenderType,
                 customData: wrapper.readString(),
                 realName: wrapper.readString(),
                 directMail: wrapper.readBoolean(),

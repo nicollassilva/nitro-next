@@ -1,5 +1,5 @@
 .nitro-toolbar {
-    @apply absolute bottom-0 left-0 flex items-center justify-between w-full gap-2 border-t pointer-events-auto h-[var(--spacing-toolbar-h)] bg-[var(--toolbar-bg)] border border-[var(--toolbar-border)] shadow-[inset_0_5px_0_-3px_var(--toolbar-shadow-top),inset_0_-4px_0_-3px_var(--toolbar-shadow-down)];
+    @apply absolute bottom-0 left-0 flex items-center justify-between w-full gap-2 border-t pointer-events-auto h-toolbar-h bg-(--toolbar-bg) border border-(--toolbar-border) shadow-[inset_0_5px_0_-3px_var(--toolbar-shadow-top),inset_0_-4px_0_-3px_var(--toolbar-shadow-down)];
 
     .nitro-icon {
         @apply cursor-pointer translate-0 drop-shadow-[1px_1px_0px_rgba(0,0,0,0.3)];
@@ -17,7 +17,7 @@
         }
 
         &.icon-me-circle {
-            @apply relative rounded-full overflow-hidden w-[45px] h-[45px];
+            @apply relative rounded-full overflow-hidden w-11.25 h-11.25;
 
             background-color: #262016;
 
@@ -40,16 +40,16 @@
     }
 
     .toolbar-collapse {
-        @apply relative z-10 w-[14px] h-[43px] cursor-pointer;
+        @apply relative z-10 w-3.5 h-10.75 cursor-pointer;
     }
 
     .toolbar-left,
     .toolbar-right {
-        @apply flex gap-[calc(var(--spacing)*var(--toolbar-icons-spacing))] items-center border-neutral-600;
+        @apply flex gap-[--spacing(var(--toolbar-icons-spacing))] items-center border-neutral-600;
     }
 
     .toolbar-left {
-        @apply border-r pr-[calc(var(--spacing)*var(--toolbar-icons-spacing))];
+        @apply border-r pr-[--spacing(var(--toolbar-icons-spacing))];
 
         .toolbar-collapse {
             background: url('../../assets/flash/toolbar/collapse_left.png');
@@ -95,7 +95,7 @@
     }
 
     .toolbar-right {
-        @apply border-l pl-[calc(var(--spacing)*var(--toolbar-icons-spacing))];
+        @apply border-l pl-[--spacing(var(--toolbar-icons-spacing))];
 
         .toolbar-collapse {
             background: url('../../assets/flash/toolbar/collapse_right.png');
@@ -108,10 +108,10 @@
 }
 
 .toolbar-menu {
-    @apply pointer-events-auto flex items-center justify-center z-10 gap-2 px-3 absolute left-1 bottom-[48px] min-w-[60px] h-[55px] [border-image-source:var(--toolbar-menu-image)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px];
+    @apply pointer-events-auto flex items-center justify-center z-10 gap-2 px-3 absolute left-1 bottom-12 min-w-15 h-13.75 [border-image-source:var(--toolbar-menu-image)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px];
 
     .toolbar-menu-button {
-        @apply w-[62px] h-[43px] cursor-pointer;
+        @apply w-15.5 h-10.75 cursor-pointer;
 
         .nitro-icon {
             @apply block mx-auto h-[32px];

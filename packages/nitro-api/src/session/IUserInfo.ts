@@ -1,8 +1,10 @@
+import { AvatarGenderType } from "../avatar";
+
 export interface IUserInfo {
     userId: number;
     name: string;
     figure: string;
-    sex: string;
+    sex: AvatarGenderType;
     customData: string;
     realName: string;
     directMail: boolean;

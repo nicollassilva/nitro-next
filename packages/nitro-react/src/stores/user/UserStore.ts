@@ -1,4 +1,4 @@
-import { ClubLevelEnum, IUserInfo, NoobnessLevelEnum, SecurityLevelEnum } from '@nitrodevco/nitro-api';
+import { AvatarGenderType, ClubLevelEnum, IUserInfo, NoobnessLevelEnum, SecurityLevelEnum } from '@nitrodevco/nitro-api';
 import { createStore } from 'zustand';
 
 type State = {
@@ -32,7 +32,7 @@ const initialState: State = {
     userId: -1,
     name: '',
     figure: '',
-    sex: '',
+    sex: AvatarGenderType.Male,
     customData: '',
     realName: '',
     directMail: false,
@@ -62,7 +62,7 @@ export const createUserStore = () => createStore<UserStore>()((set, get, store) 
     ...initialState,
     setUserInfo: (userInfo: IUserInfo) => set({ ...userInfo }),
     setName: (name: string, nameChangeAllowed: boolean) => set({ name, nameChangeAllowed }),
-    setFigure: (figure: string, sex: string) => set({ figure, sex }),
+    setFigure: (figure: string, sex: AvatarGenderType) => set({ figure, sex }),
     setAccountSafetyLocked: (accountSafetyLocked: boolean) => set({ accountSafetyLocked }),
     setRights: (clubLevel: ClubLevelEnum, securityLevel: SecurityLevelEnum, isAmbassador: boolean) => set({ clubLevel, securityLevel, isAmbassador }),
     setNoobnessLevel: (noobnessLevel: NoobnessLevelEnum) => set({ noobnessLevel }),

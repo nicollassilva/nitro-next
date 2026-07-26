@@ -1,5 +1,4 @@
 import { ISimpleRoomObjectData, RoomObjectUserType } from "@nitrodevco/nitro-api";
-import { GetRenderer } from "@nitrodevco/nitro-renderer";
 import { RoomRenderedEvent } from "@nitrodevco/nitro-shared";
 import { PointData, Rectangle } from "pixi.js";
 import { ReactNode, useEffect, useRef } from "react";
@@ -70,8 +69,8 @@ export const RoomObjectMenuBubble = (props: RoomObjectInfoBubbleProps) => {
         let x = (location.x - (elementRef.current.offsetWidth / 2));
         let y = (deltaY + offset);
 
-        const maxLeft = ((GetRenderer().width - elementRef.current.offsetWidth) - SPACE_AROUND_EDGES);
-        const maxTop = ((GetRenderer().height - elementRef.current.offsetHeight) - SPACE_AROUND_EDGES);
+        const maxLeft = ((window.innerWidth - elementRef.current.offsetWidth) - SPACE_AROUND_EDGES);
+        const maxTop = ((window.innerHeight - elementRef.current.offsetHeight) - SPACE_AROUND_EDGES);
 
         if (x < SPACE_AROUND_EDGES) x = SPACE_AROUND_EDGES;
         else if (x > maxLeft) x = maxLeft;
