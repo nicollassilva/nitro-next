@@ -1,0 +1,89 @@
+@theme static {
+    /* Panel & window chrome */
+    --color-habbo-bg: #0d1520;
+    --color-habbo-panel: #1e2d4a;
+    --color-habbo-panel-light: #263659;
+    --color-habbo-panel-mid: #2b3d65;
+    --color-habbo-panel-hover: #304470;
+
+    /* Header / title bar */
+    --color-habbo-header: #151f34;
+    --color-habbo-header-light: #1a2840;
+    --color-habbo-header-border: #0a1020;
+
+    /* Borders */
+    --color-habbo-border: #0f1828;
+    --color-habbo-border-light: #3a4f7a;
+    --color-habbo-highlight: #4a6494;
+
+    /* Gold / primary accent */
+    --color-habbo-gold: #f5c518;
+    --color-habbo-gold-dark: #c89a00;
+    --color-habbo-gold-light: #ffe066;
+    --color-habbo-gold-muted: #b8960a;
+
+    /* Text */
+    --color-habbo-text: #e8edf5;
+    --color-habbo-text-muted: #8a9bb8;
+    --color-habbo-text-faint: #5a6b88;
+
+    /* Status / semantic */
+    --color-habbo-online: #4caf50;
+    --color-habbo-danger: #e53935;
+    --color-habbo-warn: #fb8c00;
+    --color-habbo-info: #1e88e5;
+
+    /* Toolbar */
+    --color-habbo-toolbar: #0c1525;
+    --color-habbo-toolbar-btn: #1a2540;
+    --color-habbo-toolbar-active: #253660;
+
+    /* Sizing */
+    --spacing-toolbar-h: 54px;
+    --spacing-card-header-h: 32px;
+    --spacing-nav-w: 420px;
+    --spacing-nav-h: 440px;
+    --spacing-inv-w: 528px;
+    --spacing-inv-h: 320px;
+
+    /* Typography */
+    --font-sans: 'Ubuntu', system-ui, sans-serif;
+    --font-size-base: 0.875rem;
+
+    /* Keyframes */
+    --animate-rotating: rotating 1s linear infinite;
+
+    --infostand-bg-image: url('./assets/flash/buttons/toggle_bg.png');
+    --infostand-bg-thumb: url('./assets/flash/infostand/thumb_bg.png');
+    --infostand-close-bg-image: url('./assets/flash/infostand/info_close.png');
+
+    /* Buttons */
+    --infostand-button-bg: url('./assets/flash/infostand/infostand_button.png');
+    --infostand-button-hover-bg: url('./assets/flash/infostand/infostand_button_hover.png');
+    --infostand-button-active-bg: url('./assets/flash/infostand/infostand_button_active.png');
+
+    --nitro-infostand-width: 190px;
+    --nitro-infostand-motto-height: 25px;
+
+    --context-menu-bg: url('./assets/flash/room/context_menu_bg.png');
+    --context-menu-name-bg: url('./assets/flash/room/name_bg.png');
+    --context-menu-name-after: url('./assets/flash/room/pointer_after.png');
+    --content-menu-pointer-after: url('./assets/flash/room/context_pointer_after.png');
+
+    --toolbar-bg: rgba(46, 45, 44, 0.76);
+    --toolbar-border: rgba(0, 0, 0, 0.3);
+    --toolbar-shadow-top: rgba(83, 82, 78, 0.76);
+    --toolbar-shadow-down: rgba(73, 72, 69, 0.76);
+    --toolbar-icons-spacing: 3.75;
+    --toolbar-menu-image: url('./assets/flash/toolbar/menu_bg.png');
+
+    @keyframes rotating {
+        from {
+            transform: rotate(0);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+}

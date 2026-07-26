@@ -1,0 +1,28 @@
+@utility pixel-text {
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: unset;
+    font-smooth: never;
+    text-rendering: optimizeSpeed;
+}
+
+@utility font-ubuntu-bold {
+    font-family: UbuntuBold;
+    font-weight: 400;
+}
+
+@utility font-ubuntu-italic {
+    font-family: UbuntuItalics;
+}
+
+@utility font-goldfish {
+    font-family: Goldfish;
+    @apply pixel-text;
+}
+
+@utility font-goldfish-bold {
+    font-family: Goldfish-Bold;
+}
+
+@utility font-aa {
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.7);
+}

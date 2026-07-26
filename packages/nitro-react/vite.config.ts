@@ -7,7 +7,7 @@ import { defineConfig, Plugin } from 'vite';
 const r = (p: string) => `${import.meta.dirname}/${p}`;
 
 const tailwindAutoReference = (): Plugin => {
-    const indexCss = path.resolve(r('src/index.css'));
+    const indexCss = path.resolve(r('./src/index.css'));
 
     return {
         name: 'tailwind-auto-reference',
@@ -15,11 +15,7 @@ const tailwindAutoReference = (): Plugin => {
         transform(code, id) {
             const file = path.resolve(id.split('?')[0]);
 
-            if (!file.endsWith('.css')) return;
-            if (file === indexCss) return;
-            if (!file.startsWith(path.resolve(r('src')))) return;
-            if (/@reference\b/.test(code) || /@import\s+['"]tailwindcss['"]/.test(code))
-                return;
+            if (file === indexCss || !file.endsWith('.css') || !file.startsWith(path.resolve(r('./src/views'))) || /@reference\b/.test(code) || /@import\s+['"]tailwindcss['"]/.test(code)) return;
 
             const rel = path.relative(path.dirname(file), indexCss).replace(/\\/g, '/');
 
