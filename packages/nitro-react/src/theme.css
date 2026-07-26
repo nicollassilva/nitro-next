@@ -77,6 +77,26 @@
     --toolbar-icons-spacing: 3.75;
     --toolbar-menu-image: url('./assets/flash/toolbar/menu_bg.png');
 
+    --default-button-black-src: url('./assets/skins/button_black/default_button_black.png');
+    --disabled-button-black-src: url('./assets/skins/button_black/disabled_button_black.png');
+    --pressed-button-black-src: url('./assets/skins/button_black/pressed_button_black.png');
+    --hovering-button-black-src: url('./assets/skins/button_black/hovering_button_black.png');
+
+    --default-button-white-src: url('./assets/skins/button_white/default_button_white.png');
+    --disabled-button-white-src: url('./assets/skins/button_white/disabled_button_white.png');
+    --pressed-button-white-src: url('./assets/skins/button_white/pressed_button_white.png');
+    --hovering-button-white-src: url('./assets/skins/button_white/hovering_button_white.png');
+
+    --default-button-blue-src: url('./assets/skins/button_blue/default_button.png');
+    --disabled-button-blue-src: url('./assets/skins/button_blue/disabled_button.png');
+    --pressed-button-blue-src: url('./assets/skins/button_blue/pressed_button.png');
+    --hovering-button-blue-src: url('./assets/skins/button_blue/hovering_button.png');
+
+    --default-button-shiny-src: url('./assets/skins/button_shiny/default_button_shiny.png');
+    --disabled-button-shiny-src: url('./assets/skins/button_shiny/disabled_button_shiny.png');
+    --pressed-button-shiny-src: url('./assets/skins/button_shiny/pressed_button_shiny.png');
+    --hovering-button-shiny-src: url('./assets/skins/button_shiny/hovering_button_shiny.png');
+
     @keyframes rotating {
         from {
             transform: rotate(0);

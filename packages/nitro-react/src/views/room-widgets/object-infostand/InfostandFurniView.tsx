@@ -70,13 +70,16 @@ export const InfostandFurniView = (props: InfostandFurniViewProps) => {
                     <p className="text-[9px] text-white font-goldfish-bold">{getLocalizationValueParams('furni.owner', ['name'], [furniData.ownerName])}</p>
                     {canSeeFurniId && <p className="text-[9px] text-white font-goldfish-bold">ID: {furniData.id}</p>}
                 </div>
+                <div className="flex w-full gap-1 p-1">
+                    <Button variant="volterBlue" size="volterBlue" onClick={() => { }}>{getLocalizationValue('infostand.button.buy')}</Button>
+                </div>
             </div>
             {hasButtons && <div className="flex justify-end gap-2">
-                {canMove && <Button variant="infostand" size="sm" onClick={() => modifyRoomObject(objectId, category, RoomObjectOperationType.OBJECT_MOVE)}>{getLocalizationValue('infostand.button.move')}</Button>}
-                {canRotate && <Button variant="infostand" size="sm" onClick={() => modifyRoomObject(objectId, category, RoomObjectOperationType.OBJECT_ROTATE_POSITIVE)}>{getLocalizationValue('infostand.button.rotate')}</Button>}
-                {pickupMode === FurniturePickupMode.Eject && <Button variant="infostand" size="sm" onClick={() => modifyRoomObject(objectId, category, RoomObjectOperationType.OBJECT_EJECT)}>{getLocalizationValue(`infostand.button.eject`)}</Button>}
-                {pickupMode === FurniturePickupMode.Full && <Button variant="infostand" size="sm" onClick={() => modifyRoomObject(objectId, category, RoomObjectOperationType.OBJECT_PICKUP)}>{getLocalizationValue(`infostand.button.pickup`)}</Button>}
-                {canUse && <Button variant="infostand" size="sm" onClick={() => changeItemState(objectId, category, 0, false)}>{getLocalizationValue('infostand.button.use')}</Button>}
+                {canMove && <Button onClick={() => modifyRoomObject(objectId, category, RoomObjectOperationType.OBJECT_MOVE)}>{getLocalizationValue('infostand.button.move')}</Button>}
+                {canRotate && <Button onClick={() => modifyRoomObject(objectId, category, RoomObjectOperationType.OBJECT_ROTATE_POSITIVE)}>{getLocalizationValue('infostand.button.rotate')}</Button>}
+                {pickupMode === FurniturePickupMode.Eject && <Button onClick={() => modifyRoomObject(objectId, category, RoomObjectOperationType.OBJECT_EJECT)}>{getLocalizationValue(`infostand.button.eject`)}</Button>}
+                {pickupMode === FurniturePickupMode.Full && <Button onClick={() => modifyRoomObject(objectId, category, RoomObjectOperationType.OBJECT_PICKUP)}>{getLocalizationValue(`infostand.button.pickup`)}</Button>}
+                {canUse && <Button onClick={() => changeItemState(objectId, category, 0, false)}>{getLocalizationValue('infostand.button.use')}</Button>}
             </div>}
         </div>
     );

@@ -29,16 +29,23 @@ export function cva<V extends Record<string, Record<string, string>>>(
     return function (props?: VariantProps<V> & { className?: string }): string {
         const variants = config?.variants ?? {} as V;
         const defaults = config?.defaultVariants ?? {};
-        const merged = { ...defaults, ...props };
+        const merged: Record<string, unknown> = { ...defaults };
+
+        if (props) {
+            for (const [k, v] of Object.entries(props)) {
+                if (v !== undefined) merged[k] = v;
+            }
+        }
+
         const parts = [base];
         for (const [key, variantMap] of Object.entries(variants)) {
-            const val = (merged as Record<string, string>)[key];
+            const val = merged[key] as string | undefined;
             if (val != null && variantMap[val]) parts.push(variantMap[val]);
         }
         if (config?.compoundVariants) {
             for (const { class: cls, ...conditions } of config.compoundVariants) {
                 const matches = Object.entries(conditions).every(
-                    ([k, v]) => (merged as Record<string, unknown>)[k] === v
+                    ([k, v]) => (merged)[k] === v
                 );
                 if (matches) parts.push(cls);
             }
