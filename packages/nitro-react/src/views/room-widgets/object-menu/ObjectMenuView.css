@@ -74,7 +74,7 @@
     .menu-bottom {
         @apply [border-image-source:var(--context-menu-bg)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px] py-1.5 px-4.5 min-w-7.5 h-6.75 -mt-1.5 pt-1 max-h-7.5 text-center text-[12px];
 
-        > i {
+        > .nitro-icon {
             @apply mt-0.75;
         }
     }

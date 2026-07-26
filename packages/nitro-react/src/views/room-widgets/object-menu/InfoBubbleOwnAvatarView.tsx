@@ -185,19 +185,20 @@ export const InfoBubbleOwnAvatarView = (props: InfoBubbleOwnAvatarViewProps) => 
                             <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_10')}>10</div>
                             <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_11')}>
                                 <NitroIcon icon="icon-sign-heart" />
-                                <i className="nitro-icon icon-sign-heart" />
                             </div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_12')}><i className="nitro-icon icon-sign-skull" /></div>
+                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_12')}>
+                                <NitroIcon icon="icon-sign-skull" />
+                            </div>
                         </div>
                         <div className="flex justify-evenly menu-list-split-3">
                             <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_0')}>0</div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_13')}><i className="nitro-icon icon-sign-exclamation" /></div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_15')}><i className="nitro-icon icon-sign-smile" /></div>
+                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_13')}><NitroIcon icon="icon-sign-exclamation" /></div>
+                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_15')}><NitroIcon icon="icon-sign-smile" /></div>
                         </div>
                         <div className="flex justify-evenly menu-list-split-3">
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_14')}><i className="nitro-icon icon-sign-soccer" /></div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_17')}><i className="nitro-icon icon-sign-yellow" /></div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_16')}><i className="nitro-icon icon-sign-red" /></div>
+                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_14')}><NitroIcon icon="icon-sign-soccer" /></div>
+                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_17')}><NitroIcon icon="icon-sign-yellow" /></div>
+                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_16')}><NitroIcon icon="icon-sign-red" /></div>
                         </div>
                         <div className="flex items-center justify-center menu-item" onClick={() => processAction('back')}>
                             {getLocalizationValue('generic.back')}
@@ -206,7 +207,7 @@ export const InfoBubbleOwnAvatarView = (props: InfoBubbleOwnAvatarViewProps) => 
                 </div>
             </>}
             <div className="flex items-center justify-center menu-bottom" onClick={() => setCollapsed(!collapsed)}>
-                <i className={!collapsed ? 'nitro-icon icon-context-menu-arrow-down' : 'nitro-icon icon-context-menu-arrow-up'} />
+                <NitroIcon className="cursor-pointer" icon={!collapsed ? 'icon-context-menu-arrow-down' : 'icon-context-menu-arrow-up'} />
             </div>
         </div>
     );

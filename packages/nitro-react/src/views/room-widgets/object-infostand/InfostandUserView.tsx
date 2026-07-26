@@ -2,6 +2,7 @@ import { ISimpleRoomObjectData } from "@nitrodevco/nitro-api";
 import { ChangeMottoComposer } from "@nitrodevco/nitro-shared";
 import { KeyboardEvent, useEffect, useState } from "react";
 
+import { NitroIcon } from "#base/components";
 import { AvatarImage } from "#base/components/AvatarImage";
 import { useWebSocketContext } from "#base/context";
 import { useConfigValue, useRoomUserData } from "#base/hooks";
@@ -52,7 +53,7 @@ export const InfostandUserView = (props: InfostandUserViewProps) => {
             <div className="infostand-container">
                 <div className="infostand-header">
                     <div className="flex items-center gap-2">
-                        <i className="cursor-pointer nitro-icon icon-profile-house" />
+                        <NitroIcon icon="icon-profile-house" />
                         {userData.name}
                     </div>
                     <i className="infostand-close" onClick={onClose} />
@@ -68,7 +69,7 @@ export const InfostandUserView = (props: InfostandUserViewProps) => {
                     <div className="infostand-motto-container">
                         {!userData.isOwnUser && <p className="text-[9px] text-white">{motto.length === 0 ? getLocalizationValue('infostand.motto.change') : motto}</p>}
                         {userData.isOwnUser && <>
-                            <i className="cursor-pointer nitro-icon pencil-icon shrink-0" onClick={e => setIsEditingMotto(true)} />
+                            <NitroIcon icon="pencil-icon" className="cursor-pointer shrink-0" onClick={e => setIsEditingMotto(true)} />
                             {!isEditingMotto && <p className="text-[9px] text-white font-goldfish flex-1 min-w-0 overflow-hidden wrap-break-word">{motto}</p>}
                             {isEditingMotto && <input type="text" className="p-0 border-0 size-full text-[9px] flex-1 min-w-0" maxLength={mottoMaxLength} value={motto} onChange={e => setMotto(e.target.value)} onKeyDown={onMottoKeyDown} autoFocus={true} />}
                         </>}

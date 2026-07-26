@@ -2,6 +2,7 @@ import { ISimpleRoomObjectData, RoomControllerLevelEnum } from "@nitrodevco/nitr
 import { AmbassadorAlertComposer, AssignRightsComposer, BanUserWithDurationComposer, IgnoreUserComposer, KickUserComposer, MuteUserComposer, RemoveRightsComposer, SetRelationshipStatusComposer, UnignoreUserComposer } from "@nitrodevco/nitro-shared";
 import { useState } from "react";
 
+import { NitroIcon } from "#base/components";
 import { useOwnIsAmbassador, useOwnRoomObjectId, useRoomPermissionsSelector, useRoomSelector, useRoomSettingsSelector, useWebSocketContext } from "#base/context";
 import { useOwnRespectData } from "#base/context/user/selectors/useOwnRespectData";
 import { useRoomUserData } from "#base/hooks";
@@ -268,7 +269,7 @@ export const InfoBubbleAvatarView = (props: InfoBubbleAvatarViewProps) => {
                 </div>
             </>}
             <div className="flex items-center justify-center menu-bottom" onClick={() => setCollapsed(!collapsed)}>
-                <i className={!collapsed ? 'nitro-icon icon-context-menu-arrow-down' : 'nitro-icon icon-context-menu-arrow-up'} />
+                <NitroIcon className="cursor-pointer" icon={!collapsed ? 'icon-context-menu-arrow-down' : 'icon-context-menu-arrow-up'} />
             </div>
         </div>
     );
