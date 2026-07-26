@@ -90,6 +90,7 @@ export class AvatarVisualization
     private _useObject: number = 0;
     private _ownUser: boolean = false;
 
+    private _forceUpdate: boolean = false;
     private _isLaying: boolean = false;
     private _layInside: boolean = false;
     private _isAnimating: boolean = false;
@@ -98,8 +99,6 @@ export class AvatarVisualization
     private _updatesUntilFrameUpdate: number = 0;
     private _updatesUntilCleanup: number = Math.random() * 200 + 200;
 
-    private _isAvatarReady: boolean = false;
-    private _needsUpdate: boolean = false;
     private _geometryUpdateCounter: number = -1;
 
     private _additions: Map<number, IAvatarAddition> = new Map();
@@ -145,18 +144,23 @@ export class AvatarVisualization
                 this._lastUpdate = time - RoomObjectSpriteVisualization.UPDATE_TIME_INCREASER;
         }
 
-        const model = this.object.model;
         const scale = geometry.scale;
         const effect = this._effect;
 
         let didScaleUpdate = false;
         let didEffectUpdate = false;
         let otherUpdate = false;
-        let objectUpdate: boolean;
+        let objectUpdated = false;
 
-        const updateModel = this.updateModel(model, scale);
+        const modelUpdated = this.updateModel(this.object.model, scale, update);
 
-        if (updateModel || scale !== this._scale || !this._avatarImage) {
+        if (this._forceUpdate) {
+            this.resetAvatar();
+
+            this._forceUpdate = false;
+        }
+
+        if (modelUpdated || scale !== this._scale || !this._avatarImage) {
             if (scale !== this._scale) {
                 didScaleUpdate = true;
 
@@ -185,12 +189,11 @@ export class AvatarVisualization
 
             if (!this._avatarImage) return;
 
-            if (didEffectUpdate && this._avatarImage.animationHasResetOnToggle)
-                this._avatarImage.resetAnimationFrameCounter();
+            if (didEffectUpdate && this._avatarImage.animationHasResetOnToggle) this._avatarImage.resetAnimationFrameCounter();
 
             this.updateShadow(scale);
 
-            objectUpdate = this.updateObject(this.object, geometry, update, true);
+            objectUpdated = this.updateObject(this.object, geometry, update, true);
 
             this.processActionsForAvatar();
 
@@ -205,7 +208,7 @@ export class AvatarVisualization
 
             this._scale = scale;
         } else {
-            objectUpdate = this.updateObject(this.object, geometry, update);
+            objectUpdated = this.updateObject(this.object, geometry, update);
         }
 
         if (shouldUpdateFrame && this._additions) {
@@ -217,7 +220,7 @@ export class AvatarVisualization
             }
         }
 
-        const update1 = objectUpdate || updateModel || didScaleUpdate;
+        const update1 = objectUpdated || modelUpdated || didScaleUpdate;
         const update2 = (this._isAnimating || this._forcedAnimFrames > 0) && update && shouldUpdateFrame;
 
         if (update1) this._forcedAnimFrames = AvatarVisualization.ANIMATION_FRAME_UPDATE_INTERVAL;
@@ -230,7 +233,7 @@ export class AvatarVisualization
                 this._updatesUntilFrameUpdate--;
             }
 
-            if (!(this._updatesUntilFrameUpdate <= 0 || (shouldUpdateFrame && (didScaleUpdate || updateModel || otherUpdate)))) return;
+            if (!(this._updatesUntilFrameUpdate <= 0 || (shouldUpdateFrame && (didScaleUpdate || modelUpdated || otherUpdate)))) return;
 
             this._avatarImage.updateAnimationByFrames(1);
 
@@ -267,6 +270,8 @@ export class AvatarVisualization
                 if (sprite.texture) {
                     sprite.offsetX = (-1 * scale) / 2 + _local_20[0] - (sprite.texture.width - scale) / 2;
                     sprite.offsetY = -sprite.texture.height + scale / 4 + _local_20[1] + this._postureOffset;
+
+                    if (this._posture === AvatarActionStateType.SnowwarDieBack || this._posture === AvatarActionStateType.SnowwarDieFront) sprite.offsetY += 20 * scale / 32;
                 }
 
                 if (this._isLaying) {
@@ -287,8 +292,7 @@ export class AvatarVisualization
             const typingBubble = this.getAddition(AvatarVisualization.TYPING_BUBBLE_ID) as TypingBubbleAddition;
 
             if (typingBubble) {
-                if (!this._isLaying)
-                    typingBubble.relativeDepth = AvatarVisualization.AVATAR_SPRITE_DEFAULT_DEPTH - 0.01 + _local_20[2];
+                if (!this._isLaying) typingBubble.relativeDepth = AvatarVisualization.AVATAR_SPRITE_DEFAULT_DEPTH - 0.01 + _local_20[2];
                 else typingBubble.relativeDepth = AvatarVisualization.AVATAR_SPRITE_LAYING_DEPTH - 0.01 + _local_20[2];
             }
 
@@ -354,9 +358,7 @@ export class AvatarVisualization
                         if (dd < 0) dd += 8;
                         else if (dd > 7) dd -= 8;
 
-                        const assetName =
-                            this._avatarImage.getScale() + '_' + spriteData.member + '_' + dd + '_' + frameNumber;
-
+                        const assetName = `${this._avatarImage.getScale()}_${spriteData.member}_${dd}_${frameNumber}`;
                         const asset = GetAssetManager().getAsset(assetName);
 
                         if (!asset || !asset.texture) continue;
@@ -367,7 +369,7 @@ export class AvatarVisualization
                         sprite.flipH = asset.flipH;
 
                         if (spriteData.hasStaticY) {
-                            sprite.offsetY += (this._verticalOffset * scale) / (2 * AvatarVisualization.BASE_Y_SCALE);
+                            sprite.offsetY += this._verticalOffset * scale / (2 * AvatarVisualization.BASE_Y_SCALE);
                         } else {
                             sprite.offsetY += this._postureOffset;
                         }
@@ -481,14 +483,14 @@ export class AvatarVisualization
         return didUpdate;
     }
 
-    protected updateModel(model: IRoomObjectModel, scale: RoomGeometryScaleType): boolean {
+    protected updateModel(model: IRoomObjectModel, scale: RoomGeometryScaleType, update: boolean): boolean {
         if (!model) return false;
 
         if (this.updateModelCounter === model.updateCounter) return false;
 
         let needsUpdate = false;
 
-        const talk = model.getValue<number>(RoomObjectVariableEnum.FigureTalk) > 0;
+        const talk = model.getValue<number>(RoomObjectVariableEnum.FigureTalk) > 0 && update;
 
         if (talk !== this._talk) {
             this._talk = talk;
@@ -512,7 +514,7 @@ export class AvatarVisualization
             needsUpdate = true;
         }
 
-        const blink = model.getValue<number>(RoomObjectVariableEnum.FigureBlink) > 0;
+        const blink = model.getValue<number>(RoomObjectVariableEnum.FigureBlink) > 0 && update;
 
         if (blink !== this._blink) {
             this._blink = blink;
@@ -771,14 +773,6 @@ export class AvatarVisualization
         return needsUpdate;
     }
 
-    protected setDirection(direction: number): void {
-        if (this._direction === direction) return;
-
-        this._direction = direction;
-
-        this._needsUpdate = true;
-    }
-
     private updateScale(scale: RoomGeometryScaleType): void {
         if (scale < RoomGeometryScaleType.AvatarSizeNormal) this._blink = false;
 
@@ -859,27 +853,20 @@ export class AvatarVisualization
 
         this._figure = figure;
 
-        this.clearAvatar();
+        this.resetAvatar();
 
         return true;
     }
 
     public resetFigure(figure: string): void {
-        this.clearAvatar();
+        this._forceUpdate = true;
     }
 
     public resetEffect(effect: number): void {
-        this.clearAvatar();
+        this._forceUpdate = true;
     }
 
-    private clearAvatar(): void {
-        const sprite = this.getSprite(AvatarVisualization.AVATAR_LAYER_ID);
-
-        if (sprite) {
-            sprite.texture = Texture.EMPTY;
-            sprite.alpha = 255;
-        }
-
+    private resetAvatar(): void {
         for (const avatar of this._cachedAvatars.getValues()) avatar?.dispose();
 
         for (const avatar of this._cachedAvatarEffects.getValues()) avatar?.dispose();
@@ -888,6 +875,13 @@ export class AvatarVisualization
         this._cachedAvatarEffects.reset();
 
         this._avatarImage = undefined;
+
+        const sprite = this.getSprite(AvatarVisualization.AVATAR_LAYER_ID);
+
+        if (sprite) {
+            sprite.texture = Texture.EMPTY;
+            sprite.alpha = 255;
+        }
     }
 
     private getAddition(id: number): IAvatarAddition | undefined {

@@ -49,7 +49,7 @@ export enum AvatarActionStateType {
 
     // Other Actions
     Sign = 'sign',
-    Sleep = 'sleep',
+    Sleep = 'Sleep',
     Talk = 'talk',
     Blink = 'blink',
     Typing = 'typing',

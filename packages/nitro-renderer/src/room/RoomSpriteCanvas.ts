@@ -367,11 +367,7 @@ export class RoomSpriteCanvas implements IRoomRenderingCanvas {
 
         if (locationCache.locationChanged) update = true;
 
-        if (!sortableCache.needsUpdate(visualization.instanceId, visualization.updateSpriteCounter) && !update) {
-            return sortableCache.spriteCount;
-        }
-
-        update = true;
+        if (!sortableCache.needsUpdate(visualization.instanceId, visualization.updateSpriteCounter) && !update) return sortableCache.spriteCount;
 
         let x = vector.x;
         let y = vector.y;
