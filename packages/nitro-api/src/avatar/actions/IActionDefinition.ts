@@ -6,7 +6,7 @@ export interface IActionDefinition {
     setOffsets(size: string, direction: number, offset: [number, number, number]): void
     getType(id: number): IAssetAvatarActionType | undefined;
     getParameterValue(id: string): string;
-    getPrevents(typeId: number): string[];
+    getPrevents(typeId: number): AvatarActionStateType[];
     getPreventHeadTurn(typeId: number): boolean;
     isAnimated(typeId: number): boolean;
     readonly id: AvatarActionType;
@@ -20,7 +20,7 @@ export interface IActionDefinition {
     readonly isDefault: boolean;
     readonly isAnimation: boolean;
     readonly startFromFrameZero: boolean;
-    readonly prevents: string[];
+    readonly prevents: AvatarActionStateType[];
     readonly preventHeadTurn: boolean;
     readonly params: Map<string, string>;
 }

@@ -1,4 +1,4 @@
-import type { IMessageDataWrapper } from "@nitrodevco/nitro-api";
+import type { IMessageDataWrapper, RoomTradeModeEnum } from "@nitrodevco/nitro-api";
 
 export interface IRoomInfo {
     roomId: number;
@@ -9,7 +9,7 @@ export interface IRoomInfo {
     population: number;
     playersMax: number;
     description: string;
-    tradeType: number;
+    tradeType: RoomTradeModeEnum;
     score: number;
     ranking: number;
     categoryId: number;

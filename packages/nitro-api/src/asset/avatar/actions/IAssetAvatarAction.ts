@@ -14,7 +14,7 @@ export interface IAssetAvatarAction {
     readonly geometryType: AvatarGeometryType;
     readonly activePartSet?: AvatarPartSetType;
     readonly assetPartDefinition: string;
-    readonly prevents?: string[];
+    readonly prevents?: (AvatarActionStateType | string)[];
     readonly lay?: string;
     readonly params?: IAssetAvatarActionParam[];
     readonly types?: IAssetAvatarActionType[];

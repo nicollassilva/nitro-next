@@ -14,7 +14,7 @@ export class ActionDefinition implements IActionDefinition {
     private _isDefault: boolean;
     private _isAnimation: boolean;
     private _startFromFrameZero: boolean;
-    private _prevents: string[];
+    private _prevents: AvatarActionStateType[];
     private _preventHeadTurn: boolean;
     private _types: Map<number, ActionType>;
     private _params: Map<string, string>;
@@ -33,7 +33,7 @@ export class ActionDefinition implements IActionDefinition {
         this._isDefault = data.isDefault ?? false;
         this._isAnimation = data.animation ?? false;
         this._startFromFrameZero = data.startFromFrameZero ?? false;
-        this._prevents = data.prevents ?? [];
+        this._prevents = data.prevents as unknown as AvatarActionStateType[] ?? [];
         this._preventHeadTurn = data.preventHeadTurn ?? false;
         this._types = new Map();
         this._params = new Map();
@@ -84,11 +84,11 @@ export class ActionDefinition implements IActionDefinition {
         return this._params.get(id) ?? this._defaultParameterValue;
     }
 
-    public getPrevents(typeId: number): string[] {
+    public getPrevents(typeId: number): AvatarActionStateType[] {
         return this._prevents.concat(this.getTypePrevents(typeId));
     }
 
-    private getTypePrevents(typeId: number): string[] {
+    private getTypePrevents(typeId: number): AvatarActionStateType[] {
         return this._types.get(typeId)?.prevents ?? [];
     }
 
@@ -148,7 +148,7 @@ export class ActionDefinition implements IActionDefinition {
         return this._startFromFrameZero;
     }
 
-    public get prevents(): string[] {
+    public get prevents(): AvatarActionStateType[] {
         return this._prevents;
     }
 

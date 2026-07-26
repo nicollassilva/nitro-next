@@ -1,12 +1,13 @@
-import type { IRoomUserData } from "@nitrodevco/nitro-api";
+import { ISimpleRoomObjectData } from "@nitrodevco/nitro-api";
 
 type InfostandBotViewProps = {
-    data: IRoomUserData | undefined;
+    objectData: ISimpleRoomObjectData;
     onClose: () => void;
 }
 
 export const InfostandBotView = (props: InfostandBotViewProps) => {
-    const { data } = props;
+    const { objectData, onClose } = props;
+    const { objectId, category } = objectData;
 
     return (
         <div className="infostand-container"></div>

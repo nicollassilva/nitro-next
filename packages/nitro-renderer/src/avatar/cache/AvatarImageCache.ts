@@ -129,9 +129,8 @@ export class AvatarImageCache {
                         if (dirOffset < 0) dirOffset = (8 + dirOffset);
                         else if (dirOffset > 7) dirOffset = (8 - dirOffset);
                     }
-                    else
-                        if (dirOffset < 0) dirOffset = (dirOffset + 8);
-                        else if (dirOffset > 7) dirOffset = (dirOffset - 8);
+                    else if (dirOffset < 0) dirOffset = (dirOffset + 8);
+                    else if (dirOffset > 7) dirOffset = (dirOffset - 8);
 
                     if (this._scale === AvatarScaleType.Large) {
                         point.x = layer.dx;
@@ -228,7 +227,7 @@ export class AvatarImageCache {
 
             let color = 16777215;
 
-            if ((direction === 7 && (container.partType === AvatarFigurePartType.Face || container.partType === AvatarFigurePartType.Eyes)) || (container.partType === AvatarFigurePartType.RightHandItem && !container.partId)) continue;
+            if ((direction === 7 && (container.partType === AvatarFigurePartType.Face || container.partType === AvatarFigurePartType.Eyes)) || (container.partType === AvatarFigurePartType.RightHandItem && container.partId === undefined)) continue;
 
             const partId = container.partId;
             const animationFrame = container.getFrameDefinition(frameCount);

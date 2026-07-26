@@ -1,7 +1,7 @@
-import { IOutgoingPacket } from '@nitrodevco/nitro-api';
+import { IOutgoingPacket, RoomChatBubbleWidthType, RoomChatFloodSensitivityType, RoomChatModeType, RoomChatScrollSpeedType, RoomModerationType, RoomThicknessType, RoomTradeModeEnum } from '@nitrodevco/nitro-api';
 
 export type SaveRoomSettingsComposerType = {
-    roomId: RoomId;
+    roomId: number;
     roomName: string;
     roomDescription: string;
     doorMode: number;
@@ -9,21 +9,21 @@ export type SaveRoomSettingsComposerType = {
     maxVisitors: number;
     categoryId: number;
     tags: string[];
-    tradeMode: RoomTradeModeType;
+    tradeMode: RoomTradeModeEnum;
     allowPets: boolean;
     allowFoodConsume: boolean;
     allowWalkThrough: boolean;
     hideWalls: boolean;
     wallThickness: RoomThicknessType;
     floorThickness: RoomThicknessType;
-    whoCanMute: ModSettingType;
-    whoCanKick: ModSettingType;
-    whoCanBan: ModSettingType;
-    chatMode: ChatModeType;
-    chatBubbleSize: ChatBubbleWidthType;
-    chatScrollUpFrequency: ChatScrollSpeedType;
+    whoCanMute: RoomModerationType;
+    whoCanKick: RoomModerationType;
+    whoCanBan: RoomModerationType;
+    chatMode: RoomChatModeType;
+    chatBubbleSize: RoomChatBubbleWidthType;
+    chatScrollUpFrequency: RoomChatScrollSpeedType;
     chatFullHearRange: number;
-    chatFloodSensitivity: ChatFloodSensitivityType;
+    chatFloodSensitivity: RoomChatFloodSensitivityType;
     allowNavigatorDynCats: boolean;
 };
 
@@ -39,7 +39,8 @@ export class SaveRoomSettingsComposer implements IOutgoingPacket<SaveRoomSetting
             this.params.password,
             this.params.maxVisitors,
             this.params.categoryId,
-            this.params.tags,
+            this.params.tags.length,
+            ...this.params.tags,
             this.params.tradeMode,
             this.params.allowPets,
             this.params.allowFoodConsume,

@@ -89,11 +89,9 @@ export class AvatarImage implements IAvatarImage, IAvatarEffectListener {
     public dispose(): void {
         if (this._disposed) return;
 
-        if (this._image) {
-            TexturePool.releaseTexture(this._image);
+        if (this._image && !this._isCachedImage) TexturePool.releaseTexture(this._image);
 
-            this._image = undefined;
-        }
+        this._image = undefined;
 
         if (this._cache) {
             this._cache.dispose();
@@ -145,7 +143,7 @@ export class AvatarImage implements IAvatarImage, IAvatarEffectListener {
         this._changes = true;
     }
 
-    public getImage(setType: AvatarSetType, hightlight: boolean, scale: number = 1): RenderTexture | undefined {
+    public getImage(setType: AvatarSetType, hightlight: boolean, _scale: number = 1): RenderTexture | undefined {
         if (!this._changes) return this._image;
 
         if (!this._mainAction?.definition) return undefined;
@@ -241,7 +239,7 @@ export class AvatarImage implements IAvatarImage, IAvatarEffectListener {
         return this._image;
     }
 
-    public async getCroppedImageAsync(setType: AvatarSetType, hightlight: boolean, scale: number = 1): Promise<ImageLike | undefined> {
+    public async getCroppedImageAsync(setType: AvatarSetType, hightlight: boolean, _scale: number = 1): Promise<ImageLike | undefined> {
         if (!this._mainAction?.definition) return undefined;
 
         if (!this._actionsSorted) this.endActionAppends();
@@ -308,7 +306,7 @@ export class AvatarImage implements IAvatarImage, IAvatarEffectListener {
         return image;
     }
 
-    public async getCroppedBase64Async(setType: AvatarSetType, hightlight: boolean, scale: number = 1): Promise<string | undefined> {
+    public async getCroppedBase64Async(setType: AvatarSetType, hightlight: boolean, _scale: number = 1): Promise<string | undefined> {
         if (!this._mainAction?.definition) return undefined;
 
         if (!this._actionsSorted) this.endActionAppends();
@@ -400,8 +398,14 @@ export class AvatarImage implements IAvatarImage, IAvatarEffectListener {
             case AvatarActionStateType.Posture: {
                 switch (state) {
                     case AvatarActionStateType.Lay:
+                        this.setDirection(AvatarSetType.Full, this._mainDirection === 0 ? 4 : 2);
+                    // eslint-disable-next-line no-fallthrough
                     case AvatarActionStateType.Walk:
+                        this._useFullImageCache = true;
+                    // eslint-disable-next-line no-fallthrough
                     case AvatarActionStateType.Stand:
+                        this._useFullImageCache = true;
+                    // eslint-disable-next-line no-fallthrough
                     case AvatarActionStateType.Swim:
                     case AvatarActionStateType.Float:
                     case AvatarActionStateType.Sit:
@@ -410,18 +414,8 @@ export class AvatarImage implements IAvatarImage, IAvatarEffectListener {
                     case AvatarActionStateType.SnowwarDieBack:
                     case AvatarActionStateType.SnowwarPick:
                     case AvatarActionStateType.SnowwarThrow: {
-                        if (state === AvatarActionStateType.Lay) {
-                            if (this._mainDirection === 0) {
-                                this.setDirection(AvatarSetType.Full, 4);
-                            }
-                            else {
-                                this.setDirection(AvatarSetType.Full, 2);
-                            }
-                        }
-
-                        if (state === AvatarActionStateType.Walk || state === AvatarActionStateType.Stand) this._useFullImageCache = true;
-
                         this.addActionData(state);
+                        break;
                     }
                 }
 
@@ -440,6 +434,8 @@ export class AvatarImage implements IAvatarImage, IAvatarEffectListener {
                 break;
             }
             case AvatarActionStateType.Effect:
+                if (state === 33 || state === 34 || state === 35 || state === 36 || state === 38 || state === 39) this._useFullImageCache = true;
+            // eslint-disable-next-line no-fallthrough
             case AvatarActionStateType.Dance:
             case AvatarActionStateType.Talk:
             case AvatarActionStateType.Wave:
@@ -452,24 +448,21 @@ export class AvatarImage implements IAvatarImage, IAvatarEffectListener {
             case AvatarActionStateType.Idle:
             case AvatarActionStateType.SnowboardOllie:
             case AvatarActionStateType.Snowboard360:
-            case AvatarActionStateType.RideJump: {
-                const effectId = (_args[0] as unknown as number);
-
-                if (action === AvatarActionStateType.Effect && (effectId === 33 || effectId === 34 || effectId === 35 || effectId === 36 || effectId === 38 || effectId === 39)) this._useFullImageCache = true;
-
-                this.addActionData(action, effectId);
-
+            case AvatarActionStateType.RideJump:
+                this.addActionData(action, state as unknown as number);
                 break;
-            }
             case AvatarActionStateType.CarryObject:
             case AvatarActionStateType.UseObject: {
                 this.addActionData(action, parseInt(this._structure.getActionDefinitionWithState(action)?.getParameterValue(state.toString()) ?? '0'));
-
                 break;
             }
         }
 
         return true;
+    }
+
+    public disposeInactiveActionCache(): void {
+        this._cache?.disposeInactiveActions();
     }
 
     public getTotalFrameCount(): number {
@@ -597,9 +590,7 @@ export class AvatarImage implements IAvatarImage, IAvatarEffectListener {
 
     private isHeadTurnPreventedByAction(): boolean {
         if (this._sortedActions) for (const action of this._sortedActions) {
-            const _local_2 = this._structure.getActionDefinitionWithState(action.type);
-
-            if (_local_2 && _local_2.getPreventHeadTurn(action.actionParameter)) return true;
+            if (!(action.type === AvatarActionStateType.Sleep && this._mainAction.type !== AvatarActionStateType.Lay) && this._structure.getActionDefinitionWithState(action.type)?.getPreventHeadTurn(action.actionParameter)) return true;
         }
 
         return false;
@@ -608,7 +599,7 @@ export class AvatarImage implements IAvatarImage, IAvatarEffectListener {
     private sortActions(): boolean {
         let effectActive: boolean = false;
         let effectChanged: boolean = false;
-        let k: boolean = false;
+        let sorted: boolean = false;
 
         this._currentActionsString = '';
         this._sortedActions = this._structure.sortActions(this._actions);
@@ -618,7 +609,7 @@ export class AvatarImage implements IAvatarImage, IAvatarEffectListener {
             this._canvasOffsets = [0, 0, 0];
 
             if (this._lastActionsString !== '') {
-                k = true;
+                sorted = true;
 
                 this._lastActionsString = '';
             }
@@ -646,7 +637,7 @@ export class AvatarImage implements IAvatarImage, IAvatarEffectListener {
             if (effectActive) this._cache.disposeInactiveActions(0);
 
             if (this._lastActionsString !== this._currentActionsString) {
-                k = true;
+                sorted = true;
 
                 this._lastActionsString = this._currentActionsString;
             }
@@ -654,21 +645,21 @@ export class AvatarImage implements IAvatarImage, IAvatarEffectListener {
 
         this._actionsSorted = true;
 
-        return k;
+        return sorted;
     }
 
     private setActionsToParts(): void {
         const time: number = GetTickerTime();
-        const _local_4: AvatarActionStateType[] = [];
+        const actionTypes: AvatarActionStateType[] = [];
 
-        for (const action of this._sortedActions) _local_4.push(action.type);
+        for (const action of this._sortedActions) actionTypes.push(action.type);
 
         for (const action of this._sortedActions) {
             if (!action?.definition?.isAnimation) continue;
 
             const animation = this._structure.getAnimation(action.definition.state + '.' + action.actionParameter);
 
-            if (animation?.hasOverriddenActions()) for (const _local_6 of animation.overriddenActionNames()) if (_local_4.indexOf(_local_6) >= 0) action.overridingAction = animation.overridingAction(_local_6);
+            if (animation?.hasOverriddenActions()) for (const overrideActionType of animation.overriddenActionNames()) if (actionTypes.indexOf(overrideActionType) >= 0) action.overridingAction = animation.overridingAction(overrideActionType);
 
             if (animation && animation.resetOnToggle) this._animationHasResetOnToggle = true;
         }
@@ -734,64 +725,56 @@ export class AvatarImage implements IAvatarImage, IAvatarEffectListener {
     private getFullImageCacheKey(): string | undefined {
         if (!this._useFullImageCache) return undefined;
 
-        if (this._sortedActions.length === 1 && this._mainDirection === this._headDirection) return (this._mainDirection + this._currentActionsString) + (this._frameCounter % 4);
+        if (this._sortedActions.length === 1 && this._mainDirection === this._headDirection) {
+            return `${this._mainDirection}${this._currentActionsString}${this._frameCounter % 4}`;
+        }
 
-        if (this._sortedActions.length === 2) for (const k of this._sortedActions) {
-            if (k.type === AvatarActionStateType.Effect && (k.actionParameter === 33 || k.actionParameter === 34 || k.actionParameter === 35 || k.actionParameter === 36)) return (this._mainDirection + this._currentActionsString) + 0;
+        if (this._sortedActions.length === 2) for (const action of this._sortedActions) {
+            if (action.type === AvatarActionStateType.Effect && (action.actionParameter === 33 || action.actionParameter === 34 || action.actionParameter === 35 || action.actionParameter === 36)) return `${this._mainDirection}${this._currentActionsString}0`;
 
-            if (k.type === AvatarActionStateType.Effect && (k.actionParameter === 38 || k.actionParameter === 39)) return (((this._mainDirection + '_') + this._headDirection) + this._currentActionsString) + (this._frameCounter % 11);
-
-            if (k.type === AvatarActionStateType.Dance && (k.actionParameter === 1 || k.actionParameter === 2 || k.actionParameter === 3 || k.actionParameter === 4)) {
-                let frame = (this._frameCounter % 8);
-
-                if ((k.actionParameter === 3)) frame = (this._frameCounter % 10);
-
-                if ((k.actionParameter === 4)) frame = (this._frameCounter % 16);
-
-                return this._mainDirection + k.type + k.actionParameter + frame;
-            }
+            if (action.type === AvatarActionStateType.Effect && (action.actionParameter === 38 || action.actionParameter === 39)) return `${this._mainDirection}_${this._headDirection}${this._currentActionsString}${this._frameCounter % 11}`;
         }
 
         return undefined;
     }
 
     private getGrayscaleFilter(channel: string = 'CHANNELS_EQUAL'): Filter {
-        let _local_3 = 0.33;
-        let _local_4 = 0.33;
-        let _local_5 = 0.33;
+        let r = 0.33;
+        let g = 0.33;
+        let b = 0.33;
         const _local_6 = 1;
 
         switch (channel) {
             case AvatarImage.CHANNELS_UNIQUE:
-                _local_3 = 0.3;
-                _local_4 = 0.59;
-                _local_5 = 0.11;
+                r = 0.3;
+                g = 0.59;
+                b = 0.11;
                 break;
             case AvatarImage.CHANNELS_RED:
-                _local_3 = 1;
-                _local_4 = 0;
-                _local_5 = 0;
+                r = 1;
+                g = 0;
+                b = 0;
                 break;
             case AvatarImage.CHANNELS_GREEN:
-                _local_3 = 0;
-                _local_4 = 1;
-                _local_5 = 0;
+                r = 0;
+                g = 1;
+                b = 0;
                 break;
             case AvatarImage.CHANNELS_BLUE:
-                _local_3 = 0;
-                _local_4 = 0;
-                _local_5 = 1;
+                r = 0;
+                g = 0;
+                b = 1;
                 break;
             case AvatarImage.CHANNELS_DESATURATED:
-                _local_3 = 0.3086;
-                _local_4 = 0.6094;
-                _local_5 = 0.082;
+                r = 0.3086;
+                g = 0.6094;
+                b = 0.082;
                 break;
         }
 
         const filter = new ColorMatrixFilter();
 
-        filter.matrix = [_local_3, _local_4, _local_5, 0, 0, _local_3, _local_4, _local_5, 0, 0, _local_3, _local_4, _local_5, 0, 0, 0, 0, 0, 1, 0];
+        filter.matrix = [r, g, b, 0, 0, r, g, b, 0, 0, r, g, b, 0, 0, 0, 0, 0, 1, 0];
 
         return filter;
     }

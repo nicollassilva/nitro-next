@@ -1,7 +1,9 @@
-import type { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
+import type { IIncomingPacket, IMessageDataWrapper, IRoomChatSettings, IRoomModerationSettings } from '@nitrodevco/nitro-api';
 
 import type { IRoomInfo } from './Data/RoomSettingsParser';
 import { RoomSettingsParser } from './Data/RoomSettingsParser';
+import { RoomModerationParser } from './Data/RoomModerationParser';
+import { RoomChatSettingsParser } from './Data/RoomChatSettingsParser';
 
 export type GetGuestRoomResultMessageType = {
     enterRoom: boolean;
@@ -10,7 +12,9 @@ export type GetGuestRoomResultMessageType = {
     staffPick: boolean;
     isGroupMember: boolean;
     allInRoomMuted: boolean;
+    moderation: IRoomModerationSettings;
     canMute: boolean;
+    chat: IRoomChatSettings;
 };
 
 export class GetGuestRoomResultMessage implements IIncomingPacket<GetGuestRoomResultMessageType> {
@@ -22,7 +26,9 @@ export class GetGuestRoomResultMessage implements IIncomingPacket<GetGuestRoomRe
             staffPick: wrapper.readBoolean(),
             isGroupMember: wrapper.readBoolean(),
             allInRoomMuted: wrapper.readBoolean(),
+            moderation: RoomModerationParser(wrapper),
             canMute: wrapper.readBoolean(),
+            chat: RoomChatSettingsParser(wrapper)
         };
 
         return packet;

@@ -20,6 +20,7 @@ export interface IAvatarImage {
     initActionAppends(): void;
     endActionAppends(): void;
     appendAction(action: AvatarActionStateType, ..._args: (AvatarActionStateType | number)[]): boolean;
+    disposeInactiveActionCache(): void;
     getTotalFrameCount(): number;
     getFigure(): IAvatarFigureContainer;
     getScale(): AvatarScaleType;

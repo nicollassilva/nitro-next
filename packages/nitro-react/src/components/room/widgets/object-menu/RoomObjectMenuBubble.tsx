@@ -1,4 +1,4 @@
-import { IRoomObjectData, RoomObjectUserType } from "@nitrodevco/nitro-api";
+import { ISimpleRoomObjectData, RoomObjectUserType } from "@nitrodevco/nitro-api";
 import { GetRenderer } from "@nitrodevco/nitro-renderer";
 import { RoomRenderedEvent } from "@nitrodevco/nitro-shared";
 import { PointData, Rectangle } from "pixi.js";
@@ -14,20 +14,19 @@ const FADE_DELAY = 5000;
 const FADE_LENGTH = 75;
 const SPACE_AROUND_EDGES = 10;
 
-const COLLAPSED = false;
 let FIXED_STACK: FixedSizeStack | undefined = undefined;
 let MAX_STACK = -1000000;
-let FADE_TIME = 1;
 
 type RoomObjectInfoBubbleProps = {
-    objectData: IRoomObjectData;
+    objectData: ISimpleRoomObjectData;
+    userType: RoomObjectUserType;
     fades?: boolean;
     children?: ReactNode;
     onClose?: () => void;
 }
 
-export const RoomObjectInfoBubble = (props: RoomObjectInfoBubbleProps) => {
-    const { objectData, fades = false, children, onClose = undefined } = props;
+export const RoomObjectMenuBubble = (props: RoomObjectInfoBubbleProps) => {
+    const { objectData, userType, fades = false, children, onClose = undefined } = props;
     const { objectId, category } = objectData;
     const room = useRoomSelector();
     const isFading = useRef<boolean>(false);
@@ -55,9 +54,7 @@ export const RoomObjectInfoBubble = (props: RoomObjectInfoBubbleProps) => {
 
         let offset = -(elementRef.current.offsetHeight ?? 0);
 
-        const userData = objectData as unknown as { userType: RoomObjectUserType };
-
-        if (userData.userType !== undefined && (userData.userType === RoomObjectUserType.User || userData.userType === RoomObjectUserType.Bot || userData.userType === RoomObjectUserType.RentableBot)) offset = (offset + ((bounds.height > 50) ? 15 : 0));
+        if (userType === RoomObjectUserType.User || userType === RoomObjectUserType.Bot || userType === RoomObjectUserType.RentableBot) offset = (offset + ((bounds.height > 50) ? 15 : 0));
         else offset = (offset - 14);
 
         FIXED_STACK.addValue((location.y - bounds.top));
@@ -70,8 +67,8 @@ export const RoomObjectInfoBubble = (props: RoomObjectInfoBubbleProps) => {
 
         const deltaY = (location.y - maxStack);
 
-        let x = ~~(location.x - (elementRef.current.offsetWidth / 2));
-        let y = ~~(deltaY + offset);
+        let x = (location.x - (elementRef.current.offsetWidth / 2));
+        let y = (deltaY + offset);
 
         const maxLeft = ((GetRenderer().width - elementRef.current.offsetWidth) - SPACE_AROUND_EDGES);
         const maxTop = ((GetRenderer().height - elementRef.current.offsetHeight) - SPACE_AROUND_EDGES);
@@ -82,8 +79,8 @@ export const RoomObjectInfoBubble = (props: RoomObjectInfoBubbleProps) => {
         if (y < SPACE_AROUND_EDGES) y = SPACE_AROUND_EDGES;
         else if (y > maxTop) y = maxTop;
 
-        elementRef.current.style.left = `${x}px`;
-        elementRef.current.style.top = `${y}px`;
+        elementRef.current.style.left = `${~~x}px`;
+        elementRef.current.style.top = `${~~y}px`;
     }
 
     useRoomEventDispatcher<RoomRenderedEvent>(RoomRenderedEvent.ROOM_RENDERED, event => {
@@ -112,7 +109,7 @@ export const RoomObjectInfoBubble = (props: RoomObjectInfoBubbleProps) => {
     useEffect(() => {
         FIXED_STACK = new FixedSizeStack(LOCATION_STACK_SIZE);
         MAX_STACK = -1000000;
-        FADE_TIME = 1;
+        fadeTime.current = 1;
     }, []);
 
     return <div ref={elementRef} className="absolute z-50 invisible transition-[top,left] duration-60 ease-out">{children}</div>

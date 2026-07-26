@@ -1,4 +1,4 @@
-import { RoomControllerLevelEnum, RoomDoorModeEnum, RoomTradeModeEnum } from "@nitrodevco/nitro-api";
+import { IRoomChatSettings, IRoomModerationSettings, RoomChatBubbleWidthType, RoomChatFloodSensitivityType, RoomChatModeType, RoomChatScrollSpeedType, RoomControllerLevelEnum, RoomDoorModeEnum, RoomModerationType, RoomTradeModeEnum } from "@nitrodevco/nitro-api";
 import type { StateCreator } from "zustand";
 
 type State = {
@@ -14,6 +14,8 @@ type State = {
     isPlayingGame: boolean;
     isMoveBlocked: boolean;
     isOwnDancing: boolean;
+    moderationSettings: IRoomModerationSettings;
+    chatSettings: IRoomChatSettings;
 }
 
 type Actions = {
@@ -28,6 +30,8 @@ type Actions = {
     setIsSpectator: (flag: boolean) => void;
     setIsPlayingGame: (flag: boolean) => void;
     setIsOwnDancing: (flag: boolean) => void;
+    setModerationSettings: (settings: IRoomModerationSettings) => void;
+    setChatSettings: (settings: IRoomChatSettings) => void;
 };
 
 export const RoomSessionSliceInitialState: State = {
@@ -42,7 +46,19 @@ export const RoomSessionSliceInitialState: State = {
     isSpectator: false,
     isPlayingGame: false,
     isMoveBlocked: false,
-    isOwnDancing: false
+    isOwnDancing: false,
+    moderationSettings: {
+        whoCanMute: RoomModerationType.None,
+        whoCanKick: RoomModerationType.None,
+        whoCanBan: RoomModerationType.None
+    },
+    chatSettings: {
+        mode: RoomChatModeType.FreeFlow,
+        bubbleSize: RoomChatBubbleWidthType.Normal,
+        scrollUpFrequency: RoomChatScrollSpeedType.Normal,
+        fullHearRange: 0,
+        floodSensitivity: RoomChatFloodSensitivityType.Normal
+    }
 };
 
 export type RoomSessionSlice = State & Actions;
@@ -60,4 +76,6 @@ export const createRoomSessionSlice: StateCreator<RoomSessionSlice, [], [], Room
     setIsSpectator: (flag: boolean) => set({ isSpectator: flag }),
     setIsPlayingGame: (flag: boolean) => set({ isPlayingGame: flag }),
     setIsOwnDancing: (flag: boolean) => set({ isOwnDancing: flag }),
+    setModerationSettings: (settings: IRoomModerationSettings) => set({ moderationSettings: { ...settings } }),
+    setChatSettings: (settings: IRoomChatSettings) => set({ chatSettings: { ...settings } }),
 });

@@ -4,7 +4,7 @@ export const selectDoorMode = (state: RoomStore) => state.doorMode;
 
 export const selectTradeMode = (state: RoomStore) => state.tradeMode;
 
-export const selectControllerLevel = (state: RoomStore) => state.controllerLevel;
+export const selectOwnControllerLevel = (state: RoomStore) => state.controllerLevel;
 
 export const selectOwnRoomIndex = (state: RoomStore) => state.ownRoomIndex;
 
@@ -24,6 +24,10 @@ export const selectIsMoveBlocked = (state: RoomStore) => state.isMoveBlocked;
 
 export const selectIsOwnDancing = (state: RoomStore) => state.isOwnDancing;
 
+export const selectModerationSettings = (state: RoomStore) => state.moderationSettings;
+
+export const selectChatSettings = (state: RoomStore) => state.chatSettings;
+
 export const selectRoomPermissions = (state: RoomStore) => ({
     controllerLevel: state.controllerLevel,
     isRoomOwner: state.isRoomOwner
@@ -33,7 +37,9 @@ export const selectRoomSettings = (state: RoomStore) => ({
     doorMode: state.doorMode,
     tradeMode: state.tradeMode,
     allowPets: state.allowPets,
-    isGuildRoom: state.isGuildRoom
+    isGuildRoom: state.isGuildRoom,
+    moderation: state.moderationSettings,
+    chat: state.chatSettings
 });
 
 export const selectRoomInteractionState = (state: RoomStore) => ({

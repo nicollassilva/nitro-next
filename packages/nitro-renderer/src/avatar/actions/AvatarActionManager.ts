@@ -1,4 +1,4 @@
-import type { AvatarScaleType, IActiveActionData, IAssetAvatarActionData, IAssetAvatarActionOffset } from '@nitrodevco/nitro-api';
+import type { AvatarActionStateType, AvatarScaleType, IActiveActionData, IAssetAvatarActionData, IAssetAvatarActionOffset } from '@nitrodevco/nitro-api';
 
 import { ActionDefinition } from './ActionDefinition';
 
@@ -104,7 +104,7 @@ export class AvatarActionManager {
     }
 
     private filterActions(actions: IActiveActionData[]): IActiveActionData[] {
-        let preventions: string[] = [];
+        let preventions: AvatarActionStateType[] = [];
         const activeActions: IActiveActionData[] = [];
 
         for (const action of actions) {
@@ -120,9 +120,9 @@ export class AvatarActionManager {
 
             let actionType = action.type as string;
 
-            if (action.type as string === 'fx') actionType = (actionType + ('.' + action.actionParameter));
+            if (action.type as string === 'fx') actionType = `${action.type}.${action.actionParameter}`;
 
-            if (preventions.indexOf(actionType) >= 0) continue;
+            if (preventions.indexOf(actionType as unknown as AvatarActionStateType) >= 0) continue;
 
             activeActions.push(action);
         }

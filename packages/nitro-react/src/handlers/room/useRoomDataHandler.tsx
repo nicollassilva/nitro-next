@@ -4,7 +4,7 @@ import { useRoomSettingActions } from "#base/context";
 import { useMessageListener } from "#base/hooks";
 
 export const useRoomDataHandler = () => {
-    const { setTradeMode, setIsGuildRoom, setDoorMode, setAllowPets } = useRoomSettingActions();
+    const { setTradeMode, setIsGuildRoom, setDoorMode, setAllowPets, setModerationSettings, setChatSettings } = useRoomSettingActions();
 
     useMessageListener(GetGuestRoomResultMessage, data => {
         if (data.roomForward) return;
@@ -15,6 +15,7 @@ export const useRoomDataHandler = () => {
         setIsGuildRoom(roomInfo.groupId !== 0);
         setDoorMode(roomInfo.doorMode);
         setAllowPets(roomInfo.allowPets);
-        // moderation settings
+        setModerationSettings(data.moderation);
+        setChatSettings(data.chat);
     });
 }

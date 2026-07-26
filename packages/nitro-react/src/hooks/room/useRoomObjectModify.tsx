@@ -3,7 +3,7 @@ import { NitroLogger, RoomControllerLevelEnum, RoomObjectCategoryEnum, RoomObjec
 import { SelectedRoomObjectData } from "@nitrodevco/nitro-renderer";
 import { MoveObjectComposer, MoveWallItemComposer, PickupObjectComposer } from "@nitrodevco/nitro-shared";
 
-import { useIsModerator, useOwnUserId, useRoomPermissionsSelector, useRoomSelectedObject, useRoomSelectedObjectActions, useRoomSelector, useWebSocketContext } from "#base/context";
+import { useOwnIsModerator, useOwnUserId, useRoomPermissionsSelector, useRoomSelectedObject, useRoomSelectedObjectActions, useRoomSelector, useWebSocketContext } from "#base/context";
 
 import { useRoomObjectSelect } from "./useRoomObjectSelect";
 import { useRoomObjectValidation } from "./useRoomObjectValidation";
@@ -11,7 +11,7 @@ import { useRoomObjectValidation } from "./useRoomObjectValidation";
 export const useRoomObjectModify = () => {
     const room = useRoomSelector();
     const ownUserId = useOwnUserId();
-    const isModerator = useIsModerator();
+    const isModerator = useOwnIsModerator();
     const selectedObject = useRoomSelectedObject();
     const { controllerLevel, isRoomOwner } = useRoomPermissionsSelector();
     const { setSelectedObject } = useRoomSelectedObjectActions();
