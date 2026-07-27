@@ -5,6 +5,10 @@
     text-rendering: optimizeSpeed;
 }
 
+@utility font-ubuntu {
+    font-family: Ubuntu;
+}
+
 @utility font-ubuntu-bold {
     font-family: UbuntuBold;
     font-weight: 400;
@@ -20,9 +24,54 @@
 }
 
 @utility font-goldfish-bold {
-    font-family: Goldfish-Bold;
+    font-family: GoldfishBold;
+    @apply pixel-text;
 }
 
 @utility font-aa {
     text-shadow: 1px 1px rgba(0, 0, 0, 0.7);
+}
+
+@utility text-style-regular {
+    @apply font-goldfish text-[9px];
+}
+
+@utility text-style-u-regular {
+    @apply font-ubuntu text-[12px];
+}
+
+@utility text-style-button-regular {
+    @apply font-goldfish text-[9px];
+}
+
+@utility text-style-button-bold {
+    @apply font-goldfish-bold text-[9px];
+}
+
+@utility text-style-button-shiny-regular {
+    @apply font-ubuntu-bold text-[12px];
+}
+
+@utility text-style-button-shiny-bold {
+    @apply font-ubuntu text-[12px];
+}
+
+@utility text-style-il-regular {
+    @apply font-ubuntu text-[11px];
+}
+
+@utility text-style-il-button {
+    @apply font-ubuntu-bold text-[10px];
+}
+
+@utility text-style-id-button {
+    @apply font-ubuntu-bold text-[10px] text-white;
+}
+
+@utility text-style-button-tab {
+    @apply font-goldfish text-[9px];
+}
+
+@utility text-style-u-tool-tip {
+    @apply font-ubuntu text-[11px] text-white;
 }

@@ -1,8 +1,8 @@
 .infostand-container {
-    @apply relative flex flex-col min-w-(--nitro-infostand-width) max-w-(--nitro-infostand-width) size-full [border-image-source:var(--infostand-bg-image)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px] p-1 pointer-events-auto font-goldfish gap-0;
+    @apply relative flex flex-col min-w-(--nitro-infostand-width) max-w-(--nitro-infostand-width) size-full p-1 pointer-events-auto font-goldfish gap-0;
 
     .infostand-header {
-        @apply flex items-center justify-between w-full p-1 gap-1 text-white font-goldfish-bold text-[9px];
+        @apply flex items-center justify-between w-full p-1 gap-1 font-goldfish-bold text-[9px];
     }
 
     .infostand-separator {

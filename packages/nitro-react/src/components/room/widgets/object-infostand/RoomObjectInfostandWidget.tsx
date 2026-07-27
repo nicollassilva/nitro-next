@@ -3,9 +3,10 @@ import { useState } from "react";
 
 import { useRoomSelector } from "#base/context";
 import { useRoomObjectDeselected, useRoomObjectSelected } from "#base/hooks";
-import { InfostandFurniView } from "#base/views/room-widgets/object-infostand/InfostandFurniView";
 import { InfostandPetView } from "#base/views/room-widgets/object-infostand/InfostandPetView";
 import { InfostandUserView } from "#base/views/room-widgets/object-infostand/InfostandUserView";
+
+import { InfostandFurni } from "./InfostandFurni";
 
 export const RoomObjectInfostandWidget = () => {
     const [selectedData, setSelectedData] = useState<ISimpleRoomObjectData | undefined>(undefined);
@@ -31,7 +32,7 @@ export const RoomObjectInfostandWidget = () => {
     switch (selectedData.category) {
         case RoomObjectCategoryEnum.Floor:
         case RoomObjectCategoryEnum.Wall: {
-            return <InfostandFurniView objectData={selectedData} onClose={onClose} />;
+            return <InfostandFurni objectData={selectedData} onClose={onClose} />;
         }
         case RoomObjectCategoryEnum.Unit: {
             const roomObject = room.getRoomObject(selectedData.objectId, selectedData.category);

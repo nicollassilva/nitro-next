@@ -1,63 +1,36 @@
-import { FurniturePickupMode, FurnitureUsagePolicyEnum, ISimpleRoomObjectData, RoomControllerLevelEnum, RoomObjectOperationType, RoomWidgetEnumItemExtradataParameter } from "@nitrodevco/nitro-api";
+import { FurniturePickupMode, IRoomFurnitureData } from "@nitrodevco/nitro-api";
 
-import { Button } from "#base/components";
+import { Border, Button } from "#base/components";
+import { CloseButton } from "#base/components/Closebutton";
 import { FurnitureImage } from "#base/components/FurnitureImage";
-import { useOwnIsModerator, useOwnUserId, useRoomPermissionsSelector } from "#base/context";
-import { useRoomFurnitureData, useRoomObjectInteraction, useRoomObjectModify } from "#base/hooks";
 import { useLocalizationStore } from "#base/stores";
 
 type InfostandFurniViewProps = {
-    objectData: ISimpleRoomObjectData;
+    furniData: IRoomFurnitureData;
+    canMove: boolean;
+    canRotate: boolean;
+    canUse: boolean;
+    pickupMode: FurniturePickupMode;
+    hasButtons: boolean;
+    canSeeFurniId: boolean;
+    godMode: boolean;
+    processAction: (action: string) => void;
     onClose: () => void;
 }
 
 export const InfostandFurniView = (props: InfostandFurniViewProps) => {
-    const { objectData, onClose } = props;
-    const { objectId, category } = objectData;
-    const furniData = useRoomFurnitureData(objectId, category);
-    const ownUserId = useOwnUserId();
-    const isModerator = useOwnIsModerator();
-    const { controllerLevel, isRoomOwner } = useRoomPermissionsSelector();
+    const { furniData, canMove, canRotate, canUse, pickupMode, hasButtons, canSeeFurniId, godMode, processAction, onClose } = props;
     const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
     const getLocalizationValueParams = useLocalizationStore(x => x.getLocalizationValueParams);
-    const { modifyRoomObject } = useRoomObjectModify();
-    const { changeItemState } = useRoomObjectInteraction();
 
     if (!furniData?.furnitureData) return null;
 
-    let canMove = false;
-    let canRotate = false;
-    let canSeeFurniId = false;
-    let canUse = false;
-    let pickupMode = FurniturePickupMode.None;
-    let godMode = false;
-
-    const isValidController = controllerLevel >= RoomControllerLevelEnum.Guest;
-
-    if (isValidController || furniData.ownerId === ownUserId || isRoomOwner || isModerator) {
-        canMove = true;
-        canRotate = !furniData.isWallItem;
-
-        if (controllerLevel >= RoomControllerLevelEnum.Moderator) godMode = true;
-    }
-
-    if (furniData.ownerId === ownUserId || isModerator) pickupMode = FurniturePickupMode.Full;
-    else if (isRoomOwner || controllerLevel >= RoomControllerLevelEnum.GuildAdmin) pickupMode = FurniturePickupMode.Eject;
-
-    if (furniData.isStickie) pickupMode = FurniturePickupMode.None;
-
-    if (isModerator) canSeeFurniId = true;
-
-    if (furniData.usagePolicy === FurnitureUsagePolicyEnum.Everybody || (furniData.usagePolicy === FurnitureUsagePolicyEnum.Controller && isValidController) || (furniData.extraParam === RoomWidgetEnumItemExtradataParameter.JUKEBOX && isValidController) || (furniData.extraParam === RoomWidgetEnumItemExtradataParameter.USABLE_PRODUCT && isValidController)) canUse = true;
-
-    const hasButtons = canMove || canRotate || pickupMode !== FurniturePickupMode.None || canUse;
-
     return (
         <div className="flex flex-col items-end gap-2">
-            <div className="infostand-container">
+            <Border variant="1" className="infostand-container">
                 <div className="infostand-header">
                     {furniData.name}
-                    <i className="infostand-close" onClick={onClose} />
+                    <CloseButton variant="1" onClick={onClose} />
                 </div>
                 <hr className="infostand-separator" />
                 <div className="flex-1 gap-1 p-1 size-full">
@@ -67,20 +40,31 @@ export const InfostandFurniView = (props: InfostandFurniViewProps) => {
                 </div>
                 <hr className="infostand-separator" />
                 <div className="flex w-full gap-1 p-1">
-                    <p className="text-[9px] text-white font-goldfish-bold">{getLocalizationValueParams('furni.owner', ['name'], [furniData.ownerName])}</p>
-                    {canSeeFurniId && <p className="text-[9px] text-white font-goldfish-bold">ID: {furniData.id}</p>}
+                    <p className="text-[9px] font-goldfish-bold">{getLocalizationValueParams('furni.owner', ['name'], [furniData.ownerName])}</p>
+                    {canSeeFurniId && <p className="text-[9px] font-goldfish-bold">ID: {furniData.id}</p>}
                 </div>
                 <div className="flex w-full gap-1 p-1">
-                    <Button variant="volterBlue" size="volterBlue" onClick={() => { }}>{getLocalizationValue('infostand.button.buy')}</Button>
+                    <Button>{getLocalizationValue('infostand.button.buy')}</Button>
                 </div>
-            </div>
+            </Border>
             {hasButtons && <div className="flex justify-end gap-2">
-                {canMove && <Button onClick={() => modifyRoomObject(objectId, category, RoomObjectOperationType.OBJECT_MOVE)}>{getLocalizationValue('infostand.button.move')}</Button>}
-                {canRotate && <Button onClick={() => modifyRoomObject(objectId, category, RoomObjectOperationType.OBJECT_ROTATE_POSITIVE)}>{getLocalizationValue('infostand.button.rotate')}</Button>}
-                {pickupMode === FurniturePickupMode.Eject && <Button onClick={() => modifyRoomObject(objectId, category, RoomObjectOperationType.OBJECT_EJECT)}>{getLocalizationValue(`infostand.button.eject`)}</Button>}
-                {pickupMode === FurniturePickupMode.Full && <Button onClick={() => modifyRoomObject(objectId, category, RoomObjectOperationType.OBJECT_PICKUP)}>{getLocalizationValue(`infostand.button.pickup`)}</Button>}
-                {canUse && <Button onClick={() => changeItemState(objectId, category, 0, false)}>{getLocalizationValue('infostand.button.use')}</Button>}
+                {canMove && <Button variant="1" onClick={() => processAction('move')}>{getLocalizationValue('infostand.button.move')}</Button>}
+                {canRotate && <Button variant="1" onClick={() => processAction('rotate')}>{getLocalizationValue('infostand.button.rotate')}</Button>}
+                {pickupMode === FurniturePickupMode.Eject && <Button onClick={() => processAction('eject')}>{getLocalizationValue(`infostand.button.eject`)}</Button>}
+                {pickupMode === FurniturePickupMode.Full && <Button onClick={() => processAction('pickup')}>{getLocalizationValue(`infostand.button.pickup`)}</Button>}
+                {canUse && <Button onClick={() => processAction('use')}>{getLocalizationValue('infostand.button.use')}</Button>}
             </div>}
+            <div className="flex justify-end gap-2">
+                <Button variant="0">variant 0</Button>
+                <Button variant="1">variant 1</Button>
+                <Button variant="2">variant 2</Button>
+                <Button variant="3">variant 3</Button>
+                <Button variant="4">variant 4</Button>
+                <Button variant="5">variant 5</Button>
+                <Button variant="6">variant 6</Button>
+                <Button variant="100">variant 100</Button>
+                <Button variant="101">variant 101</Button>
+            </div>
         </div>
     );
 }

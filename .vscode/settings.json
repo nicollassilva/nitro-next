@@ -27,6 +27,7 @@
         "typescript",
         "typescriptreact"
     ],
+    "tailwindAutoOptimizer.autoFixOnSave": true,
     "tailwindCSS.experimental.configFile": "./packages/nitro-react/src/index.css",
     "tailwindCSS.experimental.classRegex": [
         [
@@ -47,6 +48,14 @@
         ],
         [
             "cva\\(([^;]*)\\);",
+            "[\"'`]([^\"'`]*)[\"'`]"
+        ],
+        [
+            "\\w*[Cc]lassName\\s*:\\s*([^,}]*)",
+            "[\"'`]([^\"'`]*)[\"'`]"
+        ],
+        [
+            "pieces\\s*:\\s*(\\[[^\\]]*\\])",
             "[\"'`]([^\"'`]*)[\"'`]"
         ]
     ],

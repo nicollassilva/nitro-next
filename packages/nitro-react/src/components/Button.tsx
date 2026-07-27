@@ -1,46 +1,48 @@
-import { type ButtonHTMLAttributes, forwardRef } from 'react';
+import { forwardRef, type HTMLAttributes } from 'react';
 
-import { cn, cva } from '#base/utils';
+import { cn } from '#base/utils';
 
-const buttonVariants = cva(
-    'inline-flex items-center justify-center select-none cursor-pointer box-border pointer-events-auto leading-none',
-    {
-        variants: {
-            variant: {
-                volterBlack: 'disabled:cursor-not-allowed [border-image-source:var(--default-button-black-src)] disabled:[border-image-source:var(--disabled-button-black-src)] active:[border-image-source:var(--pressed-button-black-src)] hover:[border-image-source:var(--hovering-button-black-src)] border-solid border-[3px] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] [border-image-repeat:stretch] text-white font-goldfish',
-                volterWhite: 'disabled:cursor-not-allowed [border-image-source:var(--default-button-white-src)] disabled:[border-image-source:var(--disabled-button-white-src)] active:[border-image-source:var(--pressed-button-white-src)] hover:[border-image-source:var(--hovering-button-white-src)] border-solid border-[3px] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] [border-image-repeat:stretch] text-black font-goldfish',
-                volterBlue: 'disabled:cursor-not-allowed [border-image-source:var(--default-button-blue-src)] disabled:[border-image-source:var(--disabled-button-blue-src)] active:[border-image-source:var(--pressed-button-blue-src)] hover:[border-image-source:var(--hovering-button-blue-src)] border-solid border-[3px] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] [border-image-repeat:stretch]',
-                ubuntu: 'disabled:cursor-not-allowed [border-image-source:var(--default-button-shiny-src)] disabled:[border-image-source:var(--disabled-button-shiny-src)] active:[border-image-source:var(--pressed-button-shiny-src)] hover:[border-image-source:var(--hovering-button-shiny-src)] border-solid border-[5px] [border-image-slice:5_5_5_5_fill] [border-image-width:5px_5px_5px_5px] [border-image-repeat:stretch] text-black'
-            },
-            size: {
-                volterBlack: 'text-[9px] p-[4px_8px_4px_8px] min-w-[20px] min-h-[22px]',
-                volterWhite: 'text-[9px] p-[4px_8px_4px_8px] min-w-[20px] min-h-[22px]',
-                volterBlue: 'text-[9px] p-[4px_8px_4px_8px] min-w-[20px] min-h-[22px]',
-                ubuntu: 'text-[12px] p-[2px_8px_3px_8px] min-w-[20px] min-h-[22px]'
-            },
-        },
-        defaultVariants: {
-            variant: 'volterBlack',
-            size: 'volterBlack',
-        },
-    }
-);
+const VARIANT_CLASS_NAME: Record<string, string> = {
+    // default
+    '0': '[border-image-source:var(--button-0-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] [border-image-repeat:stretch] hover:[border-image-source:var(--button-0-hovering-src)] hover:[border-image-slice:3_3_3_3_fill] hover:[border-image-width:3px_3px_3px_3px] hover:[border-image-repeat:stretch] active:[border-image-source:var(--button-0-pressed-src)] active:[border-image-slice:3_3_3_3_fill] active:[border-image-width:3px_3px_3px_3px] active:[border-image-repeat:stretch] aria-disabled:[border-image-source:var(--button-0-disabled-src)] aria-disabled:[border-image-slice:3_3_3_3_fill] aria-disabled:[border-image-width:3px_3px_3px_3px] aria-disabled:[border-image-repeat:stretch] min-w-[20px] min-h-[22px] pl-[8px] pt-[4px] pr-[8px] pb-[4px] text-[#000000] text-style-button-regular',
+    // black
+    '1': '[border-image-source:var(--button-1-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] [border-image-repeat:stretch] hover:[border-image-source:var(--button-1-hovering-src)] hover:[border-image-slice:3_3_3_3_fill] hover:[border-image-width:3px_3px_3px_3px] hover:[border-image-repeat:stretch] active:[border-image-source:var(--button-1-pressed-src)] active:[border-image-slice:3_3_3_3_fill] active:[border-image-width:3px_3px_3px_3px] active:[border-image-repeat:stretch] aria-disabled:[border-image-source:var(--button-1-disabled-src)] aria-disabled:[border-image-slice:3_3_3_3_fill] aria-disabled:[border-image-width:3px_3px_3px_3px] aria-disabled:[border-image-repeat:stretch] min-w-[20px] min-h-[22px] pl-[8px] pt-[4px] pr-[8px] pb-[4px] text-[#ffffff] text-style-button-regular',
+    // white
+    '2': '[border-image-source:var(--button-2-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] [border-image-repeat:stretch] hover:[border-image-source:var(--button-2-hovering-src)] hover:[border-image-slice:3_3_3_3_fill] hover:[border-image-width:3px_3px_3px_3px] hover:[border-image-repeat:stretch] active:[border-image-source:var(--button-2-pressed-src)] active:[border-image-slice:3_3_3_3_fill] active:[border-image-width:3px_3px_3px_3px] active:[border-image-repeat:stretch] aria-disabled:[border-image-source:var(--button-2-disabled-src)] aria-disabled:[border-image-slice:3_3_3_3_fill] aria-disabled:[border-image-width:3px_3px_3px_3px] aria-disabled:[border-image-repeat:stretch] min-w-[20px] min-h-[22px] pl-[8px] pt-[4px] pr-[8px] pb-[4px] text-[#000000] text-style-button-regular',
+    // default
+    '3': '[border-image-source:var(--button-3-default-src)] [border-image-slice:5_5_5_5_fill] [border-image-width:5px_5px_5px_5px] [border-image-repeat:stretch] hover:[border-image-source:var(--button-3-hovering-src)] hover:[border-image-slice:5_5_5_5_fill] hover:[border-image-width:5px_5px_5px_5px] hover:[border-image-repeat:stretch] active:[border-image-source:var(--button-3-pressed-src)] active:[border-image-slice:5_5_5_5_fill] active:[border-image-width:5px_5px_5px_5px] active:[border-image-repeat:stretch] aria-disabled:[border-image-source:var(--button-3-disabled-src)] aria-disabled:[border-image-slice:5_5_5_5_fill] aria-disabled:[border-image-width:5px_5px_5px_5px] aria-disabled:[border-image-repeat:stretch] min-w-[20px] min-h-[22px] pl-[8px] pt-[2px] pr-[8px] pb-[3px] text-[#000000] text-style-button-shiny-regular',
+    // black
+    '4': '[border-image-source:var(--button-4-default-src)] [border-image-slice:5_5_5_5_fill] [border-image-width:5px_5px_5px_5px] [border-image-repeat:stretch] hover:[border-image-source:var(--button-4-hovering-src)] hover:[border-image-slice:5_5_5_5_fill] hover:[border-image-width:5px_5px_5px_5px] hover:[border-image-repeat:stretch] active:[border-image-source:var(--button-4-pressed-src)] active:[border-image-slice:5_5_5_5_fill] active:[border-image-width:5px_5px_5px_5px] active:[border-image-repeat:stretch] aria-disabled:[border-image-source:var(--button-4-disabled-src)] aria-disabled:[border-image-slice:5_5_5_5_fill] aria-disabled:[border-image-width:5px_5px_5px_5px] aria-disabled:[border-image-repeat:stretch] min-w-[20px] min-h-[28px] pl-[10px] pt-[5px] pr-[10px] pb-[6px] text-[#ffffff] text-style-button-shiny-regular',
+    // white
+    '5': '[border-image-source:var(--button-5-default-src)] [border-image-slice:5_5_5_5_fill] [border-image-width:5px_5px_5px_5px] [border-image-repeat:stretch] hover:[border-image-source:var(--button-5-hovering-src)] hover:[border-image-slice:5_5_5_5_fill] hover:[border-image-width:5px_5px_5px_5px] hover:[border-image-repeat:stretch] active:[border-image-source:var(--button-5-pressed-src)] active:[border-image-slice:5_5_5_5_fill] active:[border-image-width:5px_5px_5px_5px] active:[border-image-repeat:stretch] aria-disabled:[border-image-source:var(--button-5-disabled-src)] aria-disabled:[border-image-slice:5_5_5_5_fill] aria-disabled:[border-image-width:5px_5px_5px_5px] aria-disabled:[border-image-repeat:stretch] min-w-[20px] min-h-[28px] pl-[10px] pt-[5px] pr-[10px] pb-[6px] text-[#ffffff] text-style-button-shiny-regular',
+    // green
+    '6': '[border-image-source:var(--button-6-default-src)] [border-image-slice:5_5_5_5_fill] [border-image-width:5px_5px_5px_5px] [border-image-repeat:stretch] hover:[border-image-source:var(--button-6-hovering-src)] hover:[border-image-slice:5_5_5_5_fill] hover:[border-image-width:5px_5px_5px_5px] hover:[border-image-repeat:stretch] active:[border-image-source:var(--button-6-pressed-src)] active:[border-image-slice:5_5_5_5_fill] active:[border-image-width:5px_5px_5px_5px] active:[border-image-repeat:stretch] aria-disabled:[border-image-source:var(--button-6-disabled-src)] aria-disabled:[border-image-slice:5_5_5_5_fill] aria-disabled:[border-image-width:5px_5px_5px_5px] aria-disabled:[border-image-repeat:stretch] min-w-[20px] min-h-[28px] pl-[10px] pt-[5px] pr-[10px] pb-[6px] text-[#ffffff] text-style-button-shiny-regular',
+    // landing view
+    '100': 'inline-block min-w-[50px] min-h-[50px] [background-image:var(--button-100-default-src)] [background-size:100%_100%] [background-repeat:no-repeat] hover:[background-image:var(--button-100-hovering-src)] hover:[background-size:100%_100%] hover:[background-repeat:no-repeat] active:[background-image:var(--button-100-pressed-src)] active:[background-size:100%_100%] active:[background-repeat:no-repeat] pl-[24px] pt-[14px] pr-[24px] pb-[14px] text-[#000000] text-style-il-button',
+    // window
+    '101': 'inline-block min-w-[50px] min-h-[50px] [background-image:var(--button-101-default-src)] [background-size:100%_100%] [background-repeat:no-repeat] hover:[background-image:var(--button-101-hovering-src)] hover:[background-size:100%_100%] hover:[background-repeat:no-repeat] active:[background-image:var(--button-101-pressed-src)] active:[background-size:100%_100%] active:[background-repeat:no-repeat] pl-[24px] pt-[14px] pr-[24px] pb-[14px] text-[#000000] text-style-il-button',
+    // plain
+    '102': 'inline-block min-w-[28px] min-h-[28px] [background-image:var(--button-102-default-src)] [background-size:100%_100%] [background-repeat:no-repeat] active:[background-image:var(--button-102-pressed-src)] active:[background-size:100%_100%] active:[background-repeat:no-repeat] pl-[13px] pt-[3px] pr-[13px] pb-[3px] text-[#000000] text-style-il-button',
+    // unetched
+    '103': 'inline-block min-w-[28px] min-h-[28px] [background-image:var(--button-103-default-src)] [background-size:100%_100%] [background-repeat:no-repeat] active:[background-image:var(--button-103-pressed-src)] active:[background-size:100%_100%] active:[background-repeat:no-repeat] pl-[13px] pt-[3px] pr-[13px] pb-[3px] text-[#000000] text-style-il-button',
+    // default
+    '200': '[border-image-source:var(--button-200-default-src)] [border-image-slice:4_4_5_4_fill] [border-image-width:4px_4px_5px_4px] [border-image-repeat:stretch] min-w-[28px] min-h-[28px] pl-[13px] pt-[3px] pr-[13px] pb-[3px] text-[#000000] text-style-id-button',
+};
 
-type ButtonVariantProps = NonNullable<Parameters<typeof buttonVariants>[0]>;
-
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, ButtonVariantProps {
+interface ButtonProps extends HTMLAttributes<HTMLDivElement> {
     className?: string;
-    variant?: 'volterBlack' | 'volterWhite' | 'volterBlue' | 'ubuntu';
-    size?: 'volterBlack' | 'volterWhite' | 'volterBlue' | 'ubuntu';
+    variant?: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '100' | '101' | '102' | '103' | '200';
 }
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ className, variant, size, ...props }, ref) => (
-        <button
+export const Button = forwardRef<HTMLDivElement, ButtonProps>(
+    ({ className, variant, children, ...props }, ref) => (
+        <div
             ref={ref}
-            className={cn(buttonVariants({ variant, size }), className)}
+            className={cn('select-none cursor-pointer pointer-events-auto leading-none inline-flex items-center justify-center', VARIANT_CLASS_NAME[variant ?? '0'] ?? VARIANT_CLASS_NAME['0'], className)}
             {...props}
-        />
+        >
+            {children}
+        </div>
     )
 );
 

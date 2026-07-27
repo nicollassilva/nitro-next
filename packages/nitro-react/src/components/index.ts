@@ -1,4 +1,5 @@
 export * from './AvatarImage';
+export * from './Border';
 export * from './Button';
 export * from './FurnitureImage';
 export * from './NitroIcon';
