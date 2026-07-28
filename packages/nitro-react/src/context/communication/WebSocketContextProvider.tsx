@@ -157,20 +157,25 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
 
         let consumed = 0;
 
-        while (wsBuffer.current.byteLength - consumed >= 4) {
-            const length = reader.readInt();
+        try {
+            while (wsBuffer.current.byteLength - consumed >= 4) {
+                const length = reader.readInt();
 
-            if (length > (wsBuffer.current.byteLength - consumed - 4)) break;
+                if (length < 2) {
+                    ws.current?.close(1011, `WebSocket: Malformed packet length: ${length}`);
+                    break;
+                }
+                
+                if(length > reader.remaining()) break;
 
-            const extracted = reader.readBytes(length);
+                const extracted = reader.readBytes(length);
 
-            wrappers.push(new EvaWireDataWrapper(extracted.readShort(), extracted));
+                wrappers.push(new EvaWireDataWrapper(extracted.readShort(), extracted));
 
-            consumed += length + 4;
-        }
-
-        if (consumed) {
-            wsBuffer.current = wsBuffer.current.slice(consumed);
+                consumed += length + 4;
+            }
+        } finally {
+            if (consumed) wsBuffer.current = wsBuffer.current.slice(consumed);
         }
 
         return wrappers;
