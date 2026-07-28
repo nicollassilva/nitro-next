@@ -155,18 +155,22 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
 
         const reader = new BinaryReader(wsBuffer.current);
 
-        while (wsBuffer.current.byteLength) {
-            if (wsBuffer.current.byteLength < 4) break;
+        let consumed = 0;
 
+        while (wsBuffer.current.byteLength - consumed >= 4) {
             const length = reader.readInt();
 
-            if (length > (wsBuffer.current.byteLength - 4)) break;
+            if (length > (wsBuffer.current.byteLength - consumed - 4)) break;
 
             const extracted = reader.readBytes(length);
 
             wrappers.push(new EvaWireDataWrapper(extracted.readShort(), extracted));
 
-            wsBuffer.current = wsBuffer.current.slice(length + 4);
+            consumed += length + 4;
+        }
+
+        if (consumed) {
+            wsBuffer.current = wsBuffer.current.slice(consumed);
         }
 
         return wrappers;
