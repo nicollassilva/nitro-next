@@ -18,6 +18,7 @@ type ProviderProps = {
 export const WebSocketContextProvider = ({ children }: ProviderProps) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [isReady, setIsReady] = useState<boolean>(false);
+    const [isDisconnected, setIsDisconnected] = useState<boolean>(false);
     const { incomingByHeader, incomingCtors, incomingHeaderByCtor, registerManyIncoming } = useCommunicationIncoming();
     const { outgoingHeaderByComposerName, registerManyOutgoing } = useCommunicationOutgoing();
     //const socketUrl = useConfigurationStore(x => x.config['socket.url'] as string) ?? undefined;
@@ -27,6 +28,7 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
     const listeners = useRef<Map<IncomingPacketConstructor<object>, Array<(data: object) => void>>>(new Map());
     const pendingClientMessages = useRef<IOutgoingPacket<object>[]>([]);
     const pendingServerMessages = useRef<IMessageDataWrapper[]>([]);
+    const hasConnected = useRef<boolean>(false);
 
     const connect = () => {
         try {
@@ -34,12 +36,17 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
             const socketUrl = params.get('socketUrl') ?? '';
 
             if (!socketUrl || !socketUrl.length || ws.current) return;
+            if (hasConnected.current) return;
 
-            ws.current = new WebSocket(socketUrl);
+            hasConnected.current = true;
 
-            ws.current.binaryType = 'arraybuffer';
+            const socket = new WebSocket(socketUrl);
 
-            ws.current.onopen = (event: Event) => {
+            ws.current = socket;
+
+            socket.binaryType = 'arraybuffer';
+
+            socket.onopen = () => {
                 send(new ClientHelloComposer({
                     production: production,
                     platform: 'WEB',
@@ -56,17 +63,27 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
                 }));
             };
 
-            ws.current.onerror = (event: Event) => {
+            socket.onerror = (event: Event) => {
                 NitroLogger.error('WebSocket error:', event);
             };
 
-            ws.current.onclose = (event: CloseEvent) => {
+            socket.onclose = (event: CloseEvent) => {
                 NitroLogger.warn('WebSocket closed:', event.code, event.reason);
+
+                if (ws.current !== socket) return;
+
+                ws.current = undefined;
+                wsBuffer.current = new ArrayBuffer(0);
+                
+                pendingClientMessages.current = [];
+                pendingServerMessages.current = [];
+
                 setIsAuthenticated(false);
                 setIsReady(false);
+                setIsDisconnected(true);
             };
 
-            ws.current.onmessage = (event: MessageEvent<ArrayBuffer>) => {
+            socket.onmessage = (event: MessageEvent<ArrayBuffer>) => {
                 const array = new Uint8Array(wsBuffer.current.byteLength + event.data.byteLength);
 
                 array.set(new Uint8Array(wsBuffer.current), 0);
@@ -162,11 +179,12 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
                 const length = reader.readInt();
 
                 if (length < 2) {
-                    ws.current?.close(1011, `WebSocket: Malformed packet length: ${length}`);
+                    NitroLogger.error(`WebSocket: Malformed packet length: ${length}`);
+                    ws.current?.close();
                     break;
                 }
                 
-                if(length > reader.remaining()) break;
+                if (length > reader.remaining()) break;
 
                 const extracted = reader.readBytes(length);
 
@@ -298,6 +316,14 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
         registerManyOutgoing(GetOutgoingPackets());
     }, []);
 
+    useEffect(() => () => {
+        const socket = ws.current;
+
+        ws.current = undefined;
+
+        socket?.close(1000, 'Client shutting down');
+    }, []);
+
     useEffect(() => {
         if (isAuthenticated) return;
 
@@ -307,7 +333,7 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
     }, [isAuthenticated, subscribe]);
 
     return (
-        <WebSocketContext.Provider value={{ isAuthenticated, connect, send, subscribe, setReady }}>
+        <WebSocketContext.Provider value={{ isAuthenticated, isDisconnected, connect, send, subscribe, setReady }}>
             {children}
         </WebSocketContext.Provider>
     );
