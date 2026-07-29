@@ -1,7 +1,7 @@
 import { FurniturePickupMode, IRoomFurnitureData } from "@nitrodevco/nitro-api";
 
 import { Border, Button } from "#base/components";
-import { CloseButton } from "#base/components/Closebutton";
+import { CloseButton } from "#base/components/CloseButton";
 import { FurnitureImage } from "#base/components/FurnitureImage";
 import { useLocalizationStore } from "#base/stores";
 

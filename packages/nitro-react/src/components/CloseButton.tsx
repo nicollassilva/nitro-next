@@ -2,7 +2,7 @@ import { forwardRef, type HTMLAttributes } from 'react';
 
 import { cn, cva, type VariantProps } from '#base/utils';
 
-const closebuttonVariantsConfig = {
+const closeButtonVariantsConfig = {
     variant: {
         // default
         '0': '[border-image-source:var(--closebutton-0-default-src)] [border-image-slice:0_0_0_0_fill] [border-image-width:0px_0px_0px_0px] [border-image-repeat:stretch] hover:[border-image-source:var(--closebutton-0-hovering-src)] hover:[border-image-slice:0_0_0_0_fill] hover:[border-image-width:0px_0px_0px_0px] hover:[border-image-repeat:stretch] active:[border-image-source:var(--closebutton-0-pressed-src)] active:[border-image-slice:0_0_0_0_fill] active:[border-image-width:0px_0px_0px_0px] active:[border-image-repeat:stretch]',
@@ -17,30 +17,30 @@ const closebuttonVariantsConfig = {
     },
 } as const;
 
-const closebuttonVariants = cva(
+const closeButtonVariants = cva(
     '',
     {
-        variants: closebuttonVariantsConfig,
+        variants: closeButtonVariantsConfig,
         defaultVariants: {
             variant: '0',
         },
     }
 );
 
-type ClosebuttonVariantProps = VariantProps<typeof closebuttonVariantsConfig>;
+type CloseButtonVariantProps = VariantProps<typeof closeButtonVariantsConfig>;
 
-interface ClosebuttonProps extends HTMLAttributes<HTMLDivElement>, ClosebuttonVariantProps {
+interface CloseButtonProps extends HTMLAttributes<HTMLDivElement>, CloseButtonVariantProps {
     className?: string;
 }
 
-export const Closebutton = forwardRef<HTMLDivElement, ClosebuttonProps>(
+export const CloseButton = forwardRef<HTMLDivElement, CloseButtonProps>(
     ({ className, variant, ...props }, ref) => (
         <div
             ref={ref}
-            className={cn(closebuttonVariants({ variant }), className)}
+            className={cn(closeButtonVariants({ variant }), className)}
             {...props}
         />
     )
 );
 
-Closebutton.displayName = 'Closebutton';
+CloseButton.displayName = 'CloseButton';
