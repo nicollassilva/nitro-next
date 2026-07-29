@@ -2,45 +2,45 @@ import { forwardRef, type HTMLAttributes } from 'react';
 
 import { cn, cva, type VariantProps } from '#base/utils';
 
-const closebuttonVariantsConfig = {
+const closeButtonVariantsConfig = {
     variant: {
         // default
-        '0': '[border-image-source:var(--closebutton-0-default-src)] [border-image-slice:0_0_0_0_fill] [border-image-width:0px_0px_0px_0px] [border-image-repeat:stretch] hover:[border-image-source:var(--closebutton-0-hovering-src)] hover:[border-image-slice:0_0_0_0_fill] hover:[border-image-width:0px_0px_0px_0px] hover:[border-image-repeat:stretch] active:[border-image-source:var(--closebutton-0-pressed-src)] active:[border-image-slice:0_0_0_0_fill] active:[border-image-width:0px_0px_0px_0px] active:[border-image-repeat:stretch]',
+        '0': 'inline-block min-w-3.75 min-h-3.75 [background-image:var(--closebutton-0-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] hover:[background-image:var(--closebutton-0-hovering-src)] hover:bg-size-[100%_100%] hover:bg-no-repeat hover:[image-rendering:pixelated] active:[background-image:var(--closebutton-0-pressed-src)] active:bg-size-[100%_100%] active:bg-no-repeat active:[image-rendering:pixelated]',
         // black
-        '1': '[border-image-source:var(--closebutton-1-default-src)] [border-image-slice:0_0_0_0_fill] [border-image-width:0px_0px_0px_0px] [border-image-repeat:stretch] data-[active=true]:[border-image-source:var(--closebutton-1-active-src)] data-[active=true]:[border-image-slice:0_0_0_0_fill] data-[active=true]:[border-image-width:0px_0px_0px_0px] data-[active=true]:[border-image-repeat:stretch] active:[border-image-source:var(--closebutton-1-pressed-src)] active:[border-image-slice:0_0_0_0_fill] active:[border-image-width:0px_0px_0px_0px] active:[border-image-repeat:stretch]',
+        '1': 'inline-block min-w-3.75 min-h-3.75 [background-image:var(--closebutton-1-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] data-[active=true]:[background-image:var(--closebutton-1-default-src)] data-[active=true]:bg-size-[100%_100%] data-[active=true]:bg-no-repeat data-[active=true]:[image-rendering:pixelated] active:[background-image:var(--closebutton-1-default-src)] active:bg-size-[100%_100%] active:bg-no-repeat active:[image-rendering:pixelated]',
         // white
-        '2': '[border-image-source:var(--closebutton-2-default-src)] [border-image-slice:0_0_0_0_fill] [border-image-width:0px_0px_0px_0px] [border-image-repeat:stretch] data-[active=true]:[border-image-source:var(--closebutton-2-active-src)] data-[active=true]:[border-image-slice:0_0_0_0_fill] data-[active=true]:[border-image-width:0px_0px_0px_0px] data-[active=true]:[border-image-repeat:stretch] active:[border-image-source:var(--closebutton-2-pressed-src)] active:[border-image-slice:0_0_0_0_fill] active:[border-image-width:0px_0px_0px_0px] active:[border-image-repeat:stretch]',
+        '2': 'inline-block min-w-3.75 min-h-3.75 [background-image:var(--closebutton-2-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] data-[active=true]:[background-image:var(--closebutton-2-default-src)] data-[active=true]:bg-size-[100%_100%] data-[active=true]:bg-no-repeat data-[active=true]:[image-rendering:pixelated] active:[background-image:var(--closebutton-2-default-src)] active:bg-size-[100%_100%] active:bg-no-repeat active:[image-rendering:pixelated]',
         // default
-        '3': '[border-image-source:var(--closebutton-3-default-src)] [border-image-slice:0_0_0_0_fill] [border-image-width:0px_0px_0px_0px] [border-image-repeat:stretch] hover:[border-image-source:var(--closebutton-3-hovering-src)] hover:[border-image-slice:0_0_0_0_fill] hover:[border-image-width:0px_0px_0px_0px] hover:[border-image-repeat:stretch] active:[border-image-source:var(--closebutton-3-pressed-src)] active:[border-image-slice:0_0_0_0_fill] active:[border-image-width:0px_0px_0px_0px] active:[border-image-repeat:stretch]',
+        '3': 'inline-block min-w-4.75 min-h-5 [background-image:var(--closebutton-3-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] hover:[background-image:var(--closebutton-3-hovering-src)] hover:bg-size-[100%_100%] hover:bg-no-repeat hover:[image-rendering:pixelated] active:[background-image:var(--closebutton-3-pressed-src)] active:bg-size-[100%_100%] active:bg-no-repeat active:[image-rendering:pixelated]',
         // help
-        '4': '[border-image-source:var(--closebutton-4-default-src)] [border-image-slice:0_0_0_0_fill] [border-image-width:0px_0px_0px_0px] [border-image-repeat:stretch] hover:[border-image-source:var(--closebutton-4-hovering-src)] hover:[border-image-slice:0_0_0_0_fill] hover:[border-image-width:0px_0px_0px_0px] hover:[border-image-repeat:stretch] active:[border-image-source:var(--closebutton-4-pressed-src)] active:[border-image-slice:0_0_0_0_fill] active:[border-image-width:0px_0px_0px_0px] active:[border-image-repeat:stretch]',
+        '4': 'inline-block min-w-4.75 min-h-5 [background-image:var(--closebutton-4-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] hover:[background-image:var(--closebutton-4-hovering-src)] hover:bg-size-[100%_100%] hover:bg-no-repeat hover:[image-rendering:pixelated] active:[background-image:var(--closebutton-4-pressed-src)] active:bg-size-[100%_100%] active:bg-no-repeat active:[image-rendering:pixelated]',
     },
 } as const;
 
-const closebuttonVariants = cva(
-    '',
+const closeButtonVariants = cva(
+    'cursor-pointer',
     {
-        variants: closebuttonVariantsConfig,
+        variants: closeButtonVariantsConfig,
         defaultVariants: {
             variant: '0',
         },
     }
 );
 
-type ClosebuttonVariantProps = VariantProps<typeof closebuttonVariantsConfig>;
+type CloseButtonVariantProps = VariantProps<typeof closeButtonVariantsConfig>;
 
-interface ClosebuttonProps extends HTMLAttributes<HTMLDivElement>, ClosebuttonVariantProps {
+interface CloseButtonProps extends HTMLAttributes<HTMLDivElement>, CloseButtonVariantProps {
     className?: string;
 }
 
-export const Closebutton = forwardRef<HTMLDivElement, ClosebuttonProps>(
+export const CloseButton = forwardRef<HTMLDivElement, CloseButtonProps>(
     ({ className, variant, ...props }, ref) => (
         <div
             ref={ref}
-            className={cn(closebuttonVariants({ variant }), className)}
+            className={cn(closeButtonVariants({ variant }), className)}
             {...props}
         />
     )
 );
 
-Closebutton.displayName = 'Closebutton';
+CloseButton.displayName = 'CloseButton';

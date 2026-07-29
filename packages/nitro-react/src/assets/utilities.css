@@ -75,3 +75,7 @@
 @utility text-style-u-tool-tip {
     @apply font-ubuntu text-[11px] text-white;
 }
+
+@utility text-style-u-frame-title {
+    @apply font-ubuntu-bold text-[12px];
+}

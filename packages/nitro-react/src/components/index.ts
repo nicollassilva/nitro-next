@@ -1,6 +1,9 @@
 export * from './AvatarImage';
 export * from './Border';
 export * from './Button';
+export * from './CloseButton';
+export * from './Colorize';
+export * from './Frame';
 export * from './FurnitureImage';
 export * from './NitroIcon';
 export * from './room/RoomCanvas';
@@ -8,6 +11,7 @@ export * from './room/RoomContainer';
 export * from './room/RoomEventHandler';
 export * from './room/RoomHandlers';
 export * from './room/RoomWrapper';
+export * from './room/widgets/object-infostand/InfostandFurni';
 export * from './room/widgets/object-infostand/RoomObjectInfostandWidget';
 export * from './room/widgets/object-menu/RoomObjectMenuBubble';
 export * from './room/widgets/object-menu/RoomObjectMenuNameBubble';

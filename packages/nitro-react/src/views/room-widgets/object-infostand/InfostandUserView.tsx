@@ -2,7 +2,7 @@ import { ISimpleRoomObjectData } from "@nitrodevco/nitro-api";
 import { ChangeMottoComposer } from "@nitrodevco/nitro-shared";
 import { KeyboardEvent, useEffect, useState } from "react";
 
-import { NitroIcon } from "#base/components";
+import { Border, CloseButton, NitroIcon } from "#base/components";
 import { AvatarImage } from "#base/components/AvatarImage";
 import { useWebSocketContext } from "#base/context";
 import { useConfigValue, useRoomUserData } from "#base/hooks";
@@ -48,38 +48,50 @@ export const InfostandUserView = (props: InfostandUserViewProps) => {
 
     if (!userData) return null;
 
+    // 666666
+
     return (
         <div className="flex flex-col items-end gap-2">
-            <div className="infostand-container">
+            <Border variant="1" className="infostand-container">
+                <CloseButton variant="1" className="infostand-close" onClick={onClose} />
                 <div className="infostand-header">
-                    <div className="flex items-center gap-2">
-                        <NitroIcon icon="icon-profile-house" />
-                        {userData.name}
-                    </div>
-                    <i className="infostand-close" onClick={onClose} />
+                    <NitroIcon icon="icon-profile-house" />
+                    {userData.name}
                 </div>
                 <hr className="infostand-separator" />
-                <div className="flex-1 gap-1 p-1 size-full">
-                    <div className="infostand-avatar-container">
+                <div className="flex w-full gap-2">
+                    <Border variant="0" className="infostand-avatar-container" tintColor="brightness(40%)">
                         <AvatarImage figure={userData.figure} gender={userData.gender} direction={4} />
+                    </Border>
+                    <div className="flex flex-col w-full gap-1">
+                        <div className="flex size-full gap-1">
+                            <div className="w-10.5 h-10.5 bg-black"></div>
+                            <div className="w-10.5 h-10.5 bg-black"></div>
+                        </div>
+                        <div className="flex size-full gap-1">
+                            <div className="w-10.5 h-10.5 bg-black"></div>
+                            <div className="w-10.5 h-10.5 bg-black"></div>
+                        </div>
+                        <div className="flex size-full gap-1">
+                            <div className="w-10.5 h-10.5 bg-black"></div>
+                            <div className="w-10.5 h-10.5 bg-black"></div>
+                        </div>
                     </div>
                 </div>
                 <hr className="infostand-separator" />
-                <div className="flex w-full p-1">
-                    <div className="infostand-motto-container">
-                        {!userData.isOwnUser && <p className="text-[9px] text-white">{motto.length === 0 ? getLocalizationValue('infostand.motto.change') : motto}</p>}
-                        {userData.isOwnUser && <>
-                            <NitroIcon icon="pencil-icon" className="cursor-pointer shrink-0" onClick={e => setIsEditingMotto(true)} />
-                            {!isEditingMotto && <p className="text-[9px] text-white font-goldfish flex-1 min-w-0 overflow-hidden wrap-break-word">{motto}</p>}
-                            {isEditingMotto && <input type="text" className="p-0 border-0 size-full text-[9px] flex-1 min-w-0" maxLength={mottoMaxLength} value={motto} onChange={e => setMotto(e.target.value)} onKeyDown={onMottoKeyDown} autoFocus={true} />}
-                        </>}
-                    </div>
-                </div>
+                <Border variant="0" className="infostand-motto-container" tintColor="brightness(40%)">
+                    {!userData.isOwnUser && <p className="text-[9px] text-white">{motto.length === 0 ? getLocalizationValue('infostand.motto.change') : motto}</p>}
+                    {userData.isOwnUser && <>
+                        <NitroIcon icon="pencil-icon" className="cursor-pointer shrink-0" onClick={e => setIsEditingMotto(true)} />
+                        {!isEditingMotto && <p className="text-[9px] text-white font-goldfish flex-1 min-w-0 overflow-hidden wrap-break-word">{motto}</p>}
+                        {isEditingMotto && <input type="text" className="p-0 border-0 size-full text-[9px] flex-1 min-w-0" maxLength={mottoMaxLength} value={motto} onChange={e => setMotto(e.target.value)} onKeyDown={onMottoKeyDown} autoFocus={true} />}
+                    </>}
+                </Border>
                 <hr className="infostand-separator" />
-                <div className="flex w-full gap-1 p-1">
+                <div className="flex w-full">
                     <p className="text-[9px] text-white font-goldfish-bold">{getLocalizationValue('infostand.text.achievement_score')}<br />{userData.achievementScore}</p>
                 </div>
-            </div>
+            </Border>
         </div>
     );
 }
