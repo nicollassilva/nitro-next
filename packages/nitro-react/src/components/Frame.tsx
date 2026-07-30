@@ -1,5 +1,6 @@
-import { forwardRef, type HTMLAttributes } from 'react';
+import { forwardRef, type HTMLAttributes, useCallback } from 'react';
 
+import { useFrameDrag } from '#base/hooks/logic/useFrameDrag';
 import { cn, cva, type VariantProps } from '#base/utils';
 import { useTintedVars } from '#base/utils';
 
@@ -82,24 +83,36 @@ interface FrameProps extends HTMLAttributes<HTMLDivElement>, FrameVariantProps {
     className?: string;
     tintColor?: string;
     onClose?: () => void;
+    /** Stable identifier used to persist the dragged position across open/close and to track this frame's z-index. Frames without one still drag and stack, but won't remember their position after unmounting. */
+    id?: string;
 }
 
 export const Frame = forwardRef<HTMLDivElement, FrameProps>(
-    ({ caption, className, variant, tintColor, onClose, style, children, ...props }, ref) => {
+    ({ caption, className, variant, tintColor, onClose, id, style, children, ...props }, ref) => {
         const resolvedVariant = variant ?? '0';
         const resolvedTint = tintColor || frameTintColors[resolvedVariant];
         const overlayClassName = frameOverlayVariants({ variant });
         const tintStyle = useTintedVars(frameTintableVars[resolvedVariant], resolvedTint);
+        const { frameRef, style: dragStyle, onPointerDown, onHeaderPointerDown } = useFrameDrag(id);
+
+        const setRefs = useCallback((node: HTMLDivElement | null) => {
+            frameRef.current = node;
+
+            if (typeof ref === 'function') ref(node);
+            else if (ref) ref.current = node;
+        }, [ref, frameRef]);
 
         return (
             <div
-                ref={ref}
+                ref={setRefs}
+                id={id}
                 className={cn(frameVariants({ variant }), overlayClassName && 'relative', className)}
-                style={{ ...style, ...tintStyle }}
+                style={{ ...style, ...tintStyle, ...dragStyle }}
+                onPointerDown={onPointerDown}
                 {...props}
             >
                 {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0', overlayClassName)} />}
-                <Header variant={variant as undefined} caption={caption} onClose={onClose} />
+                <Header variant={variant as undefined} caption={caption} onClose={onClose} onPointerDown={onHeaderPointerDown} className="cursor-grab active:cursor-grabbing" />
                 <ContentArea>
                     {children}
                     <Scaler variant={variant as undefined} />

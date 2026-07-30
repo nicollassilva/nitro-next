@@ -89,7 +89,7 @@ export const Header = forwardRef<HTMLDivElement, HeaderProps>(
                 {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0', overlayClassName)} />}
                 <div className="flex items-center justify-center h-full px-2">
                     <span className="flex-1 text-center">{caption}</span>
-                    <CloseButton variant={closeVariant as undefined} className="shrink-0" onClick={onClose} />
+                    <CloseButton variant={closeVariant as undefined} className="shrink-0" onClick={onClose} data-no-drag />
                 </div>
                 {children}
             </div>
