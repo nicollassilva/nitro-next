@@ -1,6 +1,7 @@
 export * from './classNames';
 export * from './colorFilter';
 export * from './FixedSizeStack';
+export * from './framePositionStorage';
 export * from './GetBrowserZoom';
 export * from './GetPixelRatio';
 export * from './IsRetinaDisplay';
