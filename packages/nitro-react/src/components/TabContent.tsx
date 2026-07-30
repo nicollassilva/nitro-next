@@ -16,7 +16,7 @@ const tabContentVariantsConfig = {
 } as const;
 
 const tabContentVariants = cva(
-    '-mt-0.5 z-10',
+    '-mt-0.5 z-10 h-full',
     {
         variants: tabContentVariantsConfig,
         defaultVariants: {
