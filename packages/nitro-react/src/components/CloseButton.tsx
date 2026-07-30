@@ -5,15 +5,15 @@ import { cn, cva, type VariantProps } from '#base/utils';
 const closeButtonVariantsConfig = {
     variant: {
         // default
-        '0': 'inline-block min-w-3.75 min-h-3.75 [background-image:var(--closebutton-0-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] hover:[background-image:var(--closebutton-0-hovering-src)] hover:bg-size-[100%_100%] hover:bg-no-repeat hover:[image-rendering:pixelated] active:[background-image:var(--closebutton-0-pressed-src)] active:bg-size-[100%_100%] active:bg-no-repeat active:[image-rendering:pixelated]',
+        '0': 'inline-block min-w-3.75 min-h-3.75 [background-image:var(--closebutton-0-default-src)] bg-size-[100%_100%] bg-no-repeat hover:[background-image:var(--closebutton-0-hovering-src)] hover:bg-size-[100%_100%] hover:bg-no-repeat hover:[image-rendering:pixelated] active:[background-image:var(--closebutton-0-pressed-src)] active:bg-size-[100%_100%] active:bg-no-repeat active:[image-rendering:pixelated]',
         // black
-        '1': 'inline-block min-w-3.75 min-h-3.75 [background-image:var(--closebutton-1-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] data-[active=true]:[background-image:var(--closebutton-1-default-src)] data-[active=true]:bg-size-[100%_100%] data-[active=true]:bg-no-repeat data-[active=true]:[image-rendering:pixelated] active:[background-image:var(--closebutton-1-default-src)] active:bg-size-[100%_100%] active:bg-no-repeat active:[image-rendering:pixelated]',
+        '1': 'inline-block min-w-3.75 min-h-3.75 [background-image:var(--closebutton-1-default-src)] bg-size-[100%_100%] bg-no-repeat active:[background-image:var(--closebutton-1-default-src)] active:bg-size-[100%_100%] active:bg-no-repeat active:[image-rendering:pixelated]',
         // white
-        '2': 'inline-block min-w-3.75 min-h-3.75 [background-image:var(--closebutton-2-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] data-[active=true]:[background-image:var(--closebutton-2-default-src)] data-[active=true]:bg-size-[100%_100%] data-[active=true]:bg-no-repeat data-[active=true]:[image-rendering:pixelated] active:[background-image:var(--closebutton-2-default-src)] active:bg-size-[100%_100%] active:bg-no-repeat active:[image-rendering:pixelated]',
+        '2': 'inline-block min-w-3.75 min-h-3.75 [background-image:var(--closebutton-2-default-src)] bg-size-[100%_100%] bg-no-repeat active:[background-image:var(--closebutton-2-default-src)] active:bg-size-[100%_100%] active:bg-no-repeat active:[image-rendering:pixelated]',
         // default
-        '3': 'inline-block min-w-4.75 min-h-5 [background-image:var(--closebutton-3-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] hover:[background-image:var(--closebutton-3-hovering-src)] hover:bg-size-[100%_100%] hover:bg-no-repeat hover:[image-rendering:pixelated] active:[background-image:var(--closebutton-3-pressed-src)] active:bg-size-[100%_100%] active:bg-no-repeat active:[image-rendering:pixelated]',
+        '3': 'inline-block min-w-4.75 min-h-5 [background-image:var(--closebutton-3-default-src)] bg-size-[100%_100%] bg-no-repeat hover:[background-image:var(--closebutton-3-hovering-src)] hover:bg-size-[100%_100%] hover:bg-no-repeat hover:[image-rendering:pixelated] active:[background-image:var(--closebutton-3-pressed-src)] active:bg-size-[100%_100%] active:bg-no-repeat active:[image-rendering:pixelated]',
         // help
-        '4': 'inline-block min-w-4.75 min-h-5 [background-image:var(--closebutton-4-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] hover:[background-image:var(--closebutton-4-hovering-src)] hover:bg-size-[100%_100%] hover:bg-no-repeat hover:[image-rendering:pixelated] active:[background-image:var(--closebutton-4-pressed-src)] active:bg-size-[100%_100%] active:bg-no-repeat active:[image-rendering:pixelated]',
+        '4': 'inline-block min-w-4.75 min-h-5 [background-image:var(--closebutton-4-default-src)] bg-size-[100%_100%] bg-no-repeat hover:[background-image:var(--closebutton-4-hovering-src)] hover:bg-size-[100%_100%] hover:bg-no-repeat hover:[image-rendering:pixelated] active:[background-image:var(--closebutton-4-pressed-src)] active:bg-size-[100%_100%] active:bg-no-repeat active:[image-rendering:pixelated]',
     },
 } as const;
 
@@ -22,7 +22,7 @@ const closeButtonVariants = cva(
     {
         variants: closeButtonVariantsConfig,
         defaultVariants: {
-            variant: '0',
+            variant: '3',
         },
     }
 );

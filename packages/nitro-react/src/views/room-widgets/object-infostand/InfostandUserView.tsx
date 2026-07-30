@@ -60,7 +60,7 @@ export const InfostandUserView = (props: InfostandUserViewProps) => {
                 </div>
                 <hr className="infostand-separator" />
                 <div className="flex w-full gap-2">
-                    <Border variant="0" className="infostand-avatar-container" tintColor="brightness(40%)">
+                    <Border variant="0" className="infostand-avatar-container" tintColor="#666666">
                         <AvatarImage figure={userData.figure} gender={userData.gender} direction={4} />
                     </Border>
                     <div className="flex flex-col w-full gap-1">
@@ -79,7 +79,7 @@ export const InfostandUserView = (props: InfostandUserViewProps) => {
                     </div>
                 </div>
                 <hr className="infostand-separator" />
-                <Border variant="0" className="infostand-motto-container" tintColor="brightness(40%)">
+                <Border variant="0" className="infostand-motto-container" tintColor="#666666">
                     {!userData.isOwnUser && <p className="text-[9px] text-white">{motto.length === 0 ? getLocalizationValue('infostand.motto.change') : motto}</p>}
                     {userData.isOwnUser && <>
                         <NitroIcon icon="pencil-icon" className="cursor-pointer shrink-0" onClick={e => setIsEditingMotto(true)} />

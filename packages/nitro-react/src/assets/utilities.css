@@ -11,7 +11,6 @@
 
 @utility font-ubuntu-bold {
     font-family: UbuntuBold;
-    font-weight: 400;
 }
 
 @utility font-ubuntu-italic {
@@ -49,11 +48,11 @@
 }
 
 @utility text-style-button-shiny-regular {
-    @apply font-ubuntu-bold text-[12px];
+    @apply font-ubuntu text-[12px];
 }
 
 @utility text-style-button-shiny-bold {
-    @apply font-ubuntu text-[12px];
+    @apply font-ubuntu-bold text-[12px];
 }
 
 @utility text-style-il-regular {
@@ -78,4 +77,8 @@
 
 @utility text-style-u-frame-title {
     @apply font-ubuntu-bold text-[12px];
+}
+
+@utility text-style-frame-title {
+    @apply font-goldfish-bold text-[9px] text-white;
 }

@@ -7,11 +7,11 @@ import { CloseButton } from './CloseButton';
 const frameTitleBarVariantsConfig = {
     variant: {
         // blue
-        '0': 'inline-block min-w-6.75 min-h-11.5 [background-image:var(--frame-0-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] text-[#000000]',
+        '0': 'min-h-3.75 max-h-3.75 py-px px-2 text-style-frame-title text-white',
         // black
-        '1': 'inline-block min-w-6.75 min-h-11.5 [background-image:var(--frame-1-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] text-[#000000]',
+        '1': 'inline-block min-w-6.75 min-h-11.5 [background-image:var(--frame-1-default-src)] bg-size-[100%_100%] bg-no-repeat text-[#000000]',
         // yellow
-        '2': 'inline-block min-w-6.75 min-h-11.5 [background-image:var(--frame-2-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] text-[#000000]',
+        '2': 'inline-block min-w-6.75 min-h-11.5 [background-image:var(--frame-2-default-src)] bg-size-[100%_100%] bg-no-repeat text-[#000000]',
         // default
         '3': 'min-h-[32px] max-h-[32px] pt-px pl-1.5 pr-1.5 text-style-u-frame-title text-white',
         // light
@@ -19,7 +19,7 @@ const frameTitleBarVariantsConfig = {
         // bubble
         '7': 'min-h-[32px] max-h-[32px] pt-px pl-1.5 pr-1.5 text-style-u-frame-title text-black',
         // default
-        '100': 'inline-block min-w-2.75 min-h-3.25 [background-image:var(--border-101-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] text-[#000000] text-style-il-frame-title',
+        '100': 'inline-block min-w-2.75 min-h-3.25 [background-image:var(--border-101-default-src)] bg-size-[100%_100%] bg-no-repeat text-[#000000] text-style-il-frame-title',
         // modal
         '101': 'min-w-12.5 min-h-20 text-[#000000] text-style-il-frame-modal-title',
         // default
@@ -42,6 +42,7 @@ type FrameTitleBarVariantProps = VariantProps<typeof frameTitleBarVariantsConfig
 interface FrameTitleBarProps extends HTMLAttributes<HTMLDivElement>, FrameTitleBarVariantProps {
     caption: string;
     className?: string;
+    closeButtonVariant?: string;
     onClose?: () => void;
 }
 
