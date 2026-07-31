@@ -120,6 +120,8 @@ export class AssetManager implements IAssetManager {
                     const base64 = btoa(binary);
                     const texture = await Assets.load<Texture>(`data:image/png;base64,${base64}`);
 
+                    console.log(url, 'made it here')
+
                     this.setTexture(url, texture);
                     break;
                 }

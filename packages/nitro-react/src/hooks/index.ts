@@ -3,6 +3,7 @@ export * from './communication/useCommunicationOutgoing';
 export * from './events/useMessageListener';
 export * from './logic/useAvatarLoader';
 export * from './logic/useConfigLoader';
+export * from './logic/useFrameDrag';
 export * from './logic/useFurnitureDataLoader';
 export * from './logic/useLocalizationLoader';
 export * from './room/useRoomCamera';
