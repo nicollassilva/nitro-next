@@ -5,6 +5,7 @@ import { RoomWrapper } from "./components";
 import { useWebSocketContext } from "./context";
 import { useNavigatorHandler, useUserInfoHandler } from "./handlers";
 import { InventoryView } from "./views/inventory/InventoryView";
+import { RightSideView } from "./views/right-side/RightSideView";
 import { ToolbarView } from "./views/toolbar/ToolbarView";
 
 export const MainView = () => {
@@ -39,6 +40,7 @@ export const MainView = () => {
             <div
                 id="ui-container"
                 className="absolute top-0 left-0 z-10 overflow-hidden pointer-events-none size-full [image-rendering:pixelated]">
+                <RightSideView />
                 <ToolbarView />
                 <InventoryView />
             </div>

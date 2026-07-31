@@ -100,6 +100,7 @@ const borderOverlayVariantsConfig = {
 /** This component's own default tint per variant, from the skin's own `<window color="…">` — a caller-supplied `tintColor` prop always overrides this. */
 const borderTintColors: Partial<Record<string, string>> = {
     '108': '#676767',
+    '9': '#686661'
 };
 
 /** Which CSS vars (bare, no `--`) each variant's own art actually needs recolored — see `#base/useTintedVars`. */

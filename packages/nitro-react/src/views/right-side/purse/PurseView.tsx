@@ -1,11 +1,22 @@
+import { Border } from "#base/components";
+
 export const PurseView = () => {
     return (
         <>
-            <div className="nitro-purse-container">
-                <div className="nitro-purse">
-
+            <Border id="purse" variant="9" className="nitro-purse">
+                <div className="purse-grid">
+                    <div className="purse-left">
+                        test
+                    </div>
+                    <div className="purse-mid">
+                        <Border className="w-full py-0.5" variant="1" tintColor="#807e7e">test</Border>
+                        <Border className="w-full py-0.5" variant="1" tintColor="#807e7e">test</Border>
+                    </div>
+                    <div className="purse-right border">
+                        test
+                    </div>
                 </div>
-            </div>
+            </Border>
         </>
     );
 }
