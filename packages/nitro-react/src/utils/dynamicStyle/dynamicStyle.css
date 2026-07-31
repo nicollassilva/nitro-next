@@ -1,0 +1,77 @@
+@layer components {
+    .dyn-root {
+        --dyn-t: var(--dyn-t-default, 0px 0px);
+
+        translate: var(--dyn-t);
+        transition: translate 75ms ease-out;
+    }
+
+    .dyn-root:hover {
+        --dyn-t: var(--dyn-t-hover, 0px 0px);
+    }
+
+    .dyn-root:active {
+        --dyn-t: var(--dyn-t-pressed, 0px 0px);
+    }
+
+    .dyn-root[data-disabled] {
+        --dyn-t: var(--dyn-t-disabled, 0px 0px);
+
+        pointer-events: none;
+    }
+
+    .dyn-art {
+        --dyn-f: var(--dyn-f-default, brightness(1));
+
+        filter: var(--tint-f, brightness(1)) var(--dyn-f);
+        transition: filter 75ms ease-out;
+    }
+
+    .dyn-root:hover > .dyn-art,
+    .dyn-root:hover .dyn-art:not(.dyn-root .dyn-root .dyn-art) {
+        --dyn-f: var(--dyn-f-hover, brightness(1));
+    }
+
+    .dyn-root:active > .dyn-art,
+    .dyn-root:active .dyn-art:not(.dyn-root .dyn-root .dyn-art) {
+        --dyn-f: var(--dyn-f-pressed, brightness(1));
+    }
+
+    .dyn-root[data-disabled] .dyn-art {
+        --dyn-f: var(--dyn-f-disabled, brightness(1));
+    }
+
+    .dyn-text {
+        --dyn-cf: var(--dyn-cf-default, brightness(1));
+        --dyn-ts: var(--dyn-ts-default, none);
+
+        filter: var(--tint-f, brightness(1)) var(--dyn-cf);
+        text-shadow: var(--dyn-ts);
+        transition:
+            filter 75ms ease-out,
+            text-shadow 75ms ease-out;
+    }
+
+    .dyn-root:hover .dyn-text {
+        --dyn-cf: var(--dyn-cf-hover, brightness(1));
+        --dyn-ts: var(--dyn-ts-hover, none);
+    }
+
+    .dyn-root:active .dyn-text {
+        --dyn-cf: var(--dyn-cf-pressed, brightness(1));
+        --dyn-ts: var(--dyn-ts-pressed, none);
+    }
+
+    .dyn-root[data-disabled] .dyn-text {
+        --dyn-cf: var(--dyn-cf-disabled, brightness(1));
+        --dyn-ts: var(--dyn-ts-disabled, none);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .dyn-root,
+        .dyn-art,
+        .dyn-text {
+            transition-duration: 0ms;
+        }
+    }
+}

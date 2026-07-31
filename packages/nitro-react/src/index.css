@@ -5,3 +5,4 @@
 @import './assets/fonts.css';
 @import './assets/utilities.css';
 @import './assets/icons.css';
+@import './utils/dynamicStyle/dynamicStyle.css';

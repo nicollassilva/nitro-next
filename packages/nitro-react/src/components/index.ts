@@ -5,6 +5,8 @@ export * from './CloseButton';
 export * from './Colorize';
 export * from './ContentArea';
 export * from './Dropmenu';
+export * from './DynamicChild';
+export * from './DynamicStyleFilters';
 export * from './Frame';
 export * from './FrameTitleBar';
 export * from './FurnitureImage';

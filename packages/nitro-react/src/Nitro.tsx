@@ -9,6 +9,7 @@ import {
 import { AnimatePresence, motion } from 'motion/react';
 import { type FC, useEffect, useState } from 'react';
 
+import { DynamicStyleFilters } from '#base/components';
 import { useConfigLoader, useFurnitureDataLoader, useLocalizationLoader } from '#base/hooks';
 import { GetPixelRatio } from '#base/utils';
 
@@ -74,6 +75,7 @@ export const Nitro: FC = () => {
 
     return (
         <>
+            <DynamicStyleFilters />
             <AnimatePresence mode="wait">
                 {!isReady && (
                     <motion.div

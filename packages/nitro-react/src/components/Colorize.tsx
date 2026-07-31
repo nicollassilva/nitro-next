@@ -1,6 +1,6 @@
-import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
+import { type CSSProperties, forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-import { cn, hexToCssFilter } from '#base/utils';
+import { cn, DYNAMIC_ART_CLASS, DYNAMIC_ROOT_CLASS, type DynamicStyleName, hexToCssFilter, useDynamicStyle } from '#base/utils';
 
 interface ColorizeProps extends HTMLAttributes<HTMLDivElement> {
     /** Raw color (e.g. `"#418db0"`) to multiply-tint `layerClassName`'s image by. Omit/empty renders it un-tinted. */
@@ -13,6 +13,8 @@ interface ColorizeProps extends HTMLAttributes<HTMLDivElement> {
      * its colored base regardless of what color the base is.
      */
     overlayClassName?: string;
+    dynamicStyle?: DynamicStyleName;
+    disabled?: boolean;
     children?: ReactNode;
 }
 
@@ -32,17 +34,33 @@ interface ColorizeProps extends HTMLAttributes<HTMLDivElement> {
  * filling that box, not the box itself.
  */
 export const Colorize = forwardRef<HTMLDivElement, ColorizeProps>(
-    ({ tintColor, layerClassName, overlayClassName, children, className, style, ...props }, ref) => (
-        <div ref={ref} className="relative" style={style} {...props}>
+    ({ tintColor, layerClassName, overlayClassName, dynamicStyle, disabled, children, className, style, ...props }, ref) => {
+        const dynamicVars = useDynamicStyle(dynamicStyle);
+
+        const layerStyle = dynamicVars
+            ? ({ '--tint-f': tintColor ? hexToCssFilter(tintColor) : 'brightness(1)' } as CSSProperties)
+            : tintColor
+              ? { filter: hexToCssFilter(tintColor) }
+              : undefined;
+
+        return (
             <div
-                aria-hidden
-                className={cn('pointer-events-none absolute inset-0', layerClassName)}
-                style={tintColor ? { filter: hexToCssFilter(tintColor) } : undefined}
-            />
-            {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0', overlayClassName)} />}
-            <div className={cn('relative z-10 size-full', className)}>{children}</div>
-        </div>
-    )
+                ref={ref}
+                data-disabled={disabled || undefined}
+                className={cn('relative', dynamicVars && DYNAMIC_ROOT_CLASS)}
+                style={{ ...style, ...dynamicVars }}
+                {...props}
+            >
+                <div
+                    aria-hidden
+                    className={cn('pointer-events-none absolute inset-0', layerClassName, dynamicVars && DYNAMIC_ART_CLASS)}
+                    style={layerStyle}
+                />
+                {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0', overlayClassName)} />}
+                <div className={cn('relative z-10 size-full', className)}>{children}</div>
+            </div>
+        );
+    }
 );
 
 Colorize.displayName = 'Colorize';

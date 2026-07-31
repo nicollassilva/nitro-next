@@ -1,5 +1,6 @@
 export * from './classNames';
 export * from './colorFilter';
+export * from './dynamicStyle';
 export * from './FixedSizeStack';
 export * from './framePositionStorage';
 export * from './GetBrowserZoom';
