@@ -8,8 +8,6 @@
         overflow: hidden;
         -webkit-user-select: none;
         user-select: none;
-        scrollbar-width: thin;
-        scrollbar-color: var(--color-habbo-border-light) var(--color-habbo-panel);
         zoom: reset;
         font-family: var(--font-sans);
     }
@@ -18,21 +16,5 @@
     *:focus,
     *:hover {
         outline: none;
-    }
-
-    /* ─── Scrollbar ─── */
-    ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-        background: var(--color-habbo-panel);
-    }
-    ::-webkit-scrollbar-thumb {
-        background: var(--color-habbo-border-light);
-        border-radius: 3px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-        background: var(--color-habbo-highlight);
     }
 }
