@@ -29,7 +29,6 @@
     --nitro-infostand-width: 190px;
     --nitro-infostand-motto-height: 25px;
 
-<<<<<<< HEAD
     --nitro-purse-width: 230px;
     --nitro-purse-height: 77px;
 
@@ -269,7 +268,6 @@
     --scrollbarsliderbarvertical-100-default-src: url('./assets/images/ScrollbarSliderBarVertical/100-default.png');
     --scrollbarsliderbarvertical-200-default-src: url('./assets/images/ScrollbarSliderBarVertical/200-default.png');
     --framepointerdown-7-default-src: url('./assets/images/FramePointerDown/7-default.png');
-=======
     --border-3-default-src: url('./assets/images/border/3-default.png');
     --border-4-default-src: url('./assets/images/border/4-default.png');
     --border-5-default-src: url('./assets/images/border/5-default.png');
@@ -499,7 +497,6 @@
     --scrollbarsliderbarvertical-100-default-src: url('./assets/images/scrollbarsliderbarvertical/100-default.png');
     --scrollbarsliderbarvertical-200-default-src: url('./assets/images/scrollbarsliderbarvertical/200-default.png');
     --framepointerdown-7-default-src: url('./assets/images/framepointerdown/7-default.png');
->>>>>>> main
 
     @keyframes rotating {
         from {
