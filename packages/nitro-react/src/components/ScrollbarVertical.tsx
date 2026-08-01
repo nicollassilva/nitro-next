@@ -5,15 +5,15 @@ import { cn, cva, type VariantProps } from '#base/utils';
 const scrollbarVerticalVariantsConfig = {
     variant: {
         // default — graphics asset has no usable "default" state
-        '0': 'min-w-[17px] min-h-[56px] text-[#000000]',
+        '0': 'min-w-4.25 min-h-14 text-[#000000]',
         // black — graphics asset has no usable "default" state
-        '1': 'min-w-[17px] min-h-[56px] text-[#000000]',
+        '1': 'min-w-4.25 min-h-14 text-[#000000]',
         // default — graphics asset has no usable "default" state
-        '3': 'min-w-[17px] min-h-[56px] text-[#000000]',
+        '3': 'min-w-4.25 min-h-14 text-[#000000]',
         // default — graphics asset has no usable "default" state
-        '100': 'min-w-[9px] min-h-[9px] text-[#000000]',
+        '100': 'min-w-2.25 min-h-2.25 text-[#000000]',
         // default — graphics asset has no usable "default" state
-        '200': 'min-w-[9px] min-h-[9px] text-[#000000]',
+        '200': 'min-w-2.25 min-h-2.25 text-[#000000]',
     },
 } as const;
 

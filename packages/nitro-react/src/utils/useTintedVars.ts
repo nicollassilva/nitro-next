@@ -28,8 +28,6 @@ export const useTintedVars = (varNames: string[] | undefined, tintColor: string 
                 })
             );
 
-            console.log(results);
-
             const next: Record<string, string> = {};
 
             for (const result of results) {

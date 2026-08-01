@@ -1,17 +1,39 @@
 import { forwardRef, type HTMLAttributes } from 'react';
 
-import { cn } from '#base/utils';
+import { cn, cva, VariantProps } from '#base/utils';
 
-interface ContentAreaProps extends HTMLAttributes<HTMLDivElement> {
+const contentAreaVariantsConfig = {
+    variant: {
+        // default
+        '0': '',
+        // default
+        '3': '',
+    },
+} as const;
+
+const contentAreaVariants = cva(
+    'relative flex flex-col px-0.75 pt-px pb-1.5 size-full overflow-hidden',
+    {
+        variants: contentAreaVariantsConfig,
+        defaultVariants: {
+            variant: '0',
+        },
+    }
+);
+
+type ContentAreaVariantProps = VariantProps<typeof contentAreaVariantsConfig>;
+
+interface ContentAreaProps extends HTMLAttributes<HTMLDivElement>, ContentAreaVariantProps {
     className?: string;
 }
 
 export const ContentArea = forwardRef<HTMLDivElement, ContentAreaProps>(
-    ({ className, ...props }, ref) => (
+    ({ className, variant, ...props }, ref) => (
         <div
             ref={ref}
-            className={cn('relative flex flex-col px-0.75 pt-px pb-1.5 size-full overflow-hidden', className)}
-            {...props} />
+            className={cn(contentAreaVariants({ variant }), className)}
+            {...props}
+        />
     )
 );
 
