@@ -11,12 +11,12 @@ const tabContentVariantsConfig = {
         // white
         '2': '[border-image-source:var(--border-2-default-src)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px_6px_6px_6px] [border-image-repeat:stretch] [image-rendering:pixelated]',
         // default
-        '3': '[border-image-source:var(--tabcontent-3-default-src)] [border-image-slice:15_0_0_0_fill] [border-image-width:15px_0px_0px_0px] [border-image-repeat:stretch] [image-rendering:pixelated] pt-1.5 px-1 -mt-0.75',
+        '3': '[border-image-source:var(--tabcontent-3-default-src)] [border-image-slice:15_0_0_0_fill] [border-image-width:15px_0px_0px_0px] [border-image-repeat:stretch] [image-rendering:pixelated] pt-1.5 px-1 -mt-0.75 pb-0.5',
     },
 } as const;
 
 const tabContentVariants = cva(
-    'z-10 h-full',
+    'z-10 h-full overflow-hidden',
     {
         variants: tabContentVariantsConfig,
         defaultVariants: {

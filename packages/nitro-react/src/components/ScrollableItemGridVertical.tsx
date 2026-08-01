@@ -5,9 +5,9 @@ import { cn, cva, type VariantProps } from '#base/utils';
 const scrollableItemGridVerticalVariantsConfig = {
     variant: {
         // default
-        '0': 'min-w-10 min-h-10 text-[#000000]',
+        '0': 'min-w-10 min-h-10 text-[#000000] bg-black',
         // default
-        '3': 'min-w-10 min-h-10 text-[#000000]',
+        '3': 'min-w-10 min-h-10 text-[#000000] bg-black',
     },
 } as const;
 
