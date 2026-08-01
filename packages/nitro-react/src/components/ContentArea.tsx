@@ -12,7 +12,7 @@ const contentAreaVariantsConfig = {
 } as const;
 
 const contentAreaVariants = cva(
-    'relative flex flex-col px-0.75 pt-px pb-1.5 size-full overflow-hidden',
+    'relative flex flex-col px-1.25 pt-px pb-1.5 size-full overflow-hidden',
     {
         variants: contentAreaVariantsConfig,
         defaultVariants: {

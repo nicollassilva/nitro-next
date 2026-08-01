@@ -15,7 +15,7 @@ export const InventoryView = () => {
     const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
 
     return (
-        <Frame id="inventory" variant="3" className="absolute left-5 top-5 w-112.5 h-62.5" caption={getLocalizationValue('inventory.title')}>
+        <Frame id="inventory" variant="3" closeVariant="3" className="absolute left-5 top-5 w-112.5 h-62.5" caption={getLocalizationValue('inventory.title')}>
             <TabContext variant="3" data-name="tabs">
                 <TabButton variant="3" onClick={() => setActiveTab('furni')} aria-selected={activeTab === 'furni'}>
                     {getLocalizationValue('inventory.furni')}

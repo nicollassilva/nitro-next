@@ -81,6 +81,7 @@ type FrameVariantProps = VariantProps<typeof frameVariantsConfig>;
 interface FrameProps extends HTMLAttributes<HTMLDivElement>, FrameVariantProps {
     caption: string;
     className?: string;
+    closeVariant?: string;
     tintColor?: string;
     onClose?: () => void;
     /** Stable identifier used to persist the dragged position across open/close and to track this frame's z-index. Frames without one still drag and stack, but won't remember their position after unmounting. */
@@ -88,7 +89,7 @@ interface FrameProps extends HTMLAttributes<HTMLDivElement>, FrameVariantProps {
 }
 
 export const Frame = forwardRef<HTMLDivElement, FrameProps>(
-    ({ caption, className, variant, tintColor, onClose, id, style, children, ...props }, ref) => {
+    ({ caption, className, closeVariant, variant, tintColor, onClose, id, style, children, ...props }, ref) => {
         const resolvedVariant = variant ?? '0';
         const resolvedTint = tintColor || frameTintColors[resolvedVariant];
         const overlayClassName = frameOverlayVariants({ variant });
@@ -112,7 +113,7 @@ export const Frame = forwardRef<HTMLDivElement, FrameProps>(
                 {...props}
             >
                 {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0', overlayClassName)} />}
-                <Header variant={variant as undefined} caption={caption} onClose={onClose} onPointerDown={onHeaderPointerDown} className="cursor-grab active:cursor-grabbing" />
+                <Header variant={variant as undefined} closeVariant={closeVariant} caption={caption} onClose={onClose} onPointerDown={onHeaderPointerDown} className="cursor-grab active:cursor-grabbing" />
                 <ContentArea>
                     {children}
                     <Scaler variant={variant as undefined} />

@@ -69,6 +69,8 @@ export const Scaler = forwardRef<HTMLDivElement, ScalerProps>(
         const overlayClassName = scalerOverlayVariants({ variant });
         const tintStyle = useTintedVars(scalerTintableVars[resolvedVariant], resolvedTint);
 
+        return null;
+
         return (
             <div
                 ref={ref}
