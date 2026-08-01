@@ -24,6 +24,7 @@ export * from './room/widgets/RoomWidgets';
 export * from './Scaler';
 export * from './ScrollableItemGridVertical';
 export * from './ScrollableItemListVertical';
+export * from './ScrollArea';
 export * from './ScrollbarHorizontal';
 export * from './ScrollbarSliderBarHorizontal';
 export * from './ScrollbarSliderBarVertical';

@@ -6,6 +6,7 @@ export * from './logic/useConfigLoader';
 export * from './logic/useFrameDrag';
 export * from './logic/useFurnitureDataLoader';
 export * from './logic/useLocalizationLoader';
+export * from './logic/useScrollbar';
 export * from './room/useRoomCamera';
 export * from './room/useRoomCursorUpdate';
 export * from './room/useRoomEventDispatcher';
