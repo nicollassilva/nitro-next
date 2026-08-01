@@ -24,7 +24,7 @@ const scrollbarHorizontalVariantsConfig = {
 } as const;
 
 const scrollbarHorizontalVariants = cva(
-    'flex flex-row items-stretch min-w-14',
+    'flex flex-row items-stretch min-w-0',
     {
         variants: scrollbarHorizontalVariantsConfig,
         defaultVariants: {
@@ -92,7 +92,7 @@ export const ScrollbarHorizontal = forwardRef<HTMLDivElement, ScrollbarHorizonta
                 <ScrollbarSliderTrackHorizontal
                     ref={trackRef}
                     variant={variant}
-                    className="relative flex-1"
+                    className="relative min-w-0 flex-1"
                     onPointerDown={onTrackPointerDown}
                 >
                     {overflowing && (
