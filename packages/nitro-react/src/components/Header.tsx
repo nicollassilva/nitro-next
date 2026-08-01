@@ -8,11 +8,11 @@ import { CloseButton } from './CloseButton';
 const headerVariantsConfig = {
     variant: {
         // blue
-        '0': 'inline-block min-h-3.75 max-h-3.75 [background-image:var(--header-0-default-src)] bg-size-auto bg-repeat ml-2 mt-0.5 mr-2 mb-px text-[#000000] text-style-frame-title',
+        '0': 'inline-block min-h-3.75 max-h-3.75 [background-image:var(--header-0-default-src)] bg-size-auto bg-repeat m-1.5 text-[#FFFFFF] text-style-frame-title',
         // black
-        '1': 'inline-block min-h-3.75 max-h-3.75 [background-image:var(--header-0-default-src)] bg-size-auto bg-repeat ml-2 mt-0.5 mr-2 mb-px text-[#000000] text-style-frame-title',
+        '1': 'inline-block min-h-3.75 max-h-3.75 [background-image:var(--header-0-default-src)] bg-size-auto bg-repeat m-1.5 text-[#FFFFFF] text-style-frame-title',
         // yellow
-        '2': 'inline-block min-h-3.75 max-h-3.75 [background-image:var(--header-0-default-src)] bg-size-auto bg-repeat ml-2 mt-0.5 mr-2 mb-px text-[#000000] text-style-frame-title',
+        '2': 'inline-block min-h-3.75 max-h-3.75 [background-image:var(--header-0-default-src)] bg-size-auto bg-repeat m-1.5 text-[#000000] text-style-frame-title',
         // default
         '3': 'inline-block min-h-8.25 max-h-8.25 text-[#ffffff] text-style-u-frame-title',
         // light

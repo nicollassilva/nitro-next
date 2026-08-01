@@ -5,7 +5,7 @@ import { cn, cva, type VariantProps } from '#base/utils';
 const tabContextVariantsConfig = {
     variant: {
         // default
-        '0': 'min-h-25 text-[#000000]',
+        '0': 'min-h-5.5 max-h-5.5 text-[#000000]',
         // default
         '3': 'min-h-8.5 max-h-8.5 text-[#000000]',
     },
