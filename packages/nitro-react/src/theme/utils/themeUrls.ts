@@ -171,6 +171,7 @@ export const THEME_URLS: Record<string, string> = {
     'scaler-0-default-shine-src': './src/assets/images/scaler/0-default-shine.png',
     'scaler-src': './src/assets/images/scaler.png',
     'closebutton-src': './src/assets/images/closebutton.png',
+    'closebutton-100-src': './src/assets/images/closebutton-100.png',
     'dropmenu-0-default-src': './src/assets/images/dropmenu/0-default.png',
     'dropmenu-0-default-arrow-src': './src/assets/images/dropmenu/0-default-arrow.png',
     'dropmenu-1-default-arrow-src': './src/assets/images/dropmenu/1-default-arrow.png',

@@ -6,11 +6,11 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const scalerVariantsConfig = {
     variant: {
         // default
-        '0': 'sprite min-w-3.75 min-h-3.75 max-w-3.75 max-h-3.75 bg-(image:--scaler-0-default-src) bg-size-[15px_15px]',
+        '0': 'sprite min-w-3.75 min-h-3.75 bg-(image:--scaler-0-default-src) bg-size-[15px_15px]',
         // black
-        '1': 'sprite min-w-3.75 min-h-3.75 max-w-3.75 max-h-3.75 bg-(image:--scaler-0-default-src) bg-size-[15px_15px]',
+        '1': 'sprite min-w-3.75 min-h-3.75 bg-(image:--scaler-0-default-src) bg-size-[15px_15px]',
         // white
-        '2': 'sprite min-w-3.75 min-h-3.75 max-w-3.75 max-h-3.75 bg-(image:--scaler-0-default-src) bg-size-[15px_15px]',
+        '2': 'sprite min-w-3.75 min-h-3.75 bg-(image:--scaler-0-default-src) bg-size-[15px_15px]',
         // default
         '3': 'sprite min-w-5 min-h-5 bg-(image:--scaler-src) bg-position-[-0px_-0px] bg-size-[20px_20px]',
         // light
@@ -37,6 +37,23 @@ const scalerOverlayVariantsConfig = {
     },
 } as const;
 
+const scalerOffsetVariantsConfig = {
+    variant: {
+        // default
+        '0': 'flex -bottom-1 -right-0.75 z-20',
+        // black
+        '1': '',
+        // white
+        '2': '',
+        // default
+        '3': 'flex bottom-0 right-0 z-20',
+        // light
+        '4': '',
+        // default
+        '100': '',
+    },
+} as const;
+
 const scalerTintColors: Partial<Record<string, string>> = {
 
 };
@@ -49,6 +66,7 @@ const scalerTintableVars: Partial<Record<string, string[]>> = {
 
 const scalerVariants = cva('', { variants: scalerVariantsConfig, defaultVariants: { variant: '0' } });
 const scalerOverlayVariants = cva('', { variants: scalerOverlayVariantsConfig, defaultVariants: { variant: '0' } });
+const scalerOffsetVariants = cva('absolute', { variants: scalerOffsetVariantsConfig, defaultVariants: { variant: '0' } });
 
 type ScalerVariantProps = VariantProps<typeof scalerVariantsConfig>;
 
@@ -65,17 +83,21 @@ export const Scaler = forwardRef<HTMLDivElement, ScalerProps>(
         const ownCascade = VARIANT_CASCADE_CONFIG['scaler']?.[resolvedVariant as string];
         const resolvedTint = tintColor || scalerTintColors[resolvedVariant as string];
         const overlayClassName = scalerOverlayVariants({ variant: resolvedVariant });
+        const offsetClassName = scalerOffsetVariants({ variant: resolvedVariant });
         const tintStyle = useTintedVars(scalerTintableVars[resolvedVariant as string], resolvedTint);
 
         return (
             <div
-                ref={ref}
-                className={cn(scalerVariants({ variant: resolvedVariant }), overlayClassName && 'relative', className)}
-                style={{ ...style, ...tintStyle }}
-                {...props}
-            >
-                {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0', overlayClassName)} />}
-                <VariantCascadeProvider map={ownCascade}>{children}</VariantCascadeProvider>
+                className={offsetClassName}>
+                <div
+                    ref={ref}
+                    className={cn(scalerVariants({ variant: resolvedVariant }), overlayClassName && 'relative', className)}
+                    style={{ ...style, ...tintStyle }}
+                    {...props}
+                >
+                    {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0', overlayClassName)} />}
+                    <VariantCascadeProvider map={ownCascade}>{children}</VariantCascadeProvider>
+                </div>
             </div>
         );
     }

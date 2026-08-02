@@ -89,6 +89,10 @@
     @apply font-ubuntu-bold text-[12px];
 }
 
+@utility text-style-il-frame-title {
+    @apply font-ubuntu-bold text-[10px];
+}
+
 @utility text-style-frame-title {
     @apply font-goldfish-bold text-[9px] text-white;
 }

@@ -2,6 +2,7 @@ import { forwardRef, type HTMLAttributes } from 'react';
 
 import { useFrameDrag } from '#base/hooks';
 
+import { ContentArea } from './ContentArea';
 import { Header } from './Header';
 import { Scaler } from './Scaler';
 import { cn, cva, useCascadedVariant, useTintedVars, VariantCascadeProvider, type VariantProps } from './utils';
@@ -115,10 +116,10 @@ export const Frame = forwardRef<HTMLDivElement, FrameProps>(
                 <VariantCascadeProvider map={ownCascade}>
                     <Header caption={caption} onClose={onClose} onPointerDown={onHeaderPointerDown} className="cursor-grab active:cursor-grabbing" />
                     <div className="flex px-0.75 pt-px pb-1 size-full overflow-hidden">
-                        <div className="relative flex flex-col w-full px-0.75">
+                        <ContentArea>
                             {children}
-                            <Scaler className="absolute z-20 bottom-0 right-0" />
-                        </div>
+                            <Scaler tintColor={resolvedTint} />
+                        </ContentArea>
                     </div>
                 </VariantCascadeProvider>
             </div>

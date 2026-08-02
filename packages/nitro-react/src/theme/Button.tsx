@@ -28,7 +28,7 @@ const buttonVariantsConfig = {
         // unetched
         '103': '[border-image-source:var(--button-103-default-src)] [border-image-slice:8_4_8_6_fill] [border-image-width:8px_4px_8px_6px] nine-slice-border active:[border-image-source:var(--button-103-pressed-src)] active:[border-image-slice:8_4_8_6_fill] active:[border-image-width:8px_4px_8px_6px]  min-w-7 min-h-7 pl-3.25 pt-0.75 pr-3.25 pb-0.75 text-[#000000] text-style-il-button',
         // default
-        '200': '[border-image-source:var(--button-200-default-src)] [border-image-slice:4_4_5_4_fill] [border-image-width:4px_4px_5px_4px] nine-slice-border min-w-7 min-h-7 pl-3.25 pt-0.75 pr-3.25 pb-0.75 text-[#000000] text-style-id-button',
+        '200': '[border-image-source:var(--button-200-default-src)] [border-image-slice:4_4_5_4_fill] [border-image-width:4px_4px_5px_4px] nine-slice-border min-w-7 min-h-7 pl-3.25 pt-0.75 pr-3.25 pb-0.75 text-[#000000] text-style-id-button'
     },
 } as const;
 
@@ -107,7 +107,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 {...props}
             >
                 {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0', overlayClassName)} />}
-                <VariantCascadeProvider map={ownCascade}><span>{children}</span></VariantCascadeProvider>
+                <VariantCascadeProvider map={ownCascade}>{children}</VariantCascadeProvider>
             </button>
         );
     }

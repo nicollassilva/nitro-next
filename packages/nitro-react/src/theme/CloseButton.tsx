@@ -15,6 +15,7 @@ const closeButtonVariantsConfig = {
         '3': 'sprite min-w-4.75 min-h-5 bg-(image:--closebutton-src) bg-position-[-0px_-0px] bg-size-[189px_20px] hover:bg-(image:--closebutton-src) hover:bg-position-[-19px_-0px] hover:bg-size-[189px_20px] hover:bg-no-repeat  active:bg-(image:--closebutton-src) active:bg-position-[-38px_-0px] active:bg-size-[189px_20px] active:bg-no-repeat ',
         // help
         '4': 'sprite min-w-4.75 min-h-5 bg-(image:--closebutton-src) bg-position-[-57px_-0px] bg-size-[189px_20px] hover:bg-(image:--closebutton-src) hover:bg-position-[-76px_-0px] hover:bg-size-[189px_20px] hover:bg-no-repeat  active:bg-(image:--closebutton-src) active:bg-position-[-95px_-0px] active:bg-size-[189px_20px] active:bg-no-repeat ',
+        '100': 'bg-(image:--closebutton-100-src) bg-size-[20px_20px] w-5 h-5 [image-rendering:pixelated]'
     },
 } as const;
 
