@@ -67,7 +67,7 @@ export function useScrollbarController({
         const atStart = scrollPos <= reachThreshold;
         const atEnd = scrollMax - scrollPos <= reachThreshold;
 
-        setState({ thumbSize, thumbOffset, atStart, atEnd, scrollable: scrollMax > 0 });
+        //setState({ thumbSize, thumbOffset, atStart, atEnd, scrollable: scrollMax > 0 });
 
         if (atStart && !wasAtStart.current) onReachStart?.();
         if (atEnd && !wasAtEnd.current) onReachEnd?.();

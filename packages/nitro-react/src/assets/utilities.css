@@ -2,19 +2,6 @@
     @apply [border-image-repeat:stretch] [image-rendering:pixelated];
 }
 
-@utility pixel-bg-* {
-    background-image: --value(
-        --border-*,
-        --bubble-*,
-        --tooltip-*,
-        --frame-*,
-        --header-*,
-        --button-*,
-        [*]
-    );
-    image-rendering: pixelated;
-}
-
 @utility sprite {
     display: inline-block;
     background-repeat: no-repeat;

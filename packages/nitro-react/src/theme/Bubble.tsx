@@ -8,7 +8,7 @@ const bubbleVariantsConfig = {
         // default
         '0': '[border-image-source:var(--bubble-0-default-src)] [border-image-slice:5_5_6_5_fill] [border-image-width:5px_5px_6px_5px] nine-slice-border min-w-5.25 min-h-5.25 text-[#000000]',
         // default
-        '7': 'sprite min-w-6.75 min-h-9.5 bg-(image:--bubble-7-default-src) bg-size-[100%_100%] [image-rendering:pixelated] text-[#000000]',
+        '7': 'sprite min-w-6.75 min-h-9.5 bg-(image:--bubble-7-default-src) bg-size-[100%_100%] text-[#000000]',
     },
 } as const;
 

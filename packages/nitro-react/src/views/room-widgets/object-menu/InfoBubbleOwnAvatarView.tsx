@@ -2,11 +2,10 @@ import { AvatarActionStateType, AvatarExpressionEnum, ISimpleRoomObjectData, Pos
 import { AvatarExpressionComposer, ChangePostureComposer, DanceComposer, DropCarryItemComposer, SignComposer } from "@nitrodevco/nitro-shared";
 import { useState } from "react";
 
-import { NitroIcon } from "#base/components";
 import { useOwnHasClub, useOwnIsDancing, useRoomCanDecorate, useWebSocketContext } from "#base/context";
 import { useRoomUserData } from "#base/hooks";
 import { useLocalizationStore } from "#base/stores";
-import { cn } from "#base/utils";
+import { cn, NitroIcon } from "#base/theme";
 
 interface InfoBubbleOwnAvatarViewProps {
     objectData: ISimpleRoomObjectData;

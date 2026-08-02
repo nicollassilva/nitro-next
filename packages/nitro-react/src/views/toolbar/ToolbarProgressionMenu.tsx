@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 
-import { NitroIcon } from '#base/components';
 import { useLocalizationStore } from '#base/stores';
+import { NitroIcon } from '#base/theme';
 
 export const ToolbarProgressionMenu = forwardRef<HTMLDivElement>((props, ref) => {
     const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);

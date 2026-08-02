@@ -6,15 +6,15 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const checkBoxVariantsConfig = {
     variant: {
         // default
-        '0': 'sprite min-w-3.75 min-h-3.75 bg-(image:--checkbox-src) bg-position-[-0px_-0px] bg-size-[60px_15px] [image-rendering:pixelated] aria-selected:bg-(image:--checkbox-src) aria-selected:bg-position-[-15px_-0px] aria-selected:bg-size-[60px_15px] active:bg-(image:--checkbox-src) active:bg-position-[-0px_-0px] active:bg-size-[60px_15px] active:bg-no-repeat ',
+        '0': 'sprite min-w-3.75 min-h-3.75 bg-(image:--checkbox-src) bg-position-[-0px_-0px] bg-size-[60px_15px] aria-selected:bg-(image:--checkbox-src) aria-selected:bg-position-[-15px_-0px] aria-selected:bg-size-[60px_15px] active:bg-(image:--checkbox-src) active:bg-position-[-0px_-0px] active:bg-size-[60px_15px]',
         // black
-        '1': 'sprite min-w-3.75 min-h-3.75 bg-(image:--checkbox-src) bg-position-[-30px_-0px] bg-size-[60px_15px] [image-rendering:pixelated] aria-selected:bg-(image:--checkbox-src) aria-selected:bg-position-[-45px_-0px] aria-selected:bg-size-[60px_15px] active:bg-(image:--checkbox-src) active:bg-position-[-30px_-0px] active:bg-size-[60px_15px] active:bg-no-repeat ',
+        '1': 'sprite min-w-3.75 min-h-3.75 bg-(image:--checkbox-src) bg-position-[-30px_-0px] bg-size-[60px_15px]aria-selected:bg-(image:--checkbox-src) aria-selected:bg-position-[-45px_-0px] aria-selected:bg-size-[60px_15px] active:bg-(image:--checkbox-src) active:bg-position-[-30px_-0px] active:bg-size-[60px_15px]',
         // white
-        '2': 'sprite min-w-3.75 min-h-3.75 bg-(image:--checkbox-src) bg-position-[-0px_-0px] bg-size-[60px_15px] [image-rendering:pixelated] aria-selected:bg-(image:--checkbox-src) aria-selected:bg-position-[-15px_-0px] aria-selected:bg-size-[60px_15px] active:bg-(image:--checkbox-src) active:bg-position-[-0px_-0px] active:bg-size-[60px_15px] active:bg-no-repeat ',
+        '2': 'sprite min-w-3.75 min-h-3.75 bg-(image:--checkbox-src) bg-position-[-0px_-0px] bg-size-[60px_15px] aria-selected:bg-(image:--checkbox-src) aria-selected:bg-position-[-15px_-0px] aria-selected:bg-size-[60px_15px] active:bg-(image:--checkbox-src) active:bg-position-[-0px_-0px] active:bg-size-[60px_15px]',
         // switch
-        '100': 'sprite min-w-9.5 min-h-5.25 bg-(image:--checkbox-100-default-src) bg-size-[38px_21px] [image-rendering:pixelated] aria-selected:bg-(image:--checkbox-100-selected-src) aria-selected:bg-size-[38px_21px] active:bg-(image:--checkbox-100-default-src) active:bg-size-[38px_21px] active:bg-no-repeat  pl-10.5 pt-1 pr-0 pb-1 text-[#000000] text-style-il-button',
+        '100': 'sprite min-w-9.5 min-h-5.25 bg-(image:--checkbox-100-default-src) bg-size-[38px_21px] aria-selected:bg-(image:--checkbox-100-selected-src) aria-selected:bg-size-[38px_21px] active:bg-(image:--checkbox-100-default-src) active:bg-size-[38px_21px] pl-10.5 pt-1 pr-0 pb-1 text-[#000000] text-style-il-button',
         // basic
-        '101': 'sprite min-w-4.75 min-h-5 bg-(image:--checkbox-101-default-src) bg-size-[19px_20px] [image-rendering:pixelated] aria-selected:bg-(image:--checkbox-101-selected-src) aria-selected:bg-size-[19px_20px] active:bg-(image:--checkbox-101-default-src) active:bg-size-[19px_20px] active:bg-no-repeat  pl-5.75 pt-1 pr-0 pb-1 text-[#000000] text-style-il-button',
+        '101': 'sprite min-w-4.75 min-h-5 bg-(image:--checkbox-101-default-src) bg-size-[19px_20px] aria-selected:bg-(image:--checkbox-101-selected-src) aria-selected:bg-size-[19px_20px] active:bg-(image:--checkbox-101-default-src) active:bg-size-[19px_20px] pl-5.75 pt-1 pr-0 pb-1 text-[#000000] text-style-il-button',
     },
 } as const;
 

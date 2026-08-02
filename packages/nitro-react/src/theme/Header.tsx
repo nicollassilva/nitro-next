@@ -12,7 +12,7 @@ const headerVariantsConfig = {
         '1': 'sprite min-w-6 min-h-3.75 bg-(image:--header-0-default-src) bg-size-[6px_15px] bg-repeat-x pl-2 pt-px pr-2 pb-px text-[#000000] text-style-frame-title',
         // yellow
         '2': 'sprite min-w-6 min-h-3.75 bg-(image:--header-0-default-src) bg-size-[6px_15px] bg-repeat-x pl-2 pt-px pr-2 pb-px text-[#000000] text-style-frame-title',
-        // default sprite bg-(image:--header-3-default-src) bg-size-[100%_100%]
+        // default sprite bg-(image:--header-3-default-src) bg-size-[100%_100%] // bg-(image:--header-3-default-src) bg-size-[6px_20px] bg-repeat-x
         '3': 'sprite min-h-8.25 max-h-8.25 text-[#ffffff] text-style-u-frame-title',
         // light
         '4': 'sprite min-w-1.5 min-h-5 bg-(image:--header-3-default-src) bg-size-[100%_100%] pl-2 pt-px pr-2 pb-px text-[#ffffff] text-style-u-frame-title',

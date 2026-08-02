@@ -6,9 +6,9 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const bubblePointerDownVariantsConfig = {
     variant: {
         // default
-        '0': 'sprite min-w-3.25 min-h-2.25 bg-(image:--bubblepointerdown-src) bg-position-[-16px_-0px] bg-size-[29px_11px] [image-rendering:pixelated]',
+        '0': 'sprite min-w-3.25 min-h-2.25 bg-(image:--bubblepointerdown-src) bg-position-[-16px_-0px] bg-size-[29px_11px]',
         // default
-        '7': 'sprite min-w-4 min-h-2.75 bg-(image:--bubblepointerdown-src) bg-position-[-0px_-0px] bg-size-[29px_11px] [image-rendering:pixelated]',
+        '7': 'sprite min-w-4 min-h-2.75 bg-(image:--bubblepointerdown-src) bg-position-[-0px_-0px] bg-size-[29px_11px]',
     },
 } as const;
 

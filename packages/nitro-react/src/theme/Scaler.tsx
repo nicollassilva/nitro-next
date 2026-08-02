@@ -6,15 +6,15 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const scalerVariantsConfig = {
     variant: {
         // default
-        '0': 'sprite min-w-3.75 min-h-3.75 bg-(image:--scaler-0-default-src) bg-size-[15px_15px] [image-rendering:pixelated]',
+        '0': 'sprite min-w-3.75 min-h-3.75 max-w-3.75 max-h-3.75 bg-(image:--scaler-0-default-src) bg-size-[15px_15px]',
         // black
-        '1': 'sprite min-w-3.75 min-h-3.75 bg-(image:--scaler-0-default-src) bg-size-[15px_15px] [image-rendering:pixelated]',
+        '1': 'sprite min-w-3.75 min-h-3.75 max-w-3.75 max-h-3.75 bg-(image:--scaler-0-default-src) bg-size-[15px_15px]',
         // white
-        '2': 'sprite min-w-3.75 min-h-3.75 bg-(image:--scaler-0-default-src) bg-size-[15px_15px] [image-rendering:pixelated]',
+        '2': 'sprite min-w-3.75 min-h-3.75 max-w-3.75 max-h-3.75 bg-(image:--scaler-0-default-src) bg-size-[15px_15px]',
         // default
-        '3': 'sprite min-w-5 min-h-5 bg-(image:--scaler-src) bg-position-[-0px_-0px] bg-size-[20px_20px] [image-rendering:pixelated]',
+        '3': 'sprite min-w-5 min-h-5 bg-(image:--scaler-src) bg-position-[-0px_-0px] bg-size-[20px_20px]',
         // light
-        '4': 'sprite min-w-5 min-h-5 bg-(image:--scaler-src) bg-position-[-0px_-0px] bg-size-[20px_20px] [image-rendering:pixelated]',
+        '4': 'sprite min-w-5 min-h-5 bg-(image:--scaler-src) bg-position-[-0px_-0px] bg-size-[20px_20px]',
         // default
         '100': '',
     },

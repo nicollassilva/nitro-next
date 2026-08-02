@@ -2,11 +2,11 @@ import { ISimpleRoomObjectData } from "@nitrodevco/nitro-api";
 import { ChangeMottoComposer } from "@nitrodevco/nitro-shared";
 import { KeyboardEvent, useEffect, useState } from "react";
 
-import { Border, CloseButton, NitroIcon } from "#base/components";
 import { AvatarImage } from "#base/components/AvatarImage";
 import { useWebSocketContext } from "#base/context";
 import { useConfigValue, useRoomUserData } from "#base/hooks";
 import { useLocalizationStore } from "#base/stores";
+import { Border, CloseButton, NitroIcon } from "#base/theme";
 
 type InfostandUserViewProps = {
     objectData: ISimpleRoomObjectData;
@@ -53,7 +53,7 @@ export const InfostandUserView = (props: InfostandUserViewProps) => {
     return (
         <div className="flex flex-col items-end gap-2">
             <Border variant="1" className="infostand-container">
-                <CloseButton variant="1" className="infostand-close" onClick={onClose} />
+                <CloseButton className="infostand-close" onClick={onClose} />
                 <div className="infostand-header">
                     <NitroIcon icon="icon-profile-house" />
                     {userData.name}

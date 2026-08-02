@@ -114,9 +114,11 @@ export const Frame = forwardRef<HTMLDivElement, FrameProps>(
                 {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0', overlayClassName)} />}
                 <VariantCascadeProvider map={ownCascade}>
                     <Header caption={caption} onClose={onClose} onPointerDown={onHeaderPointerDown} className="cursor-grab active:cursor-grabbing" />
-                    <div className="relative flex flex-col px-1.25 pt-px pb-1.5 size-full overflow-hidden">
-                        {children}
-                        <Scaler variant={variant as undefined} />
+                    <div className="flex px-0.75 pt-px pb-1 size-full overflow-hidden">
+                        <div className="relative flex flex-col w-full px-0.75">
+                            {children}
+                            <Scaler className="absolute z-20 bottom-0 right-0" />
+                        </div>
                     </div>
                 </VariantCascadeProvider>
             </div>
