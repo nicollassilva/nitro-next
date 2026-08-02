@@ -1,4 +1,4 @@
-import { type PointerEvent as ReactPointerEvent, type RefObject, useEffect, useRef, useState } from 'react';
+import { type PointerEvent as ReactPointerEvent, type RefObject, useCallback, useEffect, useRef, useState } from 'react';
 
 export type ScrollbarOrientation = 'vertical' | 'horizontal';
 
@@ -48,7 +48,14 @@ export function useScrollbarController({
     const isVertical = orientation === 'vertical';
     const dragOrigin = useRef<{ pointer: number; scroll: number; availableTrack: number; scrollMax: number } | null>(null);
 
-    const recompute = () => {
+    const onReachStartRef = useRef(onReachStart);
+    const onReachEndRef = useRef(onReachEnd);
+    useEffect(() => {
+        onReachStartRef.current = onReachStart;
+        onReachEndRef.current = onReachEnd;
+    });
+
+    const recompute = useCallback(() => {
         const viewport = viewportRef.current;
         const track = trackRef.current;
         if (!viewport || !track) return;
@@ -66,14 +73,20 @@ export function useScrollbarController({
 
         const atStart = scrollPos <= reachThreshold;
         const atEnd = scrollMax - scrollPos <= reachThreshold;
+        const scrollable = scrollMax > 0;
 
-        //setState({ thumbSize, thumbOffset, atStart, atEnd, scrollable: scrollMax > 0 });
+        setState((prev) => {
+            if (prev.thumbSize === thumbSize && prev.thumbOffset === thumbOffset && prev.atStart === atStart && prev.atEnd === atEnd && prev.scrollable === scrollable) {
+                return prev;
+            }
+            return { thumbSize, thumbOffset, atStart, atEnd, scrollable };
+        });
 
-        if (atStart && !wasAtStart.current) onReachStart?.();
-        if (atEnd && !wasAtEnd.current) onReachEnd?.();
+        if (atStart && !wasAtStart.current) onReachStartRef.current?.();
+        if (atEnd && !wasAtEnd.current) onReachEndRef.current?.();
         wasAtStart.current = atStart;
         wasAtEnd.current = atEnd;
-    }
+    }, [viewportRef, isVertical, minThumbSize, reachThreshold]);
 
     useEffect(() => {
         const viewport = viewportRef.current;
