@@ -6,7 +6,7 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const bubbleVariantsConfig = {
     variant: {
         // default
-        '0': '[border-image-source:var(--bubble-0-default-src)] [border-image-slice:5_5_6_5_fill] [border-image-width:5px_5px_6px_5px] [border-image-repeat:stretch] [image-rendering:pixelated] min-w-5.25 min-h-5.25 text-[#000000]',
+        '0': '[border-image-source:var(--bubble-0-default-src)] [border-image-slice:5_5_6_5_fill] [border-image-width:5px_5px_6px_5px] nine-slice-border min-w-5.25 min-h-5.25 text-[#000000]',
         // default
         '7': 'inline-block min-w-6.75 min-h-9.5 [background-image:var(--bubble-7-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] text-[#000000]',
     },

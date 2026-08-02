@@ -19,7 +19,7 @@ const headerVariantsConfig = {
         // bubble — graphics asset has no usable "default" state
         '7': 'min-w-16 min-h-8.25 pl-2 pt-px pr-2 pb-px text-[#ffffff] text-style-u-frame-title',
         // default
-        '200': '[border-image-source:var(--border-200-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] [border-image-repeat:stretch] [image-rendering:pixelated] pl-2.5 pt-0.5 pr-2.5 pb-0.5 text-[#ffffff] text-style-u-frame-title',
+        '200': '[border-image-source:var(--border-200-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] nine-slice-border pl-2.5 pt-0.5 pr-2.5 pb-0.5 text-[#ffffff] text-style-u-frame-title',
     },
 } as const;
 

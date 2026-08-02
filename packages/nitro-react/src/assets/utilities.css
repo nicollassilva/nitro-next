@@ -1,8 +1,6 @@
-/* @utility nine-slice-border {
-    border-image-repeat: stretch;
-    image-rendering: pixelated;
-    will-change: transform;
-} */
+@utility nine-slice-border {
+    @apply [border-image-repeat:stretch] [image-rendering:pixelated];
+}
 
 @utility pixel-text {
     -webkit-font-smoothing: none;

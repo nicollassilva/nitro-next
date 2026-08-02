@@ -6,13 +6,13 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const tabContentVariantsConfig = {
     variant: {
         // default
-        '0': '[border-image-source:var(--border-0-default-src)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px_6px_6px_6px] [border-image-repeat:stretch] [image-rendering:pixelated] p-1.5',
+        '0': '[border-image-source:var(--border-0-default-src)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px_6px_6px_6px] nine-slice-border p-1.5',
         // black
-        '1': '[border-image-source:var(--border-1-default-src)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px_6px_6px_6px] [border-image-repeat:stretch] [image-rendering:pixelated] p-1.5',
+        '1': '[border-image-source:var(--border-1-default-src)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px_6px_6px_6px] nine-slice-border p-1.5',
         // white
-        '2': '[border-image-source:var(--border-2-default-src)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px_6px_6px_6px] [border-image-repeat:stretch] [image-rendering:pixelated] p-1.5',
+        '2': '[border-image-source:var(--border-2-default-src)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px_6px_6px_6px] nine-slice-border p-1.5',
         // default
-        '3': '[border-image-source:var(--tabcontent-3-default-src)] [border-image-slice:15_0_2_0_fill] [border-image-width:15px_0px_0px_0px] [border-image-repeat:stretch] [image-rendering:pixelated] pt-1.5 px-1 -mt-0.75 pb-0.5',
+        '3': '[border-image-source:var(--tabcontent-3-default-src)] [border-image-slice:15_0_2_0_fill] [border-image-width:15px_0px_0px_0px] nine-slice-border pt-1.5 px-1 -mt-0.75 pb-0.5',
     },
 } as const;
 

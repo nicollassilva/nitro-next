@@ -10,23 +10,23 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const frameVariantsConfig = {
     variant: {
         // blue
-        '0': '[border-image-source:var(--frame-0-default-src)] [border-image-slice:13_13_13_13_fill] [border-image-width:13px_13px_13px_13px] [border-image-repeat:stretch] [image-rendering:pixelated] min-w-10 min-h-10 text-[#000000]',
+        '0': '[border-image-source:var(--frame-0-default-src)] [border-image-slice:13_13_13_13_fill] [border-image-width:13px_13px_13px_13px] nine-slice-border min-w-10 min-h-10 text-[#000000]',
         // black
-        '1': '[border-image-source:var(--frame-0-default-src)] [border-image-slice:13_13_13_13_fill] [border-image-width:13px_13px_13px_13px] [border-image-repeat:stretch] [image-rendering:pixelated] min-w-10 min-h-10 text-[#000000]',
+        '1': '[border-image-source:var(--frame-0-default-src)] [border-image-slice:13_13_13_13_fill] [border-image-width:13px_13px_13px_13px] nine-slice-border min-w-10 min-h-10 text-[#000000]',
         // yellow
-        '2': '[border-image-source:var(--frame-0-default-src)] [border-image-slice:13_13_13_13_fill] [border-image-width:13px_13px_13px_13px] [border-image-repeat:stretch] [image-rendering:pixelated] min-w-10 min-h-10 text-[#000000]',
+        '2': '[border-image-source:var(--frame-0-default-src)] [border-image-slice:13_13_13_13_fill] [border-image-width:13px_13px_13px_13px] nine-slice-border min-w-10 min-h-10 text-[#000000]',
         // default
-        '3': '[border-image-source:var(--frame-3-default-src)] [border-image-slice:33_10_10_10_fill] [border-image-width:33px_10px_10px_10px] [border-image-repeat:stretch] [image-rendering:pixelated] min-w-16 min-h-16 text-[#000000]',
+        '3': '[border-image-source:var(--frame-3-default-src)] [border-image-slice:33_10_10_10_fill] [border-image-width:33px_10px_10px_10px] nine-slice-border min-w-16 min-h-16 text-[#000000]',
         // light
-        '4': '[border-image-source:var(--frame-3-default-src)] [border-image-slice:33_10_10_10_fill] [border-image-width:33px_10px_10px_10px] [border-image-repeat:stretch] [image-rendering:pixelated] min-w-16 min-h-16 text-[#000000]',
+        '4': '[border-image-source:var(--frame-3-default-src)] [border-image-slice:33_10_10_10_fill] [border-image-width:33px_10px_10px_10px] nine-slice-border min-w-16 min-h-16 text-[#000000]',
         // bubble
-        '7': '[border-image-source:var(--frame-3-default-src)] [border-image-slice:33_10_10_10_fill] [border-image-width:33px_10px_10px_10px] [border-image-repeat:stretch] [image-rendering:pixelated] min-w-16 min-h-18.25 text-[#000000]',
+        '7': '[border-image-source:var(--frame-3-default-src)] [border-image-slice:33_10_10_10_fill] [border-image-width:33px_10px_10px_10px] nine-slice-border min-w-16 min-h-18.25 text-[#000000]',
         // default
         '100': '[background-image:var(--border-101-default-top-left-src),_var(--border-101-default-top-center-src),_var(--border-101-default-top-right-src),_var(--border-101-default-center-left-src),_var(--border-101-default-center-center-src),_var(--border-101-default-center-left-src),_var(--border-101-default-bottom-left-src),_var(--border-101-default-bottom-center-src),_var(--border-101-default-bottom-right-src)] [background-position:left_0px_top_0px,_left_4px_top_0px,_right_0px_top_0px,_left_0px_top_4px,_left_1px_top_4px,_right_0px_top_4px,_left_0px_bottom_0px,_left_4px_bottom_0px,_right_0px_bottom_0px] [background-size:4px_4px,_calc(100%_-_4px_-_4px)_4px,_4px_4px,_1px_calc(100%_-_4px_-_7px),_calc(100%_-_1px_-_1px)_calc(100%_-_4px_-_7px),_1px_calc(100%_-_4px_-_7px),_4px_7px,_calc(100%_-_4px_-_4px)_7px,_4px_7px] [background-repeat:no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat] [image-rendering:pixelated] min-w-[50px] min-h-[50px] text-[#000000] text-style-il-frame-title',
         // modal
         '101': 'min-w-12.5 min-h-20 text-[#000000] text-style-il-frame-modal-title',
         // default
-        '200': '[border-image-source:var(--frame-200-default-src)] [border-image-slice:4_4_5_4_fill] [border-image-width:4px_4px_5px_4px] [border-image-repeat:stretch] [image-rendering:pixelated] min-w-12.5 min-h-12.5 text-[#000000] text-style-id-frame-title',
+        '200': '[border-image-source:var(--frame-200-default-src)] [border-image-slice:4_4_5_4_fill] [border-image-width:4px_4px_5px_4px] nine-slice-border min-w-12.5 min-h-12.5 text-[#000000] text-style-id-frame-title',
     },
 } as const;
 
@@ -39,11 +39,11 @@ const frameOverlayVariantsConfig = {
         // yellow
         '2': '[background-image:var(--frame-0-default-shine-top-left-src),_var(--frame-0-default-shine-top-center-src),_var(--frame-0-default-shine-top-right-src),_var(--frame-0-default-shine-top-center-src),_var(--frame-0-default-shine-top-center-src),_var(--frame-0-default-shine-bottom-left-src),_var(--frame-0-default-shine-top-center-src),_var(--frame-0-default-shine-bottom-right-src)] [background-position:left_1px_top_1px,_left_8px_top_2px,_right_1px_top_1px,_left_2px_top_8px,_right_2px_top_8px,_left_1px_bottom_1px,_left_8px_bottom_2px,_right_1px_bottom_1px] [background-size:7px_7px,_calc(100%_-_8px_-_8px)_1px,_7px_7px,_1px_calc(100%_-_8px_-_8px),_1px_calc(100%_-_8px_-_7px),_7px_7px,_calc(100%_-_8px_-_7px)_1px,_6px_6px] [background-repeat:no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat] [image-rendering:pixelated]',
         // default
-        '3': '[border-image-source:var(--frame-3-default-shine-src)] [border-image-slice:33_10_10_10_fill] [border-image-width:33px_10px_10px_10px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '3': '[border-image-source:var(--frame-3-default-shine-src)] [border-image-slice:33_10_10_10_fill] [border-image-width:33px_10px_10px_10px] nine-slice-border',
         // light
-        '4': '[border-image-source:var(--frame-3-default-shine-src)] [border-image-slice:33_10_10_10_fill] [border-image-width:33px_10px_10px_10px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '4': '[border-image-source:var(--frame-3-default-shine-src)] [border-image-slice:33_10_10_10_fill] [border-image-width:33px_10px_10px_10px] nine-slice-border',
         // bubble
-        '7': '[border-image-source:var(--frame-3-default-shine-src)] [border-image-slice:33_10_10_10_fill] [border-image-width:33px_10px_10px_10px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '7': '[border-image-source:var(--frame-3-default-shine-src)] [border-image-slice:33_10_10_10_fill] [border-image-width:33px_10px_10px_10px] nine-slice-border',
         // default
         '100': '',
         // modal
@@ -71,7 +71,7 @@ const frameTintableVars: Partial<Record<string, string[]>> = {
 };
 
 const frameVariants = cva('absolute flex flex-col pointer-events-auto overflow-hidden will-change-transform', { variants: frameVariantsConfig, defaultVariants: { variant: '0' } });
-const frameOverlayVariants = cva('', { variants: frameOverlayVariantsConfig, defaultVariants: { variant: '0' } });
+const frameOverlayVariants = cva('will-change-transform', { variants: frameOverlayVariantsConfig, defaultVariants: { variant: '0' } });
 
 type FrameVariantProps = VariantProps<typeof frameVariantsConfig>;
 
@@ -111,7 +111,7 @@ export const Frame = forwardRef<HTMLDivElement, FrameProps>(
                 onPointerDown={onPointerDown}
                 {...props}
             >
-                {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0 will-change-transform', overlayClassName)} />}
+                {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0', overlayClassName)} />}
                 <VariantCascadeProvider map={ownCascade}>
                     <Header caption={caption} onClose={onClose} onPointerDown={onHeaderPointerDown} className="cursor-grab active:cursor-grabbing" />
                     <div className="relative flex flex-col px-1.25 pt-px pb-1.5 size-full overflow-hidden">

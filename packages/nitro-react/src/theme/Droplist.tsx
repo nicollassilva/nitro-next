@@ -6,9 +6,9 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const droplistVariantsConfig = {
     variant: {
         // default
-        '0': '[border-image-source:var(--dropmenu-0-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] [border-image-repeat:stretch] [image-rendering:pixelated] min-w-10 min-h-5.5 text-[#000000] text-style-regular',
+        '0': '[border-image-source:var(--dropmenu-0-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] nine-slice-border min-w-10 min-h-5.5 text-[#000000] text-style-regular',
         // white
-        '1': '[border-image-source:var(--droplist-1-default-src)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px_6px_6px_6px] [border-image-repeat:stretch] [image-rendering:pixelated] min-w-10 min-h-5.5 text-[#000000] text-style-regular',
+        '1': '[border-image-source:var(--droplist-1-default-src)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px_6px_6px_6px] nine-slice-border min-w-10 min-h-5.5 text-[#000000] text-style-regular',
     },
 } as const;
 

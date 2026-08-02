@@ -12,9 +12,9 @@ const scrollbarSliderTrackVerticalVariantsConfig = {
         // default
         '3': 'inline-block min-w-4.25 min-h-0.5 aria-disabled:pointer-events-none [background-image:var(--scrollbarslidertrackvertical-3-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] active:[background-image:var(--scrollbarslidertrackvertical-3-default-src)] active:bg-size-[100%_100%] active:bg-no-repeat active:[image-rendering:pixelated] aria-disabled:[background-image:var(--scrollbarslidertrackvertical-3-disabled-src)] aria-disabled:bg-size-[100%_100%] aria-disabled:bg-no-repeat aria-disabled:[image-rendering:pixelated]',
         // default
-        '100': '[border-image-source:var(--scrollbarslidertrackhorizontal-100-default-src)] [border-image-slice:2_0_2_0_fill] [border-image-width:2px_0px_2px_0px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '100': '[border-image-source:var(--scrollbarslidertrackhorizontal-100-default-src)] [border-image-slice:2_0_2_0_fill] [border-image-width:2px_0px_2px_0px] nine-slice-border',
         // default
-        '200': '[border-image-source:var(--scrollbarslidertrackhorizontal-200-default-src)] [border-image-slice:3_0_3_0_fill] [border-image-width:3px_0px_3px_0px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '200': '[border-image-source:var(--scrollbarslidertrackhorizontal-200-default-src)] [border-image-slice:3_0_3_0_fill] [border-image-width:3px_0px_3px_0px] nine-slice-border',
     },
 } as const;
 

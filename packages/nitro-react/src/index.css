@@ -1,12 +1,12 @@
 @import 'tailwindcss';
-@source "**/*.{ts,tsx}";
+@source "**/*.{ts,tsx,css}";
 
 @import './theme/theme.css';
 @import './assets/fonts.css';
 @import './assets/utilities.css';
 @import './assets/icons.css';
 
-@theme static {
+@theme {
     /* Typography */
     --font-sans: 'Ubuntu', system-ui, sans-serif;
     --font-size-base: 0.875rem;

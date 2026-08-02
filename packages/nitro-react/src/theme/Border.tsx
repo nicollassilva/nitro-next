@@ -6,29 +6,29 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const borderVariantsConfig = {
     variant: {
         // white with thin light border
-        '0': '[border-image-source:var(--border-0-default-src)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px_6px_6px_6px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '0': '[border-image-source:var(--border-0-default-src)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px_6px_6px_6px] nine-slice-border',
         // black borderless
-        '1': '[border-image-source:var(--border-1-default-src)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px_6px_6px_6px] [border-image-repeat:stretch] [image-rendering:pixelated] text-white',
+        '1': '[border-image-source:var(--border-1-default-src)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px_6px_6px_6px] nine-slice-border text-white',
         // white borderless
-        '2': '[border-image-source:var(--border-2-default-src)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px_6px_6px_6px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '2': '[border-image-source:var(--border-2-default-src)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px_6px_6px_6px] nine-slice-border',
         // white with sharper corners
-        '3': '[border-image-source:var(--border-3-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '3': '[border-image-source:var(--border-3-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] nine-slice-border',
         // white with thin dark border
-        '4': '[border-image-source:var(--border-4-default-src)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px_6px_6px_6px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '4': '[border-image-source:var(--border-4-default-src)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px_6px_6px_6px] nine-slice-border',
         // white with thin dark border and sharper corners
-        '5': '[border-image-source:var(--border-5-default-src)] [border-image-slice:5_5_5_5_fill] [border-image-width:5px_5px_5px_5px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '5': '[border-image-source:var(--border-5-default-src)] [border-image-slice:5_5_5_5_fill] [border-image-width:5px_5px_5px_5px] nine-slice-border',
         // grey with thick border
-        '6': '[border-image-source:var(--border-6-default-src)] [border-image-slice:8_8_8_8_fill] [border-image-width:8px_8px_8px_8px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '6': '[border-image-source:var(--border-6-default-src)] [border-image-slice:8_8_8_8_fill] [border-image-width:8px_8px_8px_8px] nine-slice-border',
         // grey with thin border
-        '7': '[border-image-source:var(--border-7-default-src)] [border-image-slice:6_6_7_6_fill] [border-image-width:6px_6px_7px_6px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '7': '[border-image-source:var(--border-7-default-src)] [border-image-slice:6_6_7_6_fill] [border-image-width:6px_6px_7px_6px] nine-slice-border',
         // white with thick dark border
-        '8': '[border-image-source:var(--border-8-default-src)] [border-image-slice:10_10_10_10_fill] [border-image-width:10px_10px_10px_10px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '8': '[border-image-source:var(--border-8-default-src)] [border-image-slice:10_10_10_10_fill] [border-image-width:10px_10px_10px_10px] nine-slice-border',
         // transp. grey with thick border
-        '9': '[border-image-source:var(--border-9-default-src)] [border-image-slice:7_7_8_7_fill] [border-image-width:7px_7px_8px_7px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '9': '[border-image-source:var(--border-9-default-src)] [border-image-slice:7_7_8_7_fill] [border-image-width:7px_7px_8px_7px] nine-slice-border',
         // white with drop shadow
-        '10': '[border-image-source:var(--border-10-default-src)] [border-image-slice:6_6_8_6_fill] [border-image-width:6px_6px_8px_6px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '10': '[border-image-source:var(--border-10-default-src)] [border-image-slice:6_6_8_6_fill] [border-image-width:6px_6px_8px_6px] nine-slice-border',
         // default
-        '100': '[border-image-source:var(--border-100-default-src)] [border-image-slice:3_3_3_3] [border-image-width:3px_3px_3px_3px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '100': '[border-image-source:var(--border-100-default-src)] [border-image-slice:3_3_3_3] [border-image-width:3px_3px_3px_3px] nine-slice-border',
         // frame
         '101': '[background-image:var(--border-101-default-top-left-src),_var(--border-101-default-top-center-src),_var(--border-101-default-top-right-src),_var(--border-101-default-center-left-src),_var(--border-101-default-center-center-src),_var(--border-101-default-center-left-src),_var(--border-101-default-bottom-left-src),_var(--border-101-default-bottom-center-src),_var(--border-101-default-bottom-right-src)] [background-position:left_0px_top_0px,_left_4px_top_0px,_right_0px_top_0px,_left_0px_top_4px,_left_1px_top_4px,_right_0px_top_4px,_left_0px_bottom_0px,_left_4px_bottom_0px,_right_0px_bottom_0px] [background-size:4px_4px,_calc(100%_-_4px_-_4px)_4px,_4px_4px,_1px_calc(100%_-_4px_-_7px),_calc(100%_-_1px_-_1px)_calc(100%_-_4px_-_7px),_1px_calc(100%_-_4px_-_7px),_4px_7px,_calc(100%_-_4px_-_4px)_7px,_4px_7px] [background-repeat:no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat] [image-rendering:pixelated]',
         // sunk
@@ -36,7 +36,7 @@ const borderVariantsConfig = {
         // light
         '103': '[background-image:var(--border-103-default-top-src),_var(--border-103-default-center-src),_var(--border-103-default-bottom-left-src),_var(--border-103-default-bottom-center-src),_var(--border-103-default-bottom-right-src)] [background-position:left_0px_top_0px,_left_0px_top_4px,_left_0px_bottom_0px,_left_4px_bottom_0px,_right_0px_bottom_0px] [background-size:100%_4px,_100%_calc(100%_-_4px_-_12px),_4px_12px,_calc(100%_-_4px_-_4px)_12px,_4px_12px] [background-repeat:no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat] [image-rendering:pixelated]',
         // raised
-        '104': '[border-image-source:var(--border-104-default-src)] [border-image-slice:7_7_7_7_fill] [border-image-width:7px_7px_7px_7px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '104': '[border-image-source:var(--border-104-default-src)] [border-image-slice:7_7_7_7_fill] [border-image-width:7px_7px_7px_7px] nine-slice-border',
         // input
         '105': 'inline-block min-w-7.25 min-h-7.25 [background-image:var(--border-105-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated]',
         // chat bubblemin-w-7.25min-h-7.25bg-size-[100%_100%]bg-no-repeat
@@ -44,9 +44,9 @@ const borderVariantsConfig = {
         // balloon
         '107': '[background-image:var(--border-107-default-background-top-left-src),_var(--border-107-default-background-top-center-src),_var(--border-107-default-background-top-right-src),_var(--border-107-default-background-center-left-src),_var(--border-107-default-background-center-center-src),_var(--border-107-default-background-center-left-src),_var(--border-107-default-background-bottom-left-src),_var(--border-107-default-background-bottom-center-src),_var(--border-107-default-background-bottom-right-src)] [background-position:left_0px_top_0px,_left_5px_top_0px,_right_0px_top_0px,_left_0px_top_10px,_left_1px_top_10px,_right_0px_top_10px,_left_0px_bottom_0px,_left_5px_bottom_0px,_right_0px_bottom_0px] [background-size:5px_10px,_calc(100%_-_5px_-_5px)_10px,_5px_10px,_1px_calc(100%_-_10px_-_5px),_calc(100%_-_1px_-_1px)_calc(100%_-_10px_-_5px),_1px_calc(100%_-_10px_-_5px),_5px_5px,_calc(100%_-_5px_-_5px)_5px,_5px_5px] [background-repeat:no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat,_no-repeat_no-repeat] [image-rendering:pixelated]',
         // info box
-        '108': '[border-image-source:var(--border-108-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '108': '[border-image-source:var(--border-108-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] nine-slice-border',
         // default
-        '200': '[border-image-source:var(--border-200-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] [border-image-repeat:stretch] [image-rendering:pixelated]',
+        '200': '[border-image-source:var(--border-200-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] nine-slice-border',
     },
 } as const;
 
@@ -120,7 +120,7 @@ const borderTintableVars: Partial<Record<string, string[]>> = {
     '108': ['border-108-default-src'],
 };
 
-const borderVariants = cva('will-change-transform', { variants: borderVariantsConfig, defaultVariants: { variant: '0' } });
+const borderVariants = cva('', { variants: borderVariantsConfig, defaultVariants: { variant: '0' } });
 const borderOverlayVariants = cva('', { variants: borderOverlayVariantsConfig, defaultVariants: { variant: '0' } });
 
 type BorderVariantProps = VariantProps<typeof borderVariantsConfig>;
@@ -147,7 +147,7 @@ export const Border = forwardRef<HTMLDivElement, BorderProps>(
                 style={{ ...style, ...tintStyle }}
                 {...props}
             >
-                {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0 will-change-transform', overlayClassName)} />}
+                {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0', overlayClassName)} />}
                 <VariantCascadeProvider map={ownCascade}>{children}</VariantCascadeProvider>
             </div>
         );
