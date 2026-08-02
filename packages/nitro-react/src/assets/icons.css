@@ -1,5 +1,5 @@
 .nitro-icon {
-    @apply inline-block outline-0 bg-transparent bg-no-repeat bg-center;
+    @apply inline-block outline-0 bg-transparent bg-no-repeat bg-center shrink-0;
 
     &.icon-nitro-light {
         background-image: url('./flash/nitro/nitro-n-light.svg');
@@ -999,6 +999,57 @@
         width: 40px;
         height: 16px;
     }
+
+    &.icon-disconnect {
+        background-image: url('./flash/purse/disconnect.png');
+        width: 13px;
+        height: 11px;
+    }
+
+    &.icon-settings {
+        background-image: url('./flash/purse/settings.png');
+        width: 12px;
+        height: 12px;
+    }
+
+    &.icon-hc-small {
+        background-image: url('./flash/purse/hc.png');
+        width: 15px;
+        height: 16px;
+    }
+
+    &.icon-earnings-small {
+        background-image: url('./flash/purse/earnings.png');
+        width: 15px;
+        height: 15px;
+    }
+    
+    &.icon-earnings-small {
+        background-image: url('./flash/purse/earnings.png');
+        width: 15px;
+        height: 15px;
+    }
+
+    /* temporary */
+
+    &.icon-currency {
+        width: 15px;
+        height: 15px;
+
+        &.credits {
+            background-image: url('./flash/purse/-1.png');
+        }
+
+        &.duckets {
+            background-image: url('./flash/purse/0.png');
+        }
+
+        &.diamonds {
+            background-image: url('./flash/purse/5.png');
+        }
+    }
+
+    /* temporary */
 
     &.spin {
         @apply animate-rotating;
