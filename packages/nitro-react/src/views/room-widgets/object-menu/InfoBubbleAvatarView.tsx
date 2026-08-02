@@ -2,12 +2,10 @@ import { ISimpleRoomObjectData, RoomControllerLevelEnum } from "@nitrodevco/nitr
 import { AmbassadorAlertComposer, AssignRightsComposer, BanUserWithDurationComposer, IgnoreUserComposer, KickUserComposer, MuteUserComposer, RemoveRightsComposer, SetRelationshipStatusComposer, UnignoreUserComposer } from "@nitrodevco/nitro-shared";
 import { useState } from "react";
 
-import { NitroIcon } from "#base/components";
-import { useOwnIsAmbassador, useOwnRoomObjectId, useRoomPermissionsSelector, useRoomSelector, useRoomSettingsSelector, useWebSocketContext } from "#base/context";
-import { useOwnRespectData } from "#base/context/user/selectors/useOwnRespectData";
+import { useOwnIsAmbassador, useOwnRespectData, useOwnRoomObjectId, useRoomPermissionsSelector, useRoomSelector, useRoomSettingsSelector, useWebSocketContext } from "#base/context";
 import { useRoomUserData } from "#base/hooks";
 import { useLocalizationStore } from "#base/stores";
-import { cn } from "#base/utils";
+import { cn, NitroIcon } from "#base/theme";
 
 interface InfoBubbleAvatarViewProps {
     objectData: ISimpleRoomObjectData;

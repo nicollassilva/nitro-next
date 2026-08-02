@@ -21,13 +21,13 @@
         @apply [border-image-source:var(--context-menu-name-bg)] [border-image-slice:6_6_6_6_fill] [border-image-width:6px] py-1.5 px-4.5 w-[unset] text-center text-white text-[12px];
 
         &:after {
-            @apply content-[''] [background-image:var(--context-menu-name-after)] bg-no-repeat w-2.75 h-2.25 absolute -bottom-1.25 left-0 right-0 m-auto;
+            @apply content-[''] bg-(image:--context-menu-name-after) w-2.75 h-2.25 absolute -bottom-1.25 left-0 right-0 m-auto;
         }
     }
 
     &:not(.name-only) {
         &:after {
-            @apply content-[''] [background-image:var(--content-menu-pointer-after)] bg-no-repeat w-2.75 h-2.25 absolute -bottom-1.25 left-0 right-0 m-auto;
+            @apply content-[''] bg-(image:--content-menu-pointer-after) w-2.75 h-2.25 absolute -bottom-1.25 left-0 right-0 m-auto;
         }
     }
 

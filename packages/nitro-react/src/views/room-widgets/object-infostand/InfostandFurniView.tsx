@@ -1,7 +1,8 @@
 import { FurniturePickupMode, IRoomFurnitureData } from "@nitrodevco/nitro-api";
 
-import { Border, Button, CloseButton, FurnitureImage } from "#base/components";
+import { FurnitureImage } from "#base/components";
 import { useLocalizationStore } from "#base/stores";
+import { Border, Button, CloseButton } from "#base/theme";
 
 type InfostandFurniViewProps = {
     furniData: IRoomFurnitureData;

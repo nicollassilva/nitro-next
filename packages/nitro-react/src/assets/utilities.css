@@ -1,3 +1,13 @@
+@utility nine-slice-border {
+    @apply [border-image-repeat:stretch] [image-rendering:pixelated];
+}
+
+@utility sprite {
+    display: inline-block;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+}
+
 @utility pixel-text {
     -webkit-font-smoothing: none;
     -moz-osx-font-smoothing: unset;
@@ -77,6 +87,10 @@
 
 @utility text-style-u-frame-title {
     @apply font-ubuntu-bold text-[12px];
+}
+
+@utility text-style-il-frame-title {
+    @apply font-ubuntu-bold text-[10px];
 }
 
 @utility text-style-frame-title {

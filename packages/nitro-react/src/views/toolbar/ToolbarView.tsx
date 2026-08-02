@@ -1,9 +1,8 @@
 import { useRef, useState } from 'react';
 
-import { NitroIcon } from '#base/components';
 import { AvatarImage } from '#base/components/AvatarImage';
 import { useOwnUserFigure, useOwnUserGender } from '#base/context';
-import { cn } from '#base/utils';
+import { cn, NitroIcon } from '#base/theme';
 
 import { ToolbarMeMenu } from './ToolbarMeMenu';
 import { ToolbarProgressionMenu } from './ToolbarProgressionMenu';

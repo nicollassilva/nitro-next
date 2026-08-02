@@ -1,4 +1,4 @@
-import { Border } from "#base/components";
+import { Border } from "#base/theme";
 
 export const PurseView = () => {
     return (
