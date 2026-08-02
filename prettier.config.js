@@ -1,3 +1,6 @@
+import * as prettierPluginTailwindCss from "prettier-plugin-tailwindcss";
+
+/** @type {import('prettier').Config & import('prettier-plugin-tailwindcss').PluginOptions} */
 export default {
     "printWidth": 88,
     "tabWidth": 4,

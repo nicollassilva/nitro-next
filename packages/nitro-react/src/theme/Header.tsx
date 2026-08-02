@@ -7,15 +7,15 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const headerVariantsConfig = {
     variant: {
         // blue
-        '0': 'inline-block min-w-6 min-h-3.75 [background-image:var(--header-0-default-src)] bg-size-[6px_15px] bg-repeat-x [image-rendering:pixelated] pl-2 pt-px pr-2 pb-px text-[#000000] text-style-frame-title',
+        '0': 'sprite min-w-6 min-h-3.75 bg-(image:--header-0-default-src) bg-size-[6px_15px] bg-repeat-x pl-2 pt-px pr-2 pb-px text-[#000000] text-style-frame-title',
         // black
-        '1': 'inline-block min-w-6 min-h-3.75 [background-image:var(--header-0-default-src)] bg-size-[6px_15px] bg-repeat-x [image-rendering:pixelated] pl-2 pt-px pr-2 pb-px text-[#000000] text-style-frame-title',
+        '1': 'sprite min-w-6 min-h-3.75 bg-(image:--header-0-default-src) bg-size-[6px_15px] bg-repeat-x pl-2 pt-px pr-2 pb-px text-[#000000] text-style-frame-title',
         // yellow
-        '2': 'inline-block min-w-6 min-h-3.75 [background-image:var(--header-0-default-src)] bg-size-[6px_15px] bg-repeat-x [image-rendering:pixelated] pl-2 pt-px pr-2 pb-px text-[#000000] text-style-frame-title',
-        // default [background-image:var(--header-3-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated]
-        '3': 'inline-block min-h-8.25 max-h-8.25 text-[#ffffff] text-style-u-frame-title',
+        '2': 'sprite min-w-6 min-h-3.75 bg-(image:--header-0-default-src) bg-size-[6px_15px] bg-repeat-x pl-2 pt-px pr-2 pb-px text-[#000000] text-style-frame-title',
+        // default sprite bg-(image:--header-3-default-src) bg-size-[100%_100%]
+        '3': 'sprite min-h-8.25 max-h-8.25 text-[#ffffff] text-style-u-frame-title',
         // light
-        '4': 'inline-block min-w-1.5 min-h-5 [background-image:var(--header-3-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] pl-2 pt-px pr-2 pb-px text-[#ffffff] text-style-u-frame-title',
+        '4': 'sprite min-w-1.5 min-h-5 bg-(image:--header-3-default-src) bg-size-[100%_100%] pl-2 pt-px pr-2 pb-px text-[#ffffff] text-style-u-frame-title',
         // bubble — graphics asset has no usable "default" state
         '7': 'min-w-16 min-h-8.25 pl-2 pt-px pr-2 pb-px text-[#ffffff] text-style-u-frame-title',
         // default
@@ -26,11 +26,11 @@ const headerVariantsConfig = {
 const headerOverlayVariantsConfig = {
     variant: {
         // blue
-        '0': '[background-image:var(--header-0-default-shine-src)] bg-size-[6px_15px] bg-repeat-x [image-rendering:pixelated]',
+        '0': 'bg-(image:--header-0-default-shine-src) bg-size-[6px_15px] bg-repeat-x [image-rendering:pixelated]',
         // black
-        '1': '[background-image:var(--header-0-default-shine-src)] bg-size-[6px_15px] bg-repeat-x [image-rendering:pixelated]',
+        '1': 'bg-(image:--header-0-default-shine-src) bg-size-[6px_15px] bg-repeat-x [image-rendering:pixelated]',
         // yellow
-        '2': '[background-image:var(--header-0-default-shine-src)] bg-size-[6px_15px] bg-repeat-x [image-rendering:pixelated]',
+        '2': 'bg-(image:--header-0-default-shine-src) bg-size-[6px_15px] bg-repeat-x [image-rendering:pixelated]',
         // default
         '3': '',
         // light

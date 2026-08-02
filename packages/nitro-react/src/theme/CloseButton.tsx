@@ -6,15 +6,15 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const closeButtonVariantsConfig = {
     variant: {
         // default
-        '0': 'inline-block min-w-3.75 min-h-3.75 [background-image:var(--closebutton-src)] bg-position-[-114px_-0px] bg-size-[189px_20px] bg-no-repeat [image-rendering:pixelated] hover:[background-image:var(--closebutton-src)] hover:bg-position-[-129px_-0px] hover:bg-size-[189px_20px] hover:bg-no-repeat hover:[image-rendering:pixelated] active:[background-image:var(--closebutton-src)] active:bg-position-[-144px_-0px] active:bg-size-[189px_20px] active:bg-no-repeat active:[image-rendering:pixelated]',
+        '0': 'sprite min-w-3.75 min-h-3.75 bg-(image:--closebutton-src) bg-position-[-114px_-0px] bg-size-[189px_20px] hover:bg-(image:--closebutton-src) hover:bg-position-[-129px_-0px] hover:bg-size-[189px_20px] hover:bg-no-repeat  active:bg-(image:--closebutton-src) active:bg-position-[-144px_-0px] active:bg-size-[189px_20px] active:bg-no-repeat ',
         // black
-        '1': 'inline-block min-w-3.75 min-h-3.75 [background-image:var(--closebutton-src)] bg-position-[-159px_-0px] bg-size-[189px_20px] bg-no-repeat [image-rendering:pixelated] active:[background-image:var(--closebutton-src)] active:bg-position-[-159px_-0px] active:bg-size-[189px_20px] active:bg-no-repeat active:[image-rendering:pixelated]',
+        '1': 'sprite min-w-3.75 min-h-3.75 bg-(image:--closebutton-src) bg-position-[-159px_-0px] bg-size-[189px_20px] active:bg-(image:--closebutton-src) active:bg-position-[-159px_-0px] active:bg-size-[189px_20px] active:bg-no-repeat ',
         // white
-        '2': 'inline-block min-w-3.75 min-h-3.75 [background-image:var(--closebutton-src)] bg-position-[-174px_-0px] bg-size-[189px_20px] bg-no-repeat [image-rendering:pixelated] active:[background-image:var(--closebutton-src)] active:bg-position-[-174px_-0px] active:bg-size-[189px_20px] active:bg-no-repeat active:[image-rendering:pixelated]',
+        '2': 'sprite min-w-3.75 min-h-3.75 bg-(image:--closebutton-src) bg-position-[-174px_-0px] bg-size-[189px_20px] active:bg-(image:--closebutton-src) active:bg-position-[-174px_-0px] active:bg-size-[189px_20px] active:bg-no-repeat ',
         // default
-        '3': 'inline-block min-w-4.75 min-h-5 [background-image:var(--closebutton-src)] bg-position-[-0px_-0px] bg-size-[189px_20px] bg-no-repeat [image-rendering:pixelated] hover:[background-image:var(--closebutton-src)] hover:bg-position-[-19px_-0px] hover:bg-size-[189px_20px] hover:bg-no-repeat hover:[image-rendering:pixelated] active:[background-image:var(--closebutton-src)] active:bg-position-[-38px_-0px] active:bg-size-[189px_20px] active:bg-no-repeat active:[image-rendering:pixelated]',
+        '3': 'sprite min-w-4.75 min-h-5 bg-(image:--closebutton-src) bg-position-[-0px_-0px] bg-size-[189px_20px] hover:bg-(image:--closebutton-src) hover:bg-position-[-19px_-0px] hover:bg-size-[189px_20px] hover:bg-no-repeat  active:bg-(image:--closebutton-src) active:bg-position-[-38px_-0px] active:bg-size-[189px_20px] active:bg-no-repeat ',
         // help
-        '4': 'inline-block min-w-4.75 min-h-5 [background-image:var(--closebutton-src)] bg-position-[-57px_-0px] bg-size-[189px_20px] bg-no-repeat [image-rendering:pixelated] hover:[background-image:var(--closebutton-src)] hover:bg-position-[-76px_-0px] hover:bg-size-[189px_20px] hover:bg-no-repeat hover:[image-rendering:pixelated] active:[background-image:var(--closebutton-src)] active:bg-position-[-95px_-0px] active:bg-size-[189px_20px] active:bg-no-repeat active:[image-rendering:pixelated]',
+        '4': 'sprite min-w-4.75 min-h-5 bg-(image:--closebutton-src) bg-position-[-57px_-0px] bg-size-[189px_20px] hover:bg-(image:--closebutton-src) hover:bg-position-[-76px_-0px] hover:bg-size-[189px_20px] hover:bg-no-repeat  active:bg-(image:--closebutton-src) active:bg-position-[-95px_-0px] active:bg-size-[189px_20px] active:bg-no-repeat ',
     },
 } as const;
 

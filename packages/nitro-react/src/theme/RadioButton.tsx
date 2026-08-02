@@ -6,13 +6,13 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const radioButtonVariantsConfig = {
     variant: {
         // default
-        '0': 'inline-block min-w-4 min-h-4 [background-image:var(--radiobutton-src)] bg-position-[-0px_-0px] bg-size-[80px_16px] bg-no-repeat [image-rendering:pixelated] aria-selected:[background-image:var(--radiobutton-src)] aria-selected:bg-position-[-16px_-0px] aria-selected:bg-size-[80px_16px] aria-selected:bg-no-repeat aria-selected:[image-rendering:pixelated]',
+        '0': 'sprite min-w-4 min-h-4 bg-(image:--radiobutton-src) bg-position-[-0px_-0px] bg-size-[80px_16px] aria-selected:bg-(image:--radiobutton-src) aria-selected:bg-position-[-16px_-0px] aria-selected:bg-size-[80px_16px]',
         // black
-        '1': 'inline-block min-w-4 min-h-4 [background-image:var(--radiobutton-src)] bg-position-[-32px_-0px] bg-size-[80px_16px] bg-no-repeat [image-rendering:pixelated] aria-selected:[background-image:var(--radiobutton-src)] aria-selected:bg-position-[-48px_-0px] aria-selected:bg-size-[80px_16px] aria-selected:bg-no-repeat aria-selected:[image-rendering:pixelated]',
+        '1': 'sprite min-w-4 min-h-4 bg-(image:--radiobutton-src) bg-position-[-32px_-0px] bg-size-[80px_16px] aria-selected:bg-(image:--radiobutton-src) aria-selected:bg-position-[-48px_-0px] aria-selected:bg-size-[80px_16px]',
         // white
-        '2': 'inline-block min-w-4 min-h-4 [background-image:var(--radiobutton-src)] bg-position-[-64px_-0px] bg-size-[80px_16px] bg-no-repeat [image-rendering:pixelated] aria-selected:[background-image:var(--radiobutton-src)] aria-selected:bg-position-[-16px_-0px] aria-selected:bg-size-[80px_16px] aria-selected:bg-no-repeat aria-selected:[image-rendering:pixelated]',
+        '2': 'sprite min-w-4 min-h-4 bg-(image:--radiobutton-src) bg-position-[-64px_-0px] bg-size-[80px_16px] aria-selected:bg-(image:--radiobutton-src) aria-selected:bg-position-[-16px_-0px] aria-selected:bg-size-[80px_16px]',
         // default
-        '100': 'inline-block min-w-2.75 min-h-3.5 [background-image:var(--radiobutton-100-default-src)] bg-size-[11px_14px] bg-no-repeat [image-rendering:pixelated] aria-selected:[background-image:var(--radiobutton-100-selected-src)] aria-selected:bg-size-[11px_14px] aria-selected:bg-no-repeat aria-selected:[image-rendering:pixelated] pl-3.5 pt-0 pr-0 pb-0 text-[#000000] text-style-il-regular',
+        '100': 'sprite min-w-2.75 min-h-3.5 bg-(image:--radiobutton-100-default-src) bg-size-[11px_14px] aria-selected:bg-(image:--radiobutton-100-selected-src) aria-selected:bg-size-[11px_14px] pl-3.5 pt-0 pr-0 pb-0 text-[#000000] text-style-il-regular',
     },
 } as const;
 

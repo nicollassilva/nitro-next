@@ -10,7 +10,7 @@ const dropmenuVariantsConfig = {
         // black
         '1': '[border-image-source:var(--button-1-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] nine-slice-border min-w-10 min-h-5.5 text-[#ffffff] text-style-regular',
         // default
-        '3': 'inline-block min-w-10 min-h-5.75 [background-image:var(--dropmenu-3-default-src)] bg-size-[100%_100%] bg-no-repeat [image-rendering:pixelated] hover:[background-image:var(--dropmenu-3-hovering-src)] hover:bg-size-[100%_100%] hover:bg-no-repeat hover:[image-rendering:pixelated] text-[#000000] text-style-u-regular',
+        '3': 'sprite min-w-10 min-h-5.75 bg-(image:--dropmenu-3-default-src) bg-size-[100%_100%] hover:bg-(image:--dropmenu-3-hovering-src) hover:bg-size-[100%_100%] hover:bg-no-repeat  text-[#000000] text-style-u-regular',
         // default
         '100': '[border-image-source:var(--dropmenu-0-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] nine-slice-border min-w-10 min-h-5.5 text-[#000000] text-style-il-regular',
     },
@@ -19,13 +19,13 @@ const dropmenuVariantsConfig = {
 const dropmenuOverlayVariantsConfig = {
     variant: {
         // default
-        '0': '[background-image:var(--dropmenu-0-default-arrow-src)] bg-position-[right_5px_top_2px] bg-size-[16px_16px] [background-repeat:no-repeat_no-repeat] [image-rendering:pixelated]',
+        '0': 'bg-(image:--dropmenu-0-default-arrow-src) bg-position-[right_5px_top_2px] bg-size-[16px_16px] bg-no-repeat [image-rendering:pixelated]',
         // black
-        '1': '[background-image:var(--dropmenu-1-default-arrow-src)] bg-position-[right_5px_top_2px] bg-size-[16px_16px] [background-repeat:no-repeat_no-repeat] [image-rendering:pixelated]',
+        '1': 'bg-(image:--dropmenu-1-default-arrow-src) bg-position-[right_5px_top_2px] bg-size-[16px_16px] bg-no-repeat [image-rendering:pixelated]',
         // default
         '3': '',
         // default
-        '100': '[background-image:var(--dropmenu-0-default-arrow-src)] bg-position-[right_5px_top_2px] bg-size-[16px_16px] [background-repeat:no-repeat_no-repeat] [image-rendering:pixelated]',
+        '100': 'bg-(image:--dropmenu-0-default-arrow-src) bg-position-[right_5px_top_2px] bg-size-[16px_16px] bg-no-repeat [image-rendering:pixelated]',
     },
 } as const;
 

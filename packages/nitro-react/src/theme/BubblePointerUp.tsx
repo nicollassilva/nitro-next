@@ -6,9 +6,9 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const bubblePointerUpVariantsConfig = {
     variant: {
         // default
-        '0': 'inline-block min-w-3.25 min-h-2.25 [background-image:var(--bubblepointerup-src)] bg-position-[-16px_-0px] bg-size-[29px_10px] bg-no-repeat [image-rendering:pixelated]',
+        '0': 'sprite min-w-3.25 min-h-2.25 bg-(image:--bubblepointerup-src) bg-position-[-16px_-0px] bg-size-[29px_10px] [image-rendering:pixelated]',
         // default
-        '7': 'inline-block min-w-4 min-h-2.5 [background-image:var(--bubblepointerup-src)] bg-position-[-0px_-0px] bg-size-[29px_10px] bg-no-repeat [image-rendering:pixelated]',
+        '7': 'sprite min-w-4 min-h-2.5 bg-(image:--bubblepointerup-src) bg-position-[-0px_-0px] bg-size-[29px_10px] [image-rendering:pixelated]',
     },
 } as const;
 

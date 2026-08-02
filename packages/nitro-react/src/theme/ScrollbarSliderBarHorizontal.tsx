@@ -10,7 +10,7 @@ const scrollbarSliderBarHorizontalVariantsConfig = {
         // black
         '1': '[border-image-source:var(--scrollbarsliderbarhorizontal-1-default-src)] [border-image-slice:0_2_0_2_fill] [border-image-width:0px_2px_0px_2px] nine-slice-border active:[border-image-source:var(--scrollbarsliderbarhorizontal-1-default-src)] active:[border-image-slice:0_2_0_2_fill] active:[border-image-width:0px_2px_0px_2px] ',
         // default
-        '3': '[border-image-source:var(--scrollbarsliderbarhorizontal-3-default-src)] [border-image-slice:0_5_0_5_fill] [border-image-width:0px_5px_0px_5px] [border-image-repeat:repeat_stretch] [image-rendering:pixelated] hover:[border-image-source:var(--scrollbarsliderbarhorizontal-3-hovering-src)] hover:[border-image-slice:0_5_0_5_fill] hover:[border-image-width:0px_5px_0px_5px] hover:[border-image-repeat:repeat_stretch] hover:[image-rendering:pixelated] active:[border-image-source:var(--scrollbarsliderbarhorizontal-3-pressed-src)] active:[border-image-slice:0_5_0_5_fill] active:[border-image-width:0px_5px_0px_5px] active:[border-image-repeat:repeat_stretch] active:[image-rendering:pixelated]',
+        '3': '[border-image-source:var(--scrollbarsliderbarhorizontal-3-default-src)] [border-image-slice:0_5_0_5_fill] [border-image-width:0px_5px_0px_5px] [border-image-repeat:repeat_stretch] [image-rendering:pixelated] hover:[border-image-source:var(--scrollbarsliderbarhorizontal-3-hovering-src)] hover:[border-image-slice:0_5_0_5_fill] hover:[border-image-width:0px_5px_0px_5px] hover:[border-image-repeat:repeat_stretch]  active:[border-image-source:var(--scrollbarsliderbarhorizontal-3-pressed-src)] active:[border-image-slice:0_5_0_5_fill] active:[border-image-width:0px_5px_0px_5px] active:[border-image-repeat:repeat_stretch] ',
         // default
         '100': '[border-image-source:var(--scrollbarsliderbarhorizontal-100-default-src)] [border-image-slice:0_4_0_4_fill] [border-image-width:0px_4px_0px_4px] nine-slice-border',
         // default
@@ -21,9 +21,9 @@ const scrollbarSliderBarHorizontalVariantsConfig = {
 const scrollbarSliderBarHorizontalOverlayVariantsConfig = {
     variant: {
         // default
-        '0': '[background-image:var(--scrollbarsliderbarhorizontal-0-default-grd-src)] bg-position-[left_0px_top_5px] bg-size-[10px_7px] [background-repeat:repeat_no-repeat] [image-rendering:pixelated] active:[background-image:var(--scrollbarsliderbarhorizontal-0-pressed-grd-src)] active:bg-position-[left_0px_top_5px] active:bg-size-[10px_7px] active:[background-repeat:repeat_no-repeat] active:[image-rendering:pixelated]',
+        '0': 'bg-(image:--scrollbarsliderbarhorizontal-0-default-grd-src) bg-position-[left_0px_top_5px] bg-size-[10px_7px] bg-no-repeat [image-rendering:pixelated] active:bg-(image:--scrollbarsliderbarhorizontal-0-pressed-grd-src) active:bg-position-[left_0px_top_5px] active:bg-size-[10px_7px] active:[background-repeat:repeat_no-repeat] ',
         // black
-        '1': '[background-image:var(--scrollbarsliderbarhorizontal-1-default-grd-src)] bg-position-[left_0px_top_5px] bg-size-[10px_7px] [background-repeat:repeat_no-repeat] [image-rendering:pixelated] active:[background-image:var(--scrollbarsliderbarhorizontal-1-default-grd-src)] active:bg-position-[left_0px_top_5px] active:bg-size-[10px_7px] active:[background-repeat:repeat_no-repeat] active:[image-rendering:pixelated]',
+        '1': 'bg-(image:--scrollbarsliderbarhorizontal-1-default-grd-src) bg-position-[left_0px_top_5px] bg-size-[10px_7px] bg-no-repeat [image-rendering:pixelated] active:bg-(image:--scrollbarsliderbarhorizontal-1-default-grd-src) active:bg-position-[left_0px_top_5px] active:bg-size-[10px_7px] active:[background-repeat:repeat_no-repeat] ',
         // default
         '3': '',
         // default

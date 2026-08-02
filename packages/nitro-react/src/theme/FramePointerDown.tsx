@@ -6,7 +6,7 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const framePointerDownVariantsConfig = {
     variant: {
         // bubble
-        '7': 'inline-block min-w-4 min-h-3 [background-image:var(--framepointerdown-src)] bg-position-[-0px_-0px] bg-size-[16px_12px] bg-no-repeat [image-rendering:pixelated]',
+        '7': 'sprite min-w-4 min-h-3 bg-(image:--framepointerdown-src) bg-position-[-0px_-0px] bg-size-[16px_12px] [image-rendering:pixelated]',
     },
 } as const;
 

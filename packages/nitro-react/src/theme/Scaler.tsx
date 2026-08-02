@@ -6,15 +6,15 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const scalerVariantsConfig = {
     variant: {
         // default
-        '0': 'inline-block min-w-3.75 min-h-3.75 [background-image:var(--scaler-0-default-src)] bg-size-[15px_15px] bg-no-repeat [image-rendering:pixelated]',
+        '0': 'sprite min-w-3.75 min-h-3.75 bg-(image:--scaler-0-default-src) bg-size-[15px_15px] [image-rendering:pixelated]',
         // black
-        '1': 'inline-block min-w-3.75 min-h-3.75 [background-image:var(--scaler-0-default-src)] bg-size-[15px_15px] bg-no-repeat [image-rendering:pixelated]',
+        '1': 'sprite min-w-3.75 min-h-3.75 bg-(image:--scaler-0-default-src) bg-size-[15px_15px] [image-rendering:pixelated]',
         // white
-        '2': 'inline-block min-w-3.75 min-h-3.75 [background-image:var(--scaler-0-default-src)] bg-size-[15px_15px] bg-no-repeat [image-rendering:pixelated]',
+        '2': 'sprite min-w-3.75 min-h-3.75 bg-(image:--scaler-0-default-src) bg-size-[15px_15px] [image-rendering:pixelated]',
         // default
-        '3': 'inline-block min-w-5 min-h-5 [background-image:var(--scaler-src)] bg-position-[-0px_-0px] bg-size-[20px_20px] bg-no-repeat [image-rendering:pixelated]',
+        '3': 'sprite min-w-5 min-h-5 bg-(image:--scaler-src) bg-position-[-0px_-0px] bg-size-[20px_20px] [image-rendering:pixelated]',
         // light
-        '4': 'inline-block min-w-5 min-h-5 [background-image:var(--scaler-src)] bg-position-[-0px_-0px] bg-size-[20px_20px] bg-no-repeat [image-rendering:pixelated]',
+        '4': 'sprite min-w-5 min-h-5 bg-(image:--scaler-src) bg-position-[-0px_-0px] bg-size-[20px_20px] [image-rendering:pixelated]',
         // default
         '100': '',
     },
@@ -23,11 +23,11 @@ const scalerVariantsConfig = {
 const scalerOverlayVariantsConfig = {
     variant: {
         // default
-        '0': '[background-image:var(--scaler-0-default-shine-src)] bg-size-[15px_15px] bg-no-repeat [image-rendering:pixelated]',
+        '0': 'bg-(image:--scaler-0-default-shine-src) bg-size-[15px_15px] [image-rendering:pixelated]',
         // black
-        '1': '[background-image:var(--scaler-0-default-shine-src)] bg-size-[15px_15px] bg-no-repeat [image-rendering:pixelated]',
+        '1': 'bg-(image:--scaler-0-default-shine-src) bg-size-[15px_15px] [image-rendering:pixelated]',
         // white
-        '2': '[background-image:var(--scaler-0-default-shine-src)] bg-size-[15px_15px] bg-no-repeat [image-rendering:pixelated]',
+        '2': 'bg-(image:--scaler-0-default-shine-src) bg-size-[15px_15px] [image-rendering:pixelated]',
         // default
         '3': '',
         // light
