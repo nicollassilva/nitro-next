@@ -27,9 +27,11 @@ export const InfostandFurniView = (props: InfostandFurniViewProps) => {
     return (
         <div className="flex flex-col items-end gap-2">
             <Border variant="1" className="infostand-container">
-                <CloseButton variant="1" className="infostand-close" onClick={onClose} />
                 <div className="infostand-header">
-                    {furniData.name}
+                    <div className="flex grow gap-1.25 items-center leading-0">
+                        {furniData.name}
+                    </div>
+                    <CloseButton variant="1" className="infostand-close shrink-0" onClick={onClose} />
                 </div>
                 <hr className="infostand-separator" />
                 <div className="flex w-full overflow-hidden items-center justify-center py-1.25">

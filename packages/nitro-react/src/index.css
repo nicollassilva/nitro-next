@@ -6,7 +6,7 @@
 @import './assets/utilities.css';
 @import './assets/icons.css';
 
-@theme {
+@theme static {
     /* Typography */
     --font-sans: 'Ubuntu', system-ui, sans-serif;
     --font-size-base: 0.875rem;
@@ -39,7 +39,7 @@
 
     --nitro-purse-width: 230px;
     --nitro-purse-height: 77px;
-    
+
     --nitro-notifications-width: 192px;
 
     @keyframes rotating {

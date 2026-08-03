@@ -1,12 +1,8 @@
 .infostand-container {
     @apply relative flex flex-col min-w-(--nitro-infostand-width) max-w-(--nitro-infostand-width) size-full pointer-events-auto font-goldfish gap-1.25 p-2.5;
 
-    .infostand-close {
-        @apply absolute left-42 top-1.5;
-    }
-
     .infostand-header {
-        @apply flex items-center w-full gap-2 font-goldfish-bold text-[9px] max-w-36.25;
+        @apply flex items-center w-full gap-2 font-goldfish-bold text-[9px];
     }
 
     .infostand-separator {
