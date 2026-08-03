@@ -1,0 +1,68 @@
+.nitro-purse {
+    @apply w-[var(--nitro-purse-width)] h-[var(--nitro-purse-height)] pointer-events-auto pt-1.5 px-1.5;
+
+    .purse-grid {
+        @apply grid grid-cols-11 justify-between items-center gap-1;
+    }
+
+    .purse-left,
+    .purse-mid,
+    .purse-right {
+        @apply flex justify-center items-center h-full col-span-3;
+    }
+
+    .purse-mid {
+        @apply col-span-5 flex-col gap-1 pb-px pr-px;
+
+        .purse-button {
+            @apply w-25.25 h-7 py-0.5 opacity-90 flex justify-start items-center px-1.75 gap-1 cursor-pointer;
+
+            span {
+                @apply text-[#00C1C4] text-[0.77rem] font-ubuntu-bold font-aa text-ellipsis text-nowrap overflow-hidden;
+            }
+
+            &:hover {
+                > * {
+                    filter: brightness(160%);
+                }
+            }
+        }
+    }
+
+    .purse-left,
+    .purse-right {
+        @apply mt-0.5;
+    }
+    
+    .purse-left {
+        @apply flex flex-col justify-center items-end pr-1.25;
+
+        .purse-currency {
+            @apply h-4.75 flex justify-end items-center gap-0.5 w-13;
+
+            span {
+                @apply text-[0.78rem] mt-1 text-ellipsis text-nowrap overflow-hidden font-ubuntu-bold;
+            }
+        }
+
+        
+    }
+
+    .purse-right {
+        @apply pl-1.75 gap-0.5 flex-col text-nowrap relative;
+
+        button {
+            @apply h-4.75 min-h-4.75;
+        }
+
+        &::after {
+            content: '';
+            width: 1px;
+            height: 55px;
+            background-color: #444;
+            position: absolute;
+            left: 2px;
+            top: 4px;
+        }
+    }
+}

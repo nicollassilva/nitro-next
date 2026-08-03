@@ -99,6 +99,7 @@ const borderOverlayVariantsConfig = {
 
 const borderTintColors: Partial<Record<string, string>> = {
     '108': '#676767',
+    '9': '#686661'
 };
 
 const borderTintableVars: Partial<Record<string, string[]>> = {

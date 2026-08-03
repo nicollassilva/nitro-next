@@ -37,6 +37,11 @@
     --nitro-infostand-width: 190px;
     --nitro-infostand-motto-height: 25px;
 
+    --nitro-purse-width: 230px;
+    --nitro-purse-height: 77px;
+    
+    --nitro-notifications-width: 192px;
+
     @keyframes rotating {
         from {
             transform: rotate(0);

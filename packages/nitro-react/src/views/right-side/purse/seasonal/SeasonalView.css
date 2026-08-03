@@ -1,0 +1,29 @@
+.nitro-seasonal-container {
+    .nitro-seasonal-currency {
+        @apply pointer-events-auto cursor-pointer h-7.25 mt-0.75 flex justify-between;
+
+        .seasonal-data {
+            @apply flex flex-1 pl-1.75 pr-4 justify-between items-center;
+
+            .seasonal-name {
+                @apply font-ubuntu-bold text-[0.7rem];
+            }
+
+            .seasonal-amount {
+                @apply font-ubuntu-bold text-[0.7rem] text-white;
+
+                &.zero {
+                    @apply underline underline-offset-1;
+                }
+            }
+        }
+        
+        .nitro-seasonal-currency-icon {
+            @apply w-7.25 h-7.25 flex justify-center items-center;
+        }
+
+        &:hover {
+            filter: brightness(120%);
+        }
+    }
+}
