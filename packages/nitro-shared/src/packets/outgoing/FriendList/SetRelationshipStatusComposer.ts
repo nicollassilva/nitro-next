@@ -1,7 +1,7 @@
 import { IOutgoingPacket } from '@nitrodevco/nitro-api';
 
 export type SetRelationshipStatusComposerType = {
-    userId: number;
+    playerId: number;
     relationshipType: number;
 };
 
@@ -10,7 +10,8 @@ export class SetRelationshipStatusComposer implements IOutgoingPacket<SetRelatio
 
     public compose(): (number | string | boolean)[] {
         return [
-            this.params.userId, this.params.relationshipType
+            this.params.playerId,
+            this.params.relationshipType
         ];
     }
 }

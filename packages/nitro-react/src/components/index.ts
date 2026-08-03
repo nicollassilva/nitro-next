@@ -1,5 +1,6 @@
 export * from './AvatarImage';
 export * from './FurnitureImage';
+export * from './messenger/MessengerComponent';
 export * from './room/RoomCanvas';
 export * from './room/RoomContainer';
 export * from './room/RoomEventHandler';
@@ -11,3 +12,4 @@ export * from './room/widgets/object-menu/RoomObjectMenuBubble';
 export * from './room/widgets/object-menu/RoomObjectMenuNameBubble';
 export * from './room/widgets/object-menu/RoomObjectMenuWidget';
 export * from './room/widgets/RoomWidgets';
+export * from './wallet/WalletComponent';

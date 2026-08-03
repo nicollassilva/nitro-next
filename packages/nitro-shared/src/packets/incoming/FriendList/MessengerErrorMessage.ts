@@ -1,22 +1,18 @@
 import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
-
-// TODO(ErrorCode: FriendListErrorCodeType): Unknown type 'FriendListErrorCodeType'. Add override mapping.
+import { FriendListErrorCodeType } from './Data/FriendListErrorCodeType';
 
 export type MessengerErrorMessageType = {
-  clientMessageId: number;
-  errorCode: any;
+    clientMessageId: number;
+    errorCode: FriendListErrorCodeType;
 };
 
-export class MessengerErrorMessage implements IIncomingPacket<MessengerErrorMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): MessengerErrorMessageType
-  {
+export class MessengerErrorMessage implements IIncomingPacket<MessengerErrorMessageType> {
+    public parse(wrapper: IMessageDataWrapper): MessengerErrorMessageType {
+        const packet: MessengerErrorMessageType = {
+            clientMessageId: wrapper.readInt(),
+            errorCode: wrapper.readInt()
+        };
 
-    const packet: MessengerErrorMessageType = {
-      clientMessageId: wrapper.readInt(),
-      errorCode: undefined as any, // Unknown type 'FriendListErrorCodeType'. Add override mapping.
-    };
-
-    return packet;
-  }
+        return packet;
+    }
 }

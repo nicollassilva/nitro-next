@@ -1,22 +1,27 @@
 import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
-
-// TODO(Messages: List<MessageHistoryEntrySnapshot>): List<T> requires custom read loop (length + items).
+import { IHistoricConsoleMessage } from './Data/IHistoricConsoleMessage';
+import { HistoricConsoleMessageParser } from './Data/HistoricConsoleMessageParser';
 
 export type ConsoleMessageHistoryMessageType = {
-  chatId: number;
-  messages: any[];
+    chatId: number;
+    messages: IHistoricConsoleMessage[];
 };
 
-export class ConsoleMessageHistoryMessage implements IIncomingPacket<ConsoleMessageHistoryMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): ConsoleMessageHistoryMessageType
-  {
+export class ConsoleMessageHistoryMessage implements IIncomingPacket<ConsoleMessageHistoryMessageType> {
+    public parse(wrapper: IMessageDataWrapper): ConsoleMessageHistoryMessageType {
+        const packet: ConsoleMessageHistoryMessageType = {
+            chatId: wrapper.readInt(),
+            messages: []
+        };
 
-    const packet: ConsoleMessageHistoryMessageType = {
-      chatId: wrapper.readInt(),
-      messages: undefined as any, // List<T> requires custom read loop (length + items).
-    };
+        let count = wrapper.readInt();
 
-    return packet;
-  }
+        while (count > 0) {
+            packet.messages.push(HistoricConsoleMessageParser(wrapper));
+
+            count--;
+        }
+
+        return packet;
+    }
 }

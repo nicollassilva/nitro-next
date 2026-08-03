@@ -1,20 +1,27 @@
 import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
-
-// TODO(Requests: List<FriendRequestSnapshot>): List<T> requires custom read loop (length + items).
+import { IFriendRequest } from './Data/IFriendRequest';
+import { FriendRequestParser } from './Data/FriendRequestParser';
 
 export type FriendRequestsMessageType = {
-  requests: any[];
+    requests: IFriendRequest[];
 };
 
-export class FriendRequestsMessage implements IIncomingPacket<FriendRequestsMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): FriendRequestsMessageType
-  {
+export class FriendRequestsMessage implements IIncomingPacket<FriendRequestsMessageType> {
+    public parse(wrapper: IMessageDataWrapper): FriendRequestsMessageType {
+        const packet: FriendRequestsMessageType = {
+            requests: []
+        };
 
-    const packet: FriendRequestsMessageType = {
-      requests: undefined as any, // List<T> requires custom read loop (length + items).
-    };
+        wrapper.readInt();
 
-    return packet;
-  }
+        let count = wrapper.readInt();
+
+        while (count > 0) {
+            packet.requests.push(FriendRequestParser(wrapper));
+
+            count--;
+        }
+
+        return packet;
+    }
 }

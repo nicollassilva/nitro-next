@@ -2,7 +2,7 @@ import { IOutgoingPacket } from '@nitrodevco/nitro-api';
 
 export type SendRoomInviteComposerType = {
     message: string;
-    friendIds: number[];
+    playerIds: number[];
 };
 
 export class SendRoomInviteComposer implements IOutgoingPacket<SendRoomInviteComposerType> {
@@ -10,8 +10,9 @@ export class SendRoomInviteComposer implements IOutgoingPacket<SendRoomInviteCom
 
     public compose(): (number | string | boolean)[] {
         return [
+            this.params.playerIds.length,
+            ...this.params.playerIds,
             this.params.message,
-            this.params.friendIds,
         ];
     }
 }

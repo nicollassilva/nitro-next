@@ -1,20 +1,16 @@
 import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
-
-// TODO(ErrorCode: FollowFriendErrorCodeType): Unknown type 'FollowFriendErrorCodeType'. Add override mapping.
+import { FollowFriendErrorCodeType } from './Data/FollowFriendErrorCodeType';
 
 export type FollowFriendFailedMessageType = {
-  errorCode: any;
+    errorCode: FollowFriendErrorCodeType;
 };
 
-export class FollowFriendFailedMessage implements IIncomingPacket<FollowFriendFailedMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): FollowFriendFailedMessageType
-  {
+export class FollowFriendFailedMessage implements IIncomingPacket<FollowFriendFailedMessageType> {
+    public parse(wrapper: IMessageDataWrapper): FollowFriendFailedMessageType {
+        const packet: FollowFriendFailedMessageType = {
+            errorCode: wrapper.readInt()
+        };
 
-    const packet: FollowFriendFailedMessageType = {
-      errorCode: undefined as any, // Unknown type 'FollowFriendErrorCodeType'. Add override mapping.
-    };
-
-    return packet;
-  }
+        return packet;
+    }
 }

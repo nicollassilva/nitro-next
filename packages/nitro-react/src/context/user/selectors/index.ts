@@ -1,3 +1,4 @@
+export * from './useFriendsSelector';
 export * from './useIsSystemShutdown';
 export * from './useOwnClubLevel';
 export * from './useOwnHasClub';
@@ -8,3 +9,4 @@ export * from './useOwnSecurityLevel';
 export * from './useOwnUserFigure';
 export * from './useOwnUserGender';
 export * from './useOwnUserId';
+export * from './useWallet';

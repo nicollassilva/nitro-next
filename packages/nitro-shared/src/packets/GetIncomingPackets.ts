@@ -294,7 +294,8 @@ import {
     YoutubeControlVideoMessage,
     YoutubeDisplayPlaylistsMessage,
     YoutubeDisplayVideoMessage,
-    WhisperMessage
+    WhisperMessage,
+    FindFriendsProcessResultMessage
 } from './incoming';
 import { IncomingHeader } from './IncomingHeader';
 
@@ -386,6 +387,7 @@ export const GetIncomingPackets = () => {
         [IncomingHeader.SilverBalanceMessage]: SilverBalanceMessage,
         [IncomingHeader.AcceptFriendResultMessage]: AcceptFriendResultMessage,
         [IncomingHeader.ConsoleMessageHistoryMessage]: ConsoleMessageHistoryMessage,
+        [IncomingHeader.FindFriendsProcessResultMessage]: FindFriendsProcessResultMessage,
         [IncomingHeader.FollowFriendFailedMessage]: FollowFriendFailedMessage,
         [IncomingHeader.FriendListFragmentMessage]: FriendListFragmentMessage,
         [IncomingHeader.FriendListUpdateMessage]: FriendListUpdateMessage,

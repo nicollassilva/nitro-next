@@ -15,9 +15,11 @@ type ProviderProps = {
     children: ReactNode;
 }
 
+type ConnectionPhase = 'idle' | 'connecting' | 'authenticating' | 'awaitingHandlers' | 'ready' | 'closed';
+
 export const WebSocketContextProvider = ({ children }: ProviderProps) => {
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-    const [isReady, setIsReady] = useState<boolean>(false);
+    const phase = useRef<ConnectionPhase>('idle');
+    const [renderedPhase, setRenderedPhase] = useState<ConnectionPhase>('idle');
     const { incomingByHeader, incomingCtors, incomingHeaderByCtor, registerManyIncoming } = useCommunicationIncoming();
     const { outgoingHeaderByComposerName, registerManyOutgoing } = useCommunicationOutgoing();
     //const socketUrl = useConfigurationStore(x => x.config['socket.url'] as string) ?? undefined;
@@ -27,6 +29,7 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
     const listeners = useRef<Map<IncomingPacketConstructor<object>, Array<(data: object) => void>>>(new Map());
     const pendingClientMessages = useRef<IOutgoingPacket<object>[]>([]);
     const pendingServerMessages = useRef<IMessageDataWrapper[]>([]);
+    const hasConnected = useRef<boolean>(false);
 
     const connect = () => {
         try {
@@ -34,12 +37,21 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
             const socketUrl = params.get('socketUrl') ?? '';
 
             if (!socketUrl || !socketUrl.length || ws.current) return;
+            if (hasConnected.current) return;
 
-            ws.current = new WebSocket(socketUrl);
+            hasConnected.current = true;
 
-            ws.current.binaryType = 'arraybuffer';
+            const socket = new WebSocket(socketUrl);
 
-            ws.current.onopen = (event: Event) => {
+            ws.current = socket;
+
+            socket.binaryType = 'arraybuffer';
+
+            setPhase('connecting');
+
+            socket.onopen = () => {
+                setPhase('authenticating');
+
                 send(new ClientHelloComposer({
                     production: production,
                     platform: 'WEB',
@@ -56,17 +68,25 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
                 }));
             };
 
-            ws.current.onerror = (event: Event) => {
+            socket.onerror = (event: Event) => {
                 NitroLogger.error('WebSocket error:', event);
             };
 
-            ws.current.onclose = (event: CloseEvent) => {
+            socket.onclose = (event: CloseEvent) => {
                 NitroLogger.warn('WebSocket closed:', event.code, event.reason);
-                setIsAuthenticated(false);
-                setIsReady(false);
+
+                if (ws.current !== socket) return;
+
+                ws.current = undefined;
+                wsBuffer.current = new ArrayBuffer(0);
+
+                pendingClientMessages.current = [];
+                pendingServerMessages.current = [];
+
+                setPhase('closed');
             };
 
-            ws.current.onmessage = (event: MessageEvent<ArrayBuffer>) => {
+            socket.onmessage = (event: MessageEvent<ArrayBuffer>) => {
                 const array = new Uint8Array(wsBuffer.current.byteLength + event.data.byteLength);
 
                 array.set(new Uint8Array(wsBuffer.current), 0);
@@ -85,15 +105,7 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
         try {
             if (wsBuffer.current.byteLength === 0) return;
 
-            const wrappers = decodeWrappers();
-
-            if (isAuthenticated && !isReady) {
-                pendingServerMessages.current.push(...wrappers);
-
-                return;
-            }
-
-            processWrappers(...wrappers);
+            dispatchWrappers(decodeWrappers());
         } catch (err) {
             NitroLogger.error(err);
         }
@@ -155,53 +167,69 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
 
         const reader = new BinaryReader(wsBuffer.current);
 
-        while (wsBuffer.current.byteLength) {
-            if (wsBuffer.current.byteLength < 4) break;
+        let consumed = 0;
 
-            const length = reader.readInt();
+        try {
+            while (wsBuffer.current.byteLength - consumed >= 4) {
+                const length = reader.readInt();
 
-            if (length > (wsBuffer.current.byteLength - 4)) break;
+                if (length < 2) {
+                    NitroLogger.error(`WebSocket: Malformed packet length: ${length}`);
+                    ws.current?.close();
+                    break;
+                }
+                
+                if (length > reader.remaining()) break;
 
-            const extracted = reader.readBytes(length);
+                const extracted = reader.readBytes(length);
 
-            wrappers.push(new EvaWireDataWrapper(extracted.readShort(), extracted));
+                wrappers.push(new EvaWireDataWrapper(extracted.readShort(), extracted));
 
-            wsBuffer.current = wsBuffer.current.slice(length + 4);
+                consumed += length + 4;
+            }
+        } catch (err) {
+            NitroLogger.error(err);
         }
+
+        if (consumed) wsBuffer.current = wsBuffer.current.slice(consumed);
 
         return wrappers;
     }
 
-    const processWrappers = (...wrappers: IMessageDataWrapper[]) => {
+    const processWrapper = (wrapper: IMessageDataWrapper) => {
         try {
-            if (!wrappers || !wrappers.length) return;
+            const ctor = incomingByHeader.current.get(wrapper.header);
 
-            for (const wrapper of wrappers) {
-                try {
-                    const ctor = incomingByHeader.current.get(wrapper.header);
+            if (!ctor) return;
 
-                    if (!ctor) continue;
+            const handlers = listeners.current.get(ctor);
 
-                    const handlers = listeners.current.get(ctor);
+            if (!handlers?.length) return;
 
-                    if (!handlers?.length) continue;
+            const parsed = new ctor().parse(wrapper);
 
-                    const parsed = new ctor().parse(wrapper);
-
-                    for (const handle of handlers) handle(parsed);
-                } catch (err) {
-                    NitroLogger.error(err);
-                }
-            }
+            for (const handle of handlers) handle(parsed);
         } catch (err) {
             NitroLogger.error(err);
+        }
+    }
+
+    const dispatchWrappers = (wrappers: IMessageDataWrapper[]) => {
+        for (let index = 0; index < wrappers.length; index++) {
+            if (phase.current === 'awaitingHandlers') {
+                pendingServerMessages.current.push(...wrappers.slice(index));
+
+                return;
+            }
+
+            processWrapper(wrappers[index]);
         }
     }
 
     const send = <T extends object,>(...packets: IOutgoingPacket<T>[]) => {
         if (!packets?.length) return;
 
-        if (isAuthenticated && !isReady) {
+        if (phase.current === 'awaitingHandlers') {
             pendingClientMessages.current.push(...packets);
 
             return;
@@ -240,6 +268,12 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
         }
     }
 
+    const setPhase = (next: ConnectionPhase) => {
+        phase.current = next;
+
+        setRenderedPhase(next);
+    }
+
     const subscribe = <T extends object>(
         event: IncomingPacketConstructor<T>,
         handler: (data: T) => void
@@ -270,7 +304,7 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
     };
 
     const setReady = () => {
-        if (isReady) return;
+        if (phase.current !== 'awaitingHandlers') return;
 
         const pendingClient = pendingClientMessages.current;
         const pendingServer = pendingServerMessages.current;
@@ -278,27 +312,32 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
         pendingServerMessages.current = [];
         pendingClientMessages.current = [];
 
-        setIsReady(true);
+        setPhase('ready');
 
-        processWrappers(...pendingServer);
+        dispatchWrappers(pendingServer);
         sendRaw(...pendingClient);
     }
 
     useEffect(() => {
         registerManyIncoming(GetIncomingPackets());
         registerManyOutgoing(GetOutgoingPackets());
+
+        return subscribe(AuthenticationOKMessage, () => setPhase('awaitingHandlers'));
     }, []);
 
-    useEffect(() => {
-        if (isAuthenticated) return;
+    useEffect(() => () => {
+        const socket = ws.current;
 
-        return subscribe(AuthenticationOKMessage, data => {
-            setIsAuthenticated(true);
-        });
-    }, [isAuthenticated, subscribe]);
+        ws.current = undefined;
+
+        socket?.close(1000, 'Client shutting down');
+    }, []);
+
+    const isAuthenticated = renderedPhase === 'awaitingHandlers' || renderedPhase === 'ready';
+    const isDisconnected = renderedPhase === 'closed';
 
     return (
-        <WebSocketContext.Provider value={{ isAuthenticated, connect, send, subscribe, setReady }}>
+        <WebSocketContext.Provider value={{ isAuthenticated, isDisconnected, connect, send, subscribe, setReady }}>
             {children}
         </WebSocketContext.Provider>
     );

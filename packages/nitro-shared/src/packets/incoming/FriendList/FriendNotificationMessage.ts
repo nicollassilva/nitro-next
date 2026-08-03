@@ -1,24 +1,20 @@
 import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
-
-// TODO(TypeCode: FriendNotificationCodeType): Unknown type 'FriendNotificationCodeType'. Add override mapping.
+import { FriendNotificationCodeType } from './Data/FriendNotificationCodeType';
 
 export type FriendNotificationMessageType = {
-  avatarId: string;
-  typeCode: any;
-  message: string;
+    playerId: number;
+    typeCode: FriendNotificationCodeType;
+    message: string;
 };
 
-export class FriendNotificationMessage implements IIncomingPacket<FriendNotificationMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): FriendNotificationMessageType
-  {
+export class FriendNotificationMessage implements IIncomingPacket<FriendNotificationMessageType> {
+    public parse(wrapper: IMessageDataWrapper): FriendNotificationMessageType {
+        const packet: FriendNotificationMessageType = {
+            playerId: parseInt(wrapper.readString()),
+            typeCode: wrapper.readInt(),
+            message: wrapper.readString()
+        };
 
-    const packet: FriendNotificationMessageType = {
-      avatarId: wrapper.readString(),
-      typeCode: undefined as any, // Unknown type 'FriendNotificationCodeType'. Add override mapping.
-      message: wrapper.readString(),
-    };
-
-    return packet;
-  }
+        return packet;
+    }
 }

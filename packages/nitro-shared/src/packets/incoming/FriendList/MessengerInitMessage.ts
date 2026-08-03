@@ -1,26 +1,31 @@
 import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
-
-// TODO(FriendCategories: List<FriendCategorySnapshot>): List<T> requires custom read loop (length + items).
+import { IMessengerCategory } from './Data/IMessengerCategory';
+import { MessengerCategoryParser } from './Data/MessengerCategoryParser';
 
 export type MessengerInitMessageType = {
-  userFriendLimit: number;
-  normalFriendLimit: number;
-  extendedFriendLimit: number;
-  friendCategories: any[];
+    userFriendLimit: number;
+    normalFriendLimit: number;
+    extendedFriendLimit: number;
+    friendCategories: IMessengerCategory[];
 };
 
-export class MessengerInitMessage implements IIncomingPacket<MessengerInitMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): MessengerInitMessageType
-  {
+export class MessengerInitMessage implements IIncomingPacket<MessengerInitMessageType> {
+    public parse(wrapper: IMessageDataWrapper): MessengerInitMessageType {
+        const packet: MessengerInitMessageType = {
+            userFriendLimit: wrapper.readInt(),
+            normalFriendLimit: wrapper.readInt(),
+            extendedFriendLimit: wrapper.readInt(),
+            friendCategories: []
+        };
 
-    const packet: MessengerInitMessageType = {
-      userFriendLimit: wrapper.readInt(),
-      normalFriendLimit: wrapper.readInt(),
-      extendedFriendLimit: wrapper.readInt(),
-      friendCategories: undefined as any, // List<T> requires custom read loop (length + items).
-    };
+        let count = wrapper.readInt();
 
-    return packet;
-  }
+        while (count > 0) {
+            packet.friendCategories.push(MessengerCategoryParser(wrapper));
+
+            count--;
+        }
+
+        return packet;
+    }
 }

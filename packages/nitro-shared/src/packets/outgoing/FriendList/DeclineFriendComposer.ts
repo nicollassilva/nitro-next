@@ -2,7 +2,7 @@ import { IOutgoingPacket } from '@nitrodevco/nitro-api';
 
 export type DeclineFriendComposerType = {
     declineAll: boolean;
-    friends: number[];
+    playerIds: number[];
 };
 
 export class DeclineFriendComposer implements IOutgoingPacket<DeclineFriendComposerType> {
@@ -11,7 +11,8 @@ export class DeclineFriendComposer implements IOutgoingPacket<DeclineFriendCompo
     public compose(): (number | string | boolean)[] {
         return [
             this.params.declineAll,
-            this.params.friends,
+            this.params.playerIds.length,
+            ...this.params.playerIds
         ];
     }
 }
