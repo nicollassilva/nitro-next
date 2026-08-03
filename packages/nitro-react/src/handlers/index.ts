@@ -8,4 +8,5 @@ export * from './room/useRoomPermissionsHandler';
 export * from './room/useRoomPetPackageHandler';
 export * from './room/useRoomPollHandler';
 export * from './room/useRoomUserHandler';
+export * from './useMessengerHandler';
 export * from './user/useUserInfoHandler';

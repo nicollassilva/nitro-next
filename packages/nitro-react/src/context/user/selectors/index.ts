@@ -1,3 +1,4 @@
+export * from './useFriendsSelector';
 export * from './useIsSystemShutdown';
 export * from './useOwnClubLevel';
 export * from './useOwnHasClub';

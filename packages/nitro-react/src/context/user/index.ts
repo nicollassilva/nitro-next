@@ -1,4 +1,6 @@
 export * from './actions/useUserInfoActions';
+export * from './actions/useUserMessengerActions';
+export * from './selectors/useFriendsSelector';
 export * from './selectors/useIsSystemShutdown';
 export * from './selectors/useOwnClubLevel';
 export * from './selectors/useOwnHasClub';

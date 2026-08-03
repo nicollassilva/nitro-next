@@ -121,16 +121,16 @@ export const InfoBubbleAvatarView = (props: InfoBubbleAvatarViewProps) => {
                 send(new AmbassadorAlertComposer({ userId: userData.webId }));
                 break;
             case 'rship_heart':
-                send(new SetRelationshipStatusComposer({ userId: userData.webId, relationshipType: 1 }));
+                send(new SetRelationshipStatusComposer({ playerId: userData.webId, relationshipType: 1 }));
                 break;
             case 'rship_smile':
-                send(new SetRelationshipStatusComposer({ userId: userData.webId, relationshipType: 2 }));
+                send(new SetRelationshipStatusComposer({ playerId: userData.webId, relationshipType: 2 }));
                 break;
             case 'rship_bobba':
-                send(new SetRelationshipStatusComposer({ userId: userData.webId, relationshipType: 3 }));
+                send(new SetRelationshipStatusComposer({ playerId: userData.webId, relationshipType: 3 }));
                 break;
             case 'rship_none':
-                send(new SetRelationshipStatusComposer({ userId: userData.webId, relationshipType: 0 }));
+                send(new SetRelationshipStatusComposer({ playerId: userData.webId, relationshipType: 0 }));
                 break;
 
         }

@@ -1,6 +1,8 @@
 import { AvatarGenderType, ClubLevelEnum, IUserInfo, NoobnessLevelEnum, SecurityLevelEnum } from '@nitrodevco/nitro-api';
 import { createStore } from 'zustand';
 
+import { createUserMessengerSlice, UserMessengerSlice } from './UserMessengerSlice';
+
 type State = {
     tags: string[];
     clubLevel: ClubLevelEnum;
@@ -56,7 +58,7 @@ const initialState: State = {
     uiFlags: 0,
 };
 
-export type UserStore = State & Actions;
+export type UserStore = State & Actions & UserMessengerSlice;
 
 export const createUserStore = () => createStore<UserStore>()((set, get, store) => ({
     ...initialState,
@@ -70,4 +72,5 @@ export const createUserStore = () => createStore<UserStore>()((set, get, store) 
     decreasePetRespects: () => set(state => ({ petRespectLeft: state.petRespectLeft - 1 })),
     setEmailVerified: (directMail: boolean) => set({ directMail }),
     setTags: (tags: string[]) => set({ tags }),
+    ...createUserMessengerSlice(set, get, store)
 }));
