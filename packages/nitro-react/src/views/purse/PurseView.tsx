@@ -6,28 +6,40 @@ export const PurseView = () => {
     const currency = useWallet();
     const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
 
+    const kinds = [
+        {
+            amount: currency.activityPoints[5] ?? 0,
+            color: '#38caeb',
+            icon: 'diamonds'
+        },
+        {
+            amount: currency.credits ?? 0,
+            color: '#d5af22',
+            icon: 'credits'
+        },
+        {
+            amount: currency.activityPoints[0] ?? 0,
+            color: '#d787d7',
+            icon: 'duckets'
+        },
+    ];
+
     return (
         <Border variant="9" className="flex w-57.5 h-19.25 p-1.5 pointer-events-auto gap-1.5">
             <div className="flex flex-col justify-center w-13">
-                <div className="h-4.75 flex justify-end items-center gap-0.5">
-                    <span className="text-[#38caeb] text-[12px] text-ellipsis text-nowrap font-ubuntu-bold">{currency.activityPoints[5] ?? 0}</span>
-                    <NitroIcon icon={`icon-currency diamonds`} />
-                </div>
-                <div className="h-4.75 flex justify-end items-center gap-0.5">
-                    <span className="text-[#d5af22] text-[12px] text-ellipsis text-nowrap font-ubuntu-bold">{currency.credits}</span>
-                    <NitroIcon icon={`icon-currency credits`} />
-                </div>
-                <div className="h-4.75 flex justify-end items-center gap-0.5">
-                    <span className="text-[#d787d7] text-[12px] text-ellipsis text-nowrap font-ubuntu-bold">{currency.activityPoints[1] ?? 0}</span>
-                    <NitroIcon icon={`icon-currency duckets`} />
-                </div>
+                {kinds.map(({ amount, color, icon }) =>
+                    <div className="h-4.75 flex justify-end items-center gap-0.5 [&:hover>*]:brightness-[1.6]">
+                        <span className="text-[12px] text-ellipsis text-nowrap font-ubuntu-bold" style={{ color }}>{amount}</span>
+                        <NitroIcon icon={`icon-currency ${icon}`} />
+                    </div>)
+                }
             </div>
             <div className="flex flex-col justify-center w-25.25 gap-1">
-                <Border className="flex items-center gap-1 opacity-90 p-1 hover:brightness-[1.6]" variant="1" tintColor="#FFE1CC">
+                <Border className="flex items-center gap-1 opacity-90 p-1 [&:hover>*]:brightness-[1.6]" variant="1" tintColor="#FFE1CC">
                     <NitroIcon icon="icon-hc-small" />
                     <span className="text-[#00C1C4] text-[12px] font-ubuntu-bold font-aa text-ellipsis text-nowrap overflow-hidden">{getLocalizationValue('purse.clubdays.zero.amount.text')}</span>
                 </Border>
-                <Border className="flex items-center gap-1 opacity-90 p-1 hover:brightness-[1.6]" variant="1" tintColor="#FFE1CC">
+                <Border className="flex items-center gap-1 opacity-90 p-1 [&:hover>*]:brightness-[1.6]" variant="1" tintColor="#FFE1CC">
                     <NitroIcon icon="icon-earnings-small" />
                     <span className="text-[#00C1C4] text-[12px] font-ubuntu-bold font-aa text-ellipsis text-nowrap overflow-hidden">{getLocalizationValue('earnings.title')}</span>
                 </Border>

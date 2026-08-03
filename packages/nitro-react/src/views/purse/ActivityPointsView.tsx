@@ -1,6 +1,6 @@
 import { useWallet } from "#base/context";
 import { useLocalizationStore } from "#base/stores";
-import { Border, cn } from "#base/theme";
+import { Border, cn, NitroIcon } from "#base/theme";
 
 export const ActivityPointsView = () => {
     const { activityPoints } = useWallet();
@@ -32,7 +32,7 @@ export const ActivityPointsView = () => {
                         </span>
                     </div>
                     <Border tintColor={color} variant="9" className="w-7.25 h-7.25 flex justify-center items-center hover:brightness-[1.2]" style={{ backgroundColor: color, borderRadius: '6px' }}>
-                        {/** icon */}
+                        <NitroIcon icon={`icon-currency ${icon}`} />
                     </Border>
                 </Border>)
             }
