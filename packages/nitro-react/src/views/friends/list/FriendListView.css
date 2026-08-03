@@ -1,0 +1,9 @@
+.nitro-friendlist {
+    @apply w-[var(--nitro-friendlist-width)] h-[var(--nitro-friendlist-height)] p-0;
+
+    .friendlist-bg {
+        @apply w-full text-black bg-white border-y border-black;
+
+        height: calc(100% - 40px);
+    }
+}

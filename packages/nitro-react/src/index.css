@@ -42,6 +42,9 @@
 
     --nitro-notifications-width: 192px;
 
+    --nitro-friendlist-width: 230px;
+    --nitro-friendlist-height: 350px;
+
     @keyframes rotating {
         from {
             transform: rotate(0);
