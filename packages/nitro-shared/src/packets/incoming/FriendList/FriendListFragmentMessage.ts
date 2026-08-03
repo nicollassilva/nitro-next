@@ -1,24 +1,29 @@
 import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
-
-// TODO(Fragment: List<MessengerFriendSnapshot>): List<T> requires custom read loop (length + items).
+import { IMessengerFriend } from './Data/IMessengerFriend';
+import { MessengerFriendParser } from './Data/MessengerFriendParser';
 
 export type FriendListFragmentMessageType = {
-  totalFragments: number;
-  fragmentIndex: number;
-  fragment: any[];
+    totalFragments: number;
+    fragmentIndex: number;
+    fragment: IMessengerFriend[];
 };
 
-export class FriendListFragmentMessage implements IIncomingPacket<FriendListFragmentMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): FriendListFragmentMessageType
-  {
+export class FriendListFragmentMessage implements IIncomingPacket<FriendListFragmentMessageType> {
+    public parse(wrapper: IMessageDataWrapper): FriendListFragmentMessageType {
+        const packet: FriendListFragmentMessageType = {
+            totalFragments: wrapper.readInt(),
+            fragmentIndex: wrapper.readInt(),
+            fragment: []
+        };
 
-    const packet: FriendListFragmentMessageType = {
-      totalFragments: wrapper.readInt(),
-      fragmentIndex: wrapper.readInt(),
-      fragment: undefined as any, // List<T> requires custom read loop (length + items).
-    };
+        let count = wrapper.readInt();
 
-    return packet;
-  }
+        while (count > 0) {
+            packet.fragment.push(MessengerFriendParser(wrapper));
+
+            count--;
+        }
+
+        return packet;
+    }
 }

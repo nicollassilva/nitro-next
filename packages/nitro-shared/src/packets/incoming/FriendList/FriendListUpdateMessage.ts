@@ -1,19 +1,36 @@
 import type { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
-
-// TODO(FriendCategories: List<FriendCategorySnapshot>): List<T> requires custom read loop (length + items).
-// TODO(Updates: List<FriendListUpdateSnapshot>): List<T> requires custom read loop (length + items).
+import { IMessengerCategory } from './Data/IMessengerCategory';
+import { IMessengerUpdate } from './Data/IMessengerUpdate';
+import { MessengerCategoryParser } from './Data/MessengerCategoryParser';
+import { MessengerUpdateParser } from './Data/MessengerUpdateParser';
 
 export type FriendListUpdateMessageType = {
-    friendCategories: any[];
-    updates: any[];
+    friendCategories: IMessengerCategory[];
+    updates: IMessengerUpdate[];
 };
 
 export class FriendListUpdateMessage implements IIncomingPacket<FriendListUpdateMessageType> {
     public parse(wrapper: IMessageDataWrapper): FriendListUpdateMessageType {
         const packet: FriendListUpdateMessageType = {
-            friendCategories: undefined as any, // List<T> requires custom read loop (length + items).
-            updates: undefined as any, // List<T> requires custom read loop (length + items).
+            friendCategories: [],
+            updates: []
         };
+
+        let count = wrapper.readInt();
+
+        while (count > 0) {
+            packet.friendCategories.push(MessengerCategoryParser(wrapper));
+
+            count--;
+        }
+
+        count = wrapper.readInt();
+
+        while (count > 0) {
+            packet.updates.push(MessengerUpdateParser(wrapper));
+
+            count--;
+        }
 
         return packet;
     }

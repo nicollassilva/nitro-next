@@ -1,18 +1,15 @@
 import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
 
 export type MiniMailUnreadCountMessageType = {
-  unreadCount: number;
+    unreadCount: number;
 };
 
-export class MiniMailUnreadCountMessage implements IIncomingPacket<MiniMailUnreadCountMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): MiniMailUnreadCountMessageType
-  {
+export class MiniMailUnreadCountMessage implements IIncomingPacket<MiniMailUnreadCountMessageType> {
+    public parse(wrapper: IMessageDataWrapper): MiniMailUnreadCountMessageType {
+        const packet: MiniMailUnreadCountMessageType = {
+            unreadCount: wrapper.readInt(),
+        };
 
-    const packet: MiniMailUnreadCountMessageType = {
-      unreadCount: wrapper.readInt(),
-    };
-
-    return packet;
-  }
+        return packet;
+    }
 }

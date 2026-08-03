@@ -1,18 +1,14 @@
 import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
 
 export type MiniMailNewMessageType = {
-  // no fields
-
+    // no fields
 };
 
-export class MiniMailNewMessage implements IIncomingPacket<MiniMailNewMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): MiniMailNewMessageType
-  {
+export class MiniMailNewMessage implements IIncomingPacket<MiniMailNewMessageType> {
+    public parse(wrapper: IMessageDataWrapper): MiniMailNewMessageType {
+        const packet: MiniMailNewMessageType = {
+        };
 
-    const packet: MiniMailNewMessageType = {
-    };
-
-    return packet;
-  }
+        return packet;
+    }
 }

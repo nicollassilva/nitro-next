@@ -531,3 +531,4 @@ export * from './Room/Engine/Data/SwimFigureUtils';
 export * from './Room/Engine/Data/UserParser';
 export * from './Room/Engine/Data/UserUpdateParser';
 export * from './Room/Engine/Data/WallItemParser';
+export * from './FriendList/FindFriendsProcessResultMessage';

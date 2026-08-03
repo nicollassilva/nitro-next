@@ -1,20 +1,24 @@
 import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
-
-// TODO(Failures: List<AcceptFriendFailureSnapshot>): List<T> requires custom read loop (length + items).
+import { IFriendAcceptFailure } from './Data/IFriendAcceptFailure';
 
 export type AcceptFriendResultMessageType = {
-  failures: any[];
+    failures: IFriendAcceptFailure[];
 };
 
-export class AcceptFriendResultMessage implements IIncomingPacket<AcceptFriendResultMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): AcceptFriendResultMessageType
-  {
+export class AcceptFriendResultMessage implements IIncomingPacket<AcceptFriendResultMessageType> {
+    public parse(wrapper: IMessageDataWrapper): AcceptFriendResultMessageType {
+        const packet: AcceptFriendResultMessageType = {
+            failures: []
+        };
 
-    const packet: AcceptFriendResultMessageType = {
-      failures: undefined as any, // List<T> requires custom read loop (length + items).
-    };
+        let count = wrapper.readInt();
 
-    return packet;
-  }
+        while (count > 0) {
+            packet.failures.push({ playerId: wrapper.readInt(), errorCode: wrapper.readInt() });
+
+            count--;
+        }
+
+        return packet;
+    }
 }

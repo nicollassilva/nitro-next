@@ -1,20 +1,17 @@
 import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
-
-// TODO(Request: FriendRequestSnapshot): Unknown type 'FriendRequestSnapshot'. Add override mapping.
+import { IFriendRequest } from './Data/IFriendRequest';
+import { FriendRequestParser } from './Data/FriendRequestParser';
 
 export type NewFriendRequestMessageType = {
-  request: any;
+    request: IFriendRequest;
 };
 
-export class NewFriendRequestMessage implements IIncomingPacket<NewFriendRequestMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): NewFriendRequestMessageType
-  {
+export class NewFriendRequestMessage implements IIncomingPacket<NewFriendRequestMessageType> {
+    public parse(wrapper: IMessageDataWrapper): NewFriendRequestMessageType {
+        const packet: NewFriendRequestMessageType = {
+            request: FriendRequestParser(wrapper)
+        };
 
-    const packet: NewFriendRequestMessageType = {
-      request: undefined as any, // Unknown type 'FriendRequestSnapshot'. Add override mapping.
-    };
-
-    return packet;
-  }
+        return packet;
+    }
 }

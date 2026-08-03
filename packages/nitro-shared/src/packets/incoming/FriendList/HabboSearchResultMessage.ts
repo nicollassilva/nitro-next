@@ -1,23 +1,35 @@
 import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
-
-// TODO(Friends: List<MessengerSearchResultSnapshot>): List<T> requires custom read loop (length + items).
-// TODO(Others: List<MessengerSearchResultSnapshot>): List<T> requires custom read loop (length + items).
+import { IMessengerSearchResult } from './Data/IMessengerSearchResult';
+import { MessengerSearchResultParser } from './Data/MessengerSearchResultParser';
 
 export type HabboSearchResultMessageType = {
-  friends: any[];
-  others: any[];
+    friends: IMessengerSearchResult[];
+    others: IMessengerSearchResult[];
 };
 
-export class HabboSearchResultMessage implements IIncomingPacket<HabboSearchResultMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): HabboSearchResultMessageType
-  {
+export class HabboSearchResultMessage implements IIncomingPacket<HabboSearchResultMessageType> {
+    public parse(wrapper: IMessageDataWrapper): HabboSearchResultMessageType {
+        const packet: HabboSearchResultMessageType = {
+            friends: [],
+            others: []
+        };
 
-    const packet: HabboSearchResultMessageType = {
-      friends: undefined as any, // List<T> requires custom read loop (length + items).
-      others: undefined as any, // List<T> requires custom read loop (length + items).
-    };
+        let count = wrapper.readInt();
 
-    return packet;
-  }
+        while (count > 0) {
+            packet.friends.push(MessengerSearchResultParser(wrapper));
+
+            count--;
+        }
+
+        count = wrapper.readInt();
+
+        while (count > 0) {
+            packet.others.push(MessengerSearchResultParser(wrapper));
+
+            count--;
+        }
+
+        return packet;
+    }
 }
