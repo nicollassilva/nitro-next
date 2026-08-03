@@ -9,3 +9,4 @@ export * from './useOwnSecurityLevel';
 export * from './useOwnUserFigure';
 export * from './useOwnUserGender';
 export * from './useOwnUserId';
+export * from './useWallet';

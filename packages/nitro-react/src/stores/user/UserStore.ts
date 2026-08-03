@@ -2,6 +2,7 @@ import { AvatarGenderType, ClubLevelEnum, IUserInfo, NoobnessLevelEnum, Security
 import { createStore } from 'zustand';
 
 import { createUserMessengerSlice, UserMessengerSlice } from './UserMessengerSlice';
+import { createUserWalletSlice, UserWalletSlice } from './UserWalletSlice';
 
 type State = {
     tags: string[];
@@ -58,7 +59,7 @@ const initialState: State = {
     uiFlags: 0,
 };
 
-export type UserStore = State & Actions & UserMessengerSlice;
+export type UserStore = State & Actions & UserMessengerSlice & UserWalletSlice;
 
 export const createUserStore = () => createStore<UserStore>()((set, get, store) => ({
     ...initialState,
@@ -72,5 +73,6 @@ export const createUserStore = () => createStore<UserStore>()((set, get, store) 
     decreasePetRespects: () => set(state => ({ petRespectLeft: state.petRespectLeft - 1 })),
     setEmailVerified: (directMail: boolean) => set({ directMail }),
     setTags: (tags: string[]) => set({ tags }),
-    ...createUserMessengerSlice(set, get, store)
+    ...createUserMessengerSlice(set, get, store),
+    ...createUserWalletSlice(set, get, store)
 }));

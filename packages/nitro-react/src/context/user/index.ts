@@ -1,5 +1,6 @@
 export * from './actions/useUserInfoActions';
 export * from './actions/useUserMessengerActions';
+export * from './actions/useUserWalletActions';
 export * from './selectors/useFriendsSelector';
 export * from './selectors/useIsSystemShutdown';
 export * from './selectors/useOwnClubLevel';
@@ -11,6 +12,7 @@ export * from './selectors/useOwnSecurityLevel';
 export * from './selectors/useOwnUserFigure';
 export * from './selectors/useOwnUserGender';
 export * from './selectors/useOwnUserId';
+export * from './selectors/useWallet';
 export * from './UserContext';
 export * from './UserContextProvider';
 export * from './useUserContext';

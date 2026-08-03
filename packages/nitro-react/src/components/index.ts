@@ -12,3 +12,4 @@ export * from './room/widgets/object-menu/RoomObjectMenuBubble';
 export * from './room/widgets/object-menu/RoomObjectMenuNameBubble';
 export * from './room/widgets/object-menu/RoomObjectMenuWidget';
 export * from './room/widgets/RoomWidgets';
+export * from './wallet/WalletComponent';

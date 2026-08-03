@@ -39,8 +39,6 @@ export const InventoryFurniView = (props: { scrollVariant: string }) => {
         if (lastRow.index >= rowCount - 1 && itemCount < MAX_ITEMS) loadMore();
     }, [virtualRows, rowCount, itemCount, loadMore]);
 
-    //tintColor="#CACACA"
-
     return (
         <div className="flex flex-col gap-1 h-full">
             <Border variant="3" tintColor="#cacaca" className="flex gap-1.5 p-1 h-6.25 items-center">

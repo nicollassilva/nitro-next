@@ -1,9 +1,9 @@
 import { InfoRetrieveComposer } from "@nitrodevco/nitro-shared";
 import { useEffect, useState } from "react";
 
-import { MessengerComponent, RoomWrapper } from "./components";
+import { MessengerComponent, RoomWrapper, WalletComponent } from "./components";
 import { useWebSocketContext } from "./context";
-import { useMessengerHandler, useNavigatorHandler, useUserInfoHandler } from "./handlers";
+import { useMessengerHandler, useNavigatorHandler, useUserInfoHandler, useWalletHandler } from "./handlers";
 import { InventoryView } from "./views/inventory/InventoryView";
 import { ToolbarView } from "./views/toolbar/ToolbarView";
 
@@ -14,6 +14,7 @@ export const MainView = () => {
     useUserInfoHandler();
     useNavigatorHandler();
     useMessengerHandler();
+    useWalletHandler();
 
     useEffect(() => {
         if (!isReady) return;
@@ -43,6 +44,7 @@ export const MainView = () => {
                 <ToolbarView />
                 <InventoryView />
                 <MessengerComponent />
+                <WalletComponent />
             </div>
         </>
     );
