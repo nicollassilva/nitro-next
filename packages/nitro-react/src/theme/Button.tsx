@@ -6,7 +6,7 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const buttonVariantsConfig = {
     variant: {
         // default
-        '0': '[border-image-source:var(--button-0-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] nine-slice-border hover:[border-image-source:var(--button-0-hovering-src)] hover:[border-image-slice:3_3_3_3_fill] hover:[border-image-width:3px_3px_3px_3px] active:[border-image-source:var(--button-0-pressed-src)] active:[border-image-slice:3_3_3_3_fill] active:[border-image-width:3px_3px_3px_3px]  aria-disabled:[border-image-source:var(--button-0-disabled-src)] aria-disabled:[border-image-slice:3_3_3_3_fill] aria-disabled:[border-image-width:3px_3px_3px_3px] aria-disabled:[border-image-repeat:stretch]  min-w-5 min-h-5.5 pl-2 pt-1 pr-2 pb-1 text-[#000000] text-style-button-regular',
+        '0': '[border-image-source:var(--button-0-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] nine-slice-border hover:[border-image-source:var(--button-0-hovering-src)] hover:[border-image-slice:3_3_3_3_fill] hover:[border-image-width:3px_3px_3px_3px] active:[border-image-source:var(--button-0-pressed-src)] active:[border-image-slice:3_3_3_3_fill] active:[border-image-width:3px_3px_3px_3px]  aria-disabled:[border-image-source:var(--button-0-disabled-src)] aria-disabled:[border-image-slice:3_3_3_3_fill] aria-disabled:[border-image-width:3px_3px_3px_3px] aria-disabled:[border-image-repeat:stretch] px-2 py-2 text-[#000000] text-style-button-regular',
         // black
         '1': '[border-image-source:var(--button-1-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] nine-slice-border hover:[border-image-source:var(--button-1-hovering-src)] hover:[border-image-slice:3_3_3_3_fill] hover:[border-image-width:3px_3px_3px_3px] active:[border-image-source:var(--border-3-default-src)] active:[border-image-slice:3_3_3_3_fill] active:[border-image-width:3px_3px_3px_3px]  aria-disabled:[border-image-source:var(--button-1-disabled-src)] aria-disabled:[border-image-slice:3_3_3_3_fill] aria-disabled:[border-image-width:3px_3px_3px_3px] aria-disabled:[border-image-repeat:stretch]  min-w-5 min-h-5.5 pl-2 pt-1 pr-2 pb-1 text-[#ffffff] text-style-button-regular',
         // white
@@ -79,7 +79,7 @@ const buttonTintableVars: Partial<Record<string, string[]>> = {
     '103': ['button-103-default-src', 'button-103-pressed-src'],
 };
 
-const buttonVariants = cva('pointer-events-auto leading-none cursor-pointer', { variants: buttonVariantsConfig, defaultVariants: { variant: '0' } });
+const buttonVariants = cva('flex items-center justify-center pointer-events-auto leading-0 cursor-pointer', { variants: buttonVariantsConfig, defaultVariants: { variant: '0' } });
 const buttonOverlayVariants = cva('', { variants: buttonOverlayVariantsConfig, defaultVariants: { variant: '0' } });
 
 type ButtonVariantProps = VariantProps<typeof buttonVariantsConfig>;
