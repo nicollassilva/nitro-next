@@ -39,6 +39,8 @@
 
     --nitro-purse-width: 230px;
     --nitro-purse-height: 77px;
+    
+    --nitro-notifications-width: 192px;
 
     @keyframes rotating {
         from {

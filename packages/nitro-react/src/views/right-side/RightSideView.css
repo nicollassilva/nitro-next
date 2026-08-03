@@ -1,3 +1,7 @@
 .nitro-right-side-container {
     @apply absolute right-0 -mt-1.5 w-[var(--nitro-purse-width)] max-w-[var(--nitro-purse-width)] mr-[3px];
+
+    .notifications-container {
+        @apply w-[var(--nitro-notifications-width)] h-10 ml-auto;
+    }
 }
