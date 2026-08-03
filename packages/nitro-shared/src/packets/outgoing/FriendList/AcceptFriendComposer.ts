@@ -1,7 +1,7 @@
 import { IOutgoingPacket } from '@nitrodevco/nitro-api';
 
 export type AcceptFriendComposerType = {
-    friends: number[];
+    playerIds: number[];
 };
 
 export class AcceptFriendComposer implements IOutgoingPacket<AcceptFriendComposerType> {
@@ -9,7 +9,8 @@ export class AcceptFriendComposer implements IOutgoingPacket<AcceptFriendCompose
 
     public compose(): (number | string | boolean)[] {
         return [
-            this.params.friends,
+            this.params.playerIds.length,
+            ...this.params.playerIds
         ];
     }
 }

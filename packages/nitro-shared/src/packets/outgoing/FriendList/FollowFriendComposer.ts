@@ -1,7 +1,7 @@
 import { IOutgoingPacket } from '@nitrodevco/nitro-api';
 
 export type FollowFriendComposerType = {
-    playerId: PlayerId;
+    playerId: number;
 };
 
 export class FollowFriendComposer implements IOutgoingPacket<FollowFriendComposerType> {

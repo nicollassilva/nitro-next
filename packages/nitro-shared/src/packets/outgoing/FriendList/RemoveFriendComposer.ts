@@ -1,7 +1,7 @@
 import { IOutgoingPacket } from '@nitrodevco/nitro-api';
 
 export type RemoveFriendComposerType = {
-    friendIds: number[];
+    playerIds: number[];
 };
 
 export class RemoveFriendComposer implements IOutgoingPacket<RemoveFriendComposerType> {
@@ -9,7 +9,8 @@ export class RemoveFriendComposer implements IOutgoingPacket<RemoveFriendCompose
 
     public compose(): (number | string | boolean)[] {
         return [
-            this.params.friendIds,
+            this.params.playerIds.length,
+            ...this.params.playerIds
         ];
     }
 }
