@@ -1,9 +1,10 @@
 .nitro-friendlist {
-    @apply w-[var(--nitro-friendlist-width)] h-[var(--nitro-friendlist-height)] p-0;
+    @apply w-[var(--nitro-friendlist-width)] h-[var(--nitro-friendlist-height)];
 
     .friendlist-bg {
-        @apply w-full text-black bg-white border-y border-black;
+        @apply w-full text-black bg-white border-y border-black -ml-0.5;
 
-        height: calc(100% - 40px);
+        width: calc(100% + 4px);
+        height: calc(100% - 30px);
     }
 }

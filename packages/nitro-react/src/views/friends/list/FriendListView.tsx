@@ -6,7 +6,7 @@ export const FriendListView = () => {
 
     return (
         <>
-            <Frame variant="0" id="friendlist px-0" className="nitro-friendlist" caption={ getLocalizationValue('friendlist.friends') }>
+            <Frame variant="0" id="friendlist" className="nitro-friendlist" containerClassName="!px-0" caption={ getLocalizationValue('friendlist.friends') }>
                 <div className="friendlist-bg">
                     
                 </div>
