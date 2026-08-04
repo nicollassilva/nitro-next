@@ -24,8 +24,11 @@ export const FriendListSearch = (props: FriendListSearchProps) => {
                 <NitroIcon className="brightness-0 invert mb-px" icon={ isActive() ? 'icon-arrow-down-small' : 'icon-arrow-right-small' } />
             </div>
             { isActive() && <>
-                <div className="w-full bg-[#b6b6b6] flex-1 min-h-0 overflow-y-auto border-b">
-
+                <div className="w-full flex flex-col flex-1 min-h-0 overflow-hidden border-b">
+                    <div className="flex-1 min-h-0 overflow-y-auto bg-[#b6b6b6]">
+                        <p>a</p>
+                    </div>
+                    <div className="h-10 shrink-0 bg-red-400">a</div>
                 </div>
             </> }
         </>
