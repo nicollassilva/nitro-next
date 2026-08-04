@@ -32,7 +32,7 @@ export * from './room/useRoomContext';
 export * from './user/actions/useUserInfoActions';
 export * from './user/actions/useUserMessengerActions';
 export * from './user/actions/useUserWalletActions';
-export * from './user/selectors/useFriendsSelector';
+export * from './user/selectors/friends/useFriendsSelector';
 export * from './user/selectors/useIsSystemShutdown';
 export * from './user/selectors/useOwnClubLevel';
 export * from './user/selectors/useOwnHasClub';

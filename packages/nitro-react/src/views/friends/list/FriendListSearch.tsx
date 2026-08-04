@@ -1,7 +1,7 @@
 import { HTMLAttributes } from "react";
 
 import { useLocalizationStore } from "#base/stores";
-import { NitroIcon } from "#base/theme";
+import { Border, NitroIcon, ScrollArea } from "#base/theme";
 
 interface FriendListSearchProps extends HTMLAttributes<HTMLDivElement> {
     activeTab: string;
@@ -12,7 +12,7 @@ interface FriendListSearchProps extends HTMLAttributes<HTMLDivElement> {
 export const FriendListSearch = (props: FriendListSearchProps) => {
     const tabName = 'search';
 
-    const { activeTab, onTabChanged, onTooltipChanged } = props;
+    const { activeTab, onTabChanged } = props;
 
     const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
 
@@ -20,16 +20,18 @@ export const FriendListSearch = (props: FriendListSearchProps) => {
 
     return (
         <>
-            <div className="w-full h-4.5 shrink-0 bg-linear-to-b from-[#6b6b6b] from-50% to-[#555555] to-50% border-b flex justify-start items-center pt-px px-2 gap-1.5" onClick={ () => onTabChanged(tabName) }>
+            <div className="h-4.5 shrink-0 bg-linear-to-b from-[#6b6b6b] from-50% to-[#555555] to-50% border-b flex justify-start items-center pt-px px-2 gap-1.5" onClick={ () => onTabChanged(tabName) }>
                 <span className="text-white text-[0.68rem]">{ getLocalizationValue('people.search.title') }</span>
                 <NitroIcon className="brightness-0 invert mb-px" icon={ isActive() ? 'icon-arrow-down-black' : 'icon-arrow-right-black' } />
             </div>
             { isActive() && <>
-                <div className="w-full flex flex-col flex-1 min-h-0 overflow-hidden border-b">
-                    <div className="flex-1 min-h-0 overflow-y-auto bg-[#b6b6b6]">
-                        <p>a</p>
+                <div className="flex flex-col flex-1 overflow-hidden border-b bg-[#b6b6b6]">
+                    <ScrollArea className="flex-1 min-h-0 p-1 pb-0 gap-1" contentClassName="flex flex-col [&>*:nth-child(odd)]:bg-[#eeeeee] [&>*:nth-child(even)]:bg-white">
+                        area
+                    </ScrollArea>
+                    <div className="h-10 shrink-0 px-1.5 py-1.25">
+                        <Border tintColor="#838383" className="h-full flex justify-center items-center px-1.25"></Border>
                     </div>
-                    <div className="h-10 shrink-0 bg-red-400">a</div>
                 </div>
             </> }
         </>
