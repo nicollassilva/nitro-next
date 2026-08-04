@@ -2,9 +2,9 @@
 @source "**/*.{ts,tsx,css}";
 
 @import './theme/theme.css';
-@import './assets/fonts.css';
-@import './assets/utilities.css';
-@import './assets/icons.css';
+@import './theme/fonts.css';
+@import './theme/utilities.css';
+@import './theme/icons.css';
 
 @theme static {
     /* Typography */
