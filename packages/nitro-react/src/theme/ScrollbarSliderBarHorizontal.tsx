@@ -33,12 +33,10 @@ const scrollbarSliderBarHorizontalOverlayVariantsConfig = {
     },
 } as const;
 
-/** This component's own default tint per variant, from the skin's own `<window color="…">` — a caller-supplied `tintColor` prop always overrides this. */
 const scrollbarSliderBarHorizontalTintColors: Partial<Record<string, string>> = {
 
 };
 
-/** Which CSS vars (bare, no `--`) each variant's own art actually needs recolored — see `#base/useTintedVars`. */
 const scrollbarSliderBarHorizontalTintableVars: Partial<Record<string, string[]>> = {
     '0': ['scrollbarsliderbarhorizontal-0-default-src', 'scrollbarsliderbarhorizontal-0-pressed-src'],
     '1': ['scrollbarsliderbarhorizontal-1-default-src'],

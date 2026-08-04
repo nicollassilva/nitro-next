@@ -1,5 +1,6 @@
 import { forwardRef, type HTMLAttributes } from 'react';
 
+import { BubblePointer } from './BubblePointer';
 import { cn, cva, useCascadedVariant, useTintedVars, VariantCascadeProvider, type VariantProps } from './utils';
 import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 
@@ -21,32 +22,31 @@ const bubbleOverlayVariantsConfig = {
     },
 } as const;
 
-/** This component's own default tint per variant, from the skin's own `<window color="…">` — a caller-supplied `tintColor` prop always overrides this. */
 const bubbleTintColors: Partial<Record<string, string>> = {
 
 };
 
-/** Which CSS vars (bare, no `--`) each variant's own art actually needs recolored — see `#base/useTintedVars`. */
 const bubbleTintableVars: Partial<Record<string, string[]>> = {
     '0': ['bubble-0-default-src'],
     '7': ['bubble-7-default-src'],
 };
 
-const bubbleVariants = cva('', { variants: bubbleVariantsConfig, defaultVariants: { variant: '0' } });
+const bubbleVariants = cva('pointer-events-auto z-10', { variants: bubbleVariantsConfig, defaultVariants: { variant: '0' } });
 const bubbleOverlayVariants = cva('', { variants: bubbleOverlayVariantsConfig, defaultVariants: { variant: '0' } });
 
 type BubbleVariantProps = VariantProps<typeof bubbleVariantsConfig>;
 
 interface BubbleProps extends HTMLAttributes<HTMLDivElement>, BubbleVariantProps {
     className?: string;
-    /** Recolors this variant's tintable art at runtime — overrides this variant's own default color from the skin, if it has one (see `#base/pixiTint`). */
     tintColor?: string;
-    /** Lower-priority fallback than `variant` and any ancestor variant cascade (see `#base/variantCascade`) — e.g. a composite's own window_layout-authored default for this exact instance. Omit to fall back to this component's own generic default. */
     defaultVariant?: string;
+    usePointer?: boolean;
+    pointer?: 'up' | 'down' | 'left' | 'right';
+    pointerOffset?: number;
 }
 
 export const Bubble = forwardRef<HTMLDivElement, BubbleProps>(
-    ({ className, variant, defaultVariant, tintColor, style, children, ...props }, ref) => {
+    ({ className, variant, defaultVariant, tintColor, usePointer = true, pointer = 'down', pointerOffset = 0, style, children, ...props }, ref) => {
         const cascadedVariant = useCascadedVariant('bubble');
         const resolvedVariant = (variant ?? cascadedVariant ?? defaultVariant ?? '0') as never;
         const ownCascade = VARIANT_CASCADE_CONFIG['bubble']?.[resolvedVariant];
@@ -55,14 +55,21 @@ export const Bubble = forwardRef<HTMLDivElement, BubbleProps>(
         const tintStyle = useTintedVars(bubbleTintableVars[resolvedVariant as string], resolvedTint);
 
         return (
-            <div
-                ref={ref}
-                className={cn(bubbleVariants({ variant: resolvedVariant }), overlayClassName && 'relative', className)}
-                style={{ ...style, ...tintStyle }}
-                {...props}
-            >
-                {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0', overlayClassName)} />}
-                <VariantCascadeProvider map={ownCascade}>{children}</VariantCascadeProvider>
+            <div className={cn('flex items-center', (pointer === 'up' || pointer === 'down') && 'flex-col', pointer === 'up' && 'flex-col-reverse', pointer === 'left' && 'flex-row-reverse')}>
+                <div
+                    ref={ref}
+                    className={cn(bubbleVariants({ variant: resolvedVariant }), overlayClassName && 'relative', className)}
+                    style={{ ...style, ...tintStyle }}
+                    {...props}
+                >
+                    {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0', overlayClassName)} />}
+                    <VariantCascadeProvider map={ownCascade}>
+                        {children}
+                    </VariantCascadeProvider>
+                </div>
+                <VariantCascadeProvider map={ownCascade}>
+                    {usePointer && <BubblePointer className="z-20" direction={pointer} tintColor={resolvedTint} />}
+                </VariantCascadeProvider>
             </div>
         );
     }

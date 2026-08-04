@@ -1,3 +1,4 @@
+import { NitroLogger } from '@nitrodevco/nitro-api';
 import { useEffect, useState } from 'react';
 
 import { useConfigurationStore } from '#base/stores';
@@ -7,68 +8,39 @@ export const useConfigLoader = () => {
     const setConfig = useConfigurationStore(x => x.setConfig);
 
     useEffect(() => {
-        setConfig({
-            'production.version': 'WIN63-202601121721-391685409',
-            'gamedata.urls.externalTexts': 'https://assets.nitrodev.co/gamedata/ExternalTexts.json',
-            'furnituredata.url': 'https://assets.nitrodev.co/gamedata/FurnitureData.json',
-            'figuredata.url': 'https://assets.nitrodev.co/gamedata/FigureData.json',
-            'figuremap.url': 'https://assets.nitrodev.co/gamedata/FigureMap.json',
-            'effectmap.url': 'https://assets.nitrodev.co/gamedata/EffectMap.json',
-            'asset.urls.generic': 'https://assets.nitrodev.co/bundled/generic/%libname%.nitro',
-            'asset.urls.furni': 'https://assets.nitrodev.co/bundled/furniture/%libname%.nitro',
-            'asset.urls.icons.furni': 'https://assets.nitrodev.co/images/furni-icons/%libname%%param%_icon.png',
-            'asset.urls.pet': 'https://assets.nitrodev.co/bundled/pet/%libname%.nitro',
-            'asset.urls.avatar': 'https://assets.nitrodev.co/bundled/figures/%libname%.nitro',
-            'asset.urls.effect': 'https://assets.nitrodev.co/bundled/effects/%libname%.nitro',
-            'fps.limit': 60,
-            'socket.url': 'ws://localhost:9001',
-            'motto.max.length': 38,
-            'renderer.petTypes': [
-                'dog',
-                'cat',
-                'croco',
-                'terrier',
-                'bear',
-                'pig',
-                'lion',
-                'rhino',
-                'spider',
-                'turtle',
-                'chicken',
-                'frog',
-                'dragon',
-                'monster',
-                'monkey',
-                'horse',
-                'monsterplant',
-                'bunnyeaster',
-                'bunnyevil',
-                'bunnydepressed',
-                'bunnylove',
-                'pigeongood',
-                'pigeonevil',
-                'demonmonkey',
-                'bearbaby',
-                'terrierbaby',
-                'gnome',
-                'gnome',
-                'kittenbaby',
-                'puppybaby',
-                'pigletbaby',
-                'haloompa',
-                'fools',
-                'pterosaur',
-                'velociraptor',
-                'cow',
-                'LeetPen',
-                'bbwibb',
-                'elephants',
-            ],
-        });
+        if (!window.NitroConfig) throw new Error('NitroConfig is not defined!');
 
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setIsConfigReady(true);
+        const urls: string[] = [];
+
+        if (Array.isArray(window.NitroConfig['nitro.config.url'])) window.NitroConfig['nitro.config.url'].forEach((url: string) => urls.push(url));
+        else urls.push(window.NitroConfig['nitro.config.url']);
+
+        const load = async (urls: string[]) => {
+            let data: Record<string, object> = {};
+
+            for (const url of urls) {
+                try {
+                    const response = await fetch(url);
+                    const responseData = await response.json() as Record<string, object>;
+
+                    data = { ...data, ...responseData };
+                }
+
+                catch (err) {
+                    NitroLogger.error(`Trouble loading the configuration using: ${url}`, err.message);
+                }
+            }
+
+            const dataToProcess = { ...data, ...window.NitroConfig };
+            const urlParams = new URLSearchParams(window.location.search);
+
+            if (urlParams.size > 0) urlParams.forEach((value, key) => dataToProcess[key] = value);
+
+            setConfig(dataToProcess);
+            setIsConfigReady(true);
+        }
+
+        void load(urls);
     }, []);
-
     return { isConfigReady };
 };

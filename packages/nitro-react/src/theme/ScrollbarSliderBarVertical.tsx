@@ -33,12 +33,10 @@ const scrollbarSliderBarVerticalOverlayVariantsConfig = {
     },
 } as const;
 
-/** This component's own default tint per variant, from the skin's own `<window color="…">` — a caller-supplied `tintColor` prop always overrides this. */
 const scrollbarSliderBarVerticalTintColors: Partial<Record<string, string>> = {
 
 };
 
-/** Which CSS vars (bare, no `--`) each variant's own art actually needs recolored — see `#base/useTintedVars`. */
 const scrollbarSliderBarVerticalTintableVars: Partial<Record<string, string[]>> = {
     '0': ['scrollbarsliderbarvertical-0-default-src', 'scrollbarsliderbarvertical-0-pressed-src'],
     '1': ['scrollbarsliderbarvertical-1-default-src'],

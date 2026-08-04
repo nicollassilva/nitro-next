@@ -19,15 +19,10 @@ type ActiveListeners = {
     up: (event: PointerEvent) => void;
 };
 
-/** Minimum sliver (px) of the frame kept on-screen while dragging, so it can never be stranded off-viewport. */
 const MIN_VISIBLE = 40;
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
-/**
- * Drives frame dragging (via translate offset), z-index "active on top" stacking, and
- * localStorage persistence of the dragged position keyed by `id`.
- */
 export const useFrameDrag = (id: string | undefined) => {
     const generatedId = useId();
     const stackId = id ?? generatedId;

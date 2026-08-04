@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useOwnHasClub, useOwnIsDancing, useRoomCanDecorate, useWebSocketContext } from "#base/context";
 import { useRoomUserData } from "#base/hooks";
 import { useLocalizationStore } from "#base/stores";
-import { cn, NitroIcon } from "#base/theme";
+import { Bubble, Button, NitroIcon } from "#base/theme";
 
 interface InfoBubbleOwnAvatarViewProps {
     objectData: ISimpleRoomObjectData;
@@ -88,126 +88,184 @@ export const InfoBubbleOwnAvatarView = (props: InfoBubbleOwnAvatarViewProps) => 
         if (hideMenu && onClose) onClose();
     }
 
+    const MODE_NORMAL_ACTIONS = [
+        {
+            visible: canDecorate,
+            caption: 'widget.avatar.decorate',
+            action: undefined
+        },
+        {
+            visible: true,
+            caption: 'widget.memenu.myclothes',
+            action: undefined
+        },
+        {
+            visible: hasHabboClub && !isRidingHorse,
+            caption: 'widget.memenu.dance',
+            action: () => processAction('dance_menu')
+        },
+        {
+            visible: !isOwnDancing && !hasHabboClub && !isRidingHorse,
+            caption: 'widget.avatar.dance',
+            action: () => processAction('dance')
+        },
+        {
+            visible: isOwnDancing && !hasHabboClub && !isRidingHorse,
+            caption: 'widget.memenu.dance.stop',
+            action: () => processAction('dance_stop')
+        },
+        {
+            visible: true,
+            caption: 'infostand.link.expressions',
+            action: () => processAction('expressions')
+        },
+        {
+            visible: true,
+            caption: 'infostand.show.signs',
+            action: () => processAction('signs')
+        },
+        {
+            visible: userData.carryItem > 0,
+            caption: 'avatar.widget.drop_hand_item',
+            action: () => processAction('drop_hand_item')
+        }
+    ];
+
+    const MODE_BUTTONS = {
+        0: [
+            {
+                visible: canDecorate,
+                caption: 'widget.avatar.decorate',
+                action: undefined
+            },
+            {
+                visible: true,
+                caption: 'widget.memenu.myclothes',
+                action: undefined
+            },
+            {
+                visible: hasHabboClub && !isRidingHorse,
+                caption: 'widget.memenu.dance',
+                action: () => processAction('dance_menu')
+            },
+            {
+                visible: !isOwnDancing && !hasHabboClub && !isRidingHorse,
+                caption: 'widget.avatar.dance',
+                action: () => processAction('dance')
+            },
+            {
+                visible: isOwnDancing && !hasHabboClub && !isRidingHorse,
+                caption: 'widget.memenu.dance.stop',
+                action: () => processAction('dance_stop')
+            },
+            {
+                visible: true,
+                caption: 'infostand.link.expressions',
+                action: () => processAction('expressions')
+            },
+            {
+                visible: true,
+                caption: 'infostand.show.signs',
+                action: () => processAction('signs')
+            },
+            {
+                visible: userData.carryItem > 0,
+                caption: 'avatar.widget.drop_hand_item',
+                action: () => processAction('drop_hand_item')
+            }
+        ],
+        1: [
+            {
+                visible: isOwnDancing,
+                caption: 'widget.memenu.dance.stop',
+                action: () => processAction('dance_stop')
+            },
+            {
+                visible: true,
+                caption: 'widget.memenu.dance1',
+                action: () => processAction('dance_1')
+            },
+            {
+                visible: true,
+                caption: 'widget.memenu.dance2',
+                action: () => processAction('dance_2')
+            },
+            {
+                visible: true,
+                caption: 'widget.memenu.dance3',
+                action: () => processAction('dance_3')
+            },
+            {
+                visible: true,
+                caption: 'widget.memenu.dance4',
+                action: () => processAction('dance_4')
+            },
+            {
+                visible: true,
+                caption: 'generic.back',
+                action: () => processAction('back')
+            }
+        ],
+        3: [
+            {
+                visible: userData.posture === AvatarActionStateType.Stand,
+                caption: 'widget.memenu.sit',
+                action: () => processAction('sit')
+            },
+            {
+                visible: userData.canStandUp,
+                caption: 'widget.memenu.stand',
+                action: () => processAction('stand')
+            },
+            {
+                visible: true,
+                caption: 'widget.memenu.wave',
+                action: () => processAction('wave')
+            },
+            {
+                visible: true,
+                caption: 'widget.memenu.laugh',
+                action: () => processAction('laugh')
+            },
+            {
+                visible: true,
+                caption: 'widget.memenu.blow',
+                action: () => processAction('blow')
+            },
+            {
+                visible: true,
+                caption: 'widget.memenu.idle',
+                action: () => processAction('idle')
+            },
+            {
+                visible: true,
+                caption: 'generic.back',
+                action: () => processAction('back')
+            }
+        ],
+        4: [
+
+        ]
+    }
+
     return (
-        <div className={cn('contextmenu-container', collapsed && 'menu-collapsed')}>
-            {!collapsed && <>
-                <div className="flex items-center justify-center menu-header">
-                    <p>{userData.name}</p>
+        <Bubble className="min-w-28.75" variant="0" tintColor="#6e6b67">
+            <div className="flex flex-col mx-px overflow-hidden">
+                <div className="flex items-center justify-center py-1.5 px-4.5 m-h-7.5 max-h-7.5 z-20">
+                    <span className="text-style-u-bold font-[11px] text-white">{userData.name}</span>
                 </div>
-                <div className="menu-content">
-                    {mode === MODE_NORMAL && <>
-                        {canDecorate && <div className="flex items-center justify-center menu-item">
-                            {getLocalizationValue('widget.avatar.decorate')}
-                        </div>}
-                        <div className="flex items-center justify-center underline menu-item">
-                            {getLocalizationValue('widget.memenu.myclothes')}
-                        </div>
-                        {hasHabboClub && !isRidingHorse && <div className="flex items-center justify-center menu-item" onClick={() => processAction('dance_menu')}>
-                            {getLocalizationValue('widget.memenu.dance')}
-                        </div>}
-                        {!isOwnDancing && !hasHabboClub && !isRidingHorse && <div className="flex items-center justify-center menu-item" onClick={() => processAction('dance')}>
-                            {getLocalizationValue('widget.memenu.dance')}
-                        </div>}
-                        {isOwnDancing && !hasHabboClub && !isRidingHorse && <div className="flex items-center justify-center menu-item" onClick={() => processAction('dance_stop')}>
-                            {getLocalizationValue('widget.memenu.dance.stop')}
-                        </div>}
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('expressions')}>
-                            {getLocalizationValue('infostand.link.expressions')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('signs')}>
-                            {getLocalizationValue('infostand.show.signs')}
-                        </div>
-                        {userData.carryItem > 0 && <div className="flex items-center justify-center menu-item" onClick={() => processAction('drop_hand_item')}>
-                            {getLocalizationValue('avatar.widget.drop_hand_item')}
-                        </div>}
-                    </>}
-                    {mode === MODE_CLUB_DANCES && <>
-                        {isOwnDancing && <div className="flex items-center justify-center menu-item" onClick={() => processAction('dance_stop')}>
-                            {getLocalizationValue('widget.memenu.dance.stop')}
-                        </div>}
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('dance_1')}>
-                            {getLocalizationValue('widget.memenu.dance1')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('dance_2')}>
-                            {getLocalizationValue('widget.memenu.dance2')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('dance_3')}>
-                            {getLocalizationValue('widget.memenu.dance3')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('dance_4')}>
-                            {getLocalizationValue('widget.memenu.dance4')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('back')}>
-                            {getLocalizationValue('generic.back')}
-                        </div>
-                    </>}
-                    {mode === MODE_EXPRESSIONS && <>
-                        {(userData.posture === AvatarActionStateType.Stand) && <div className="flex items-center justify-center menu-item" onClick={() => processAction('sit')}>
-                            {getLocalizationValue('widget.memenu.sit')}
-                        </div>}
-                        {userData.canStandUp && <div className="flex items-center justify-center menu-item" onClick={() => processAction('stand')}>
-                            {getLocalizationValue('widget.memenu.stand')}
-                        </div>}
-                        {canUseExpressions && <div className="flex items-center justify-center menu-item" onClick={() => processAction('wave')}>
-                            {getLocalizationValue('widget.memenu.wave')}
-                        </div>}
-                        {canUseExpressions && <div className="flex items-center justify-center menu-item" onClick={() => processAction('laugh')}>
-                            {getLocalizationValue('widget.memenu.laugh')}
-                        </div>}
-                        {canUseExpressions && <div className="flex items-center justify-center menu-item" onClick={() => processAction('blow')}>
-                            {getLocalizationValue('widget.memenu.blow')}
-                        </div>}
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('idle')}>
-                            {getLocalizationValue('widget.memenu.idle')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('back')}>
-                            {getLocalizationValue('generic.back')}
-                        </div>
-                    </>}
-                    {mode === MODE_SIGNS && <>
-                        <div className="flex justify-evenly menu-list-split-3">
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_1')}>1</div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_2')}>2</div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_3')}>3</div>
-                        </div>
-                        <div className="flex justify-evenly menu-list-split-3">
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_4')}>4</div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_5')}>5</div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_6')}>6</div>
-                        </div>
-                        <div className="flex justify-evenly menu-list-split-3">
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_7')}>7</div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_8')}>8</div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_9')}>9</div>
-                        </div>
-                        <div className="flex justify-evenly menu-list-split-3">
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_10')}>10</div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_11')}>
-                                <NitroIcon icon="icon-sign-heart" />
-                            </div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_12')}>
-                                <NitroIcon icon="icon-sign-skull" />
-                            </div>
-                        </div>
-                        <div className="flex justify-evenly menu-list-split-3">
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_0')}>0</div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_13')}><NitroIcon icon="icon-sign-exclamation" /></div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_15')}><NitroIcon icon="icon-sign-smile" /></div>
-                        </div>
-                        <div className="flex justify-evenly menu-list-split-3">
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_14')}><NitroIcon icon="icon-sign-soccer" /></div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_17')}><NitroIcon icon="icon-sign-yellow" /></div>
-                            <div className="flex items-center justify-center w-full menu-item" onClick={() => processAction('sign_16')}><NitroIcon icon="icon-sign-red" /></div>
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('back')}>
-                            {getLocalizationValue('generic.back')}
-                        </div>
-                    </>}
+                <div className="h-px w-full bg-black z-20" />
+                <div className="flex flex-col w-[calc(100%+10px)] -ml-1.25 px-px overflow-hidden z-10 gap-px">
+                    {MODE_BUTTONS[mode].map(({ visible, caption, action }) =>
+                        visible ? <div className="flex items-center justify-center min-h-6.5 max-h-6.5 overflow-hidden">
+                            <Button variant="3" tintColor="#2d2a27" className="min-h-8.75 max-h-[8.75] text-white text-[11px] w-full p-0!" onClick={action}>{getLocalizationValue(caption)}</Button>
+                        </div> : null)}
                 </div>
-            </>}
-            <div className="flex items-center justify-center menu-bottom" onClick={() => setCollapsed(!collapsed)}>
-                <NitroIcon className="cursor-pointer" icon={!collapsed ? 'icon-context-menu-arrow-down' : 'icon-context-menu-arrow-up'} />
+                <div className="h-px w-full bg-black z-20" />
+                <div className="flex items-center justify-center min-h-4.5 max-h-4.5 z-20" onClick={() => setCollapsed(!collapsed)}>
+                    <NitroIcon className="cursor-pointer" icon={!collapsed ? 'icon-context-menu-arrow-down' : 'icon-context-menu-arrow-up'} />
+                </div>
             </div>
-        </div>
+        </Bubble>
     );
 }
