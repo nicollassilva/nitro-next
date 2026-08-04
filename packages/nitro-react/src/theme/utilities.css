@@ -49,6 +49,22 @@
     @apply font-ubuntu text-[12px];
 }
 
+@utility text-style-u-bold {
+    @apply font-ubuntu-bold text-[12px];
+}
+
+@utility text-style-u-italic {
+    @apply font-ubuntu-italic text-[12px];
+}
+
+@utility text-style-u-tool-tip {
+    @apply font-ubuntu text-[11px] text-white;
+}
+
+@utility text-style-u-frame-title {
+    @apply font-ubuntu-bold text-[12px];
+}
+
 @utility text-style-button-regular {
     @apply font-goldfish text-[9px];
 }
@@ -79,14 +95,6 @@
 
 @utility text-style-button-tab {
     @apply font-goldfish text-[9px];
-}
-
-@utility text-style-u-tool-tip {
-    @apply font-ubuntu text-[11px] text-white;
-}
-
-@utility text-style-u-frame-title {
-    @apply font-ubuntu-bold text-[12px];
 }
 
 @utility text-style-il-frame-title {

@@ -37,9 +37,7 @@ type DroplistVariantProps = VariantProps<typeof droplistVariantsConfig>;
 
 interface DroplistProps extends HTMLAttributes<HTMLDivElement>, DroplistVariantProps {
     className?: string;
-    /** Recolors this variant's tintable art at runtime — overrides this variant's own default color from the skin, if it has one (see `#base/pixiTint`). */
     tintColor?: string;
-    /** Lower-priority fallback than `variant` and any ancestor variant cascade (see `#base/variantCascade`) — e.g. a composite's own window_layout-authored default for this exact instance. Omit to fall back to this component's own generic default. */
     defaultVariant?: string;
 }
 

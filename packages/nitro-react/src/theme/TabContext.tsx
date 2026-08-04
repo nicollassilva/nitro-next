@@ -26,7 +26,6 @@ type TabContextVariantProps = VariantProps<typeof tabContextVariantsConfig>;
 
 interface TabContextProps extends HTMLAttributes<HTMLDivElement>, TabContextVariantProps {
     className?: string;
-    /** Lower-priority fallback than `variant` and any ancestor variant cascade (see `#base/variantCascade`) — e.g. a composite's own window_layout-authored default for this exact instance. Omit to fall back to this component's own generic default. */
     defaultVariant?: string;
 }
 
