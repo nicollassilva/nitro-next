@@ -1030,6 +1030,25 @@
         height: 15px;
     }
 
+    &.icon-arrow-right-small {
+        background-image: url('/assets/flash/icons/arrows-group.png');
+        background-position: -7px -5px;
+        width: 5px;
+        height: 9px;
+    }
+
+    &.icon-arrow-down-small {
+        background-position: -25px -7px;
+        background-image: url('/assets/flash/icons/arrows-group.png');
+        width: 9px;
+        height: 5px;
+    }
+
+    &.icon-arrow-down-small {
+        width: 9px;
+        height: 5px;
+    }
+
     /* temporary */
 
     &.icon-currency {
