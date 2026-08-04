@@ -1,4 +1,4 @@
-import { forwardRef, type HTMLAttributes, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react';
+import { forwardRef, type HTMLAttributes, type KeyboardEvent as ReactKeyboardEvent, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react';
 
 import { useAccordionItem } from './AccordionContext';
 import { cn } from './utils';
@@ -9,7 +9,7 @@ interface AccordionTriggerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'ch
 }
 
 export const AccordionTrigger = forwardRef<HTMLDivElement, AccordionTriggerProps>(
-    ({ className, children, onClick, ...props }, ref) => {
+    ({ className, children, onClick, onKeyDown, ...props }, ref) => {
         const { isOpen, toggle } = useAccordionItem();
 
         const onTriggerClick = (event: ReactMouseEvent<HTMLDivElement>) => {
@@ -20,14 +20,26 @@ export const AccordionTrigger = forwardRef<HTMLDivElement, AccordionTriggerProps
             toggle();
         }
 
+        const onTriggerKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+            onKeyDown?.(event);
+
+            if (event.defaultPrevented) return;
+            if (event.key !== 'Enter' && event.key !== ' ') return;
+
+            event.preventDefault();
+            toggle();
+        }
+
         return (
             <div
                 ref={ref}
                 role="button"
+                tabIndex={0}
                 aria-expanded={isOpen}
                 data-state={isOpen ? 'open' : 'closed'}
                 className={cn('cursor-pointer', className)}
                 onClick={onTriggerClick}
+                onKeyDown={onTriggerKeyDown}
                 {...props}
             >
                 {typeof children === 'function' ? children({ isOpen }) : children}

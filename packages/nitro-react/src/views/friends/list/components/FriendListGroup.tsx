@@ -1,33 +1,30 @@
-import { IMessengerFriend } from "@nitrodevco/nitro-shared";
+import { ReactNode } from "react";
 
 import { useLocalizationStore } from "#base/stores";
 import { AccordionContent, AccordionItem, AccordionTrigger, NitroIcon } from "#base/theme";
 
-import { FriendListItem } from "./FriendListItem";
-
 interface FriendListGroupProps {
     value: string;
     caption: string;
-    friends: IMessengerFriend[];
+    count: number;
+    children?: ReactNode;
 }
 
 export const FriendListGroup = (props: FriendListGroupProps) => {
-    const { value, caption, friends } = props;
+    const { value, caption, count, children } = props;
 
     const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
 
     return (
         <AccordionItem value={ value }>
-            <AccordionTrigger className="font-bold px-1 flex gap-1 items-center py-0.5">
+            <AccordionTrigger className="font-bold px-1 flex gap-1 items-center py-0.5 h-5">
                 { ({ isOpen }) => <>
-                    { getLocalizationValue(caption) } ({ friends.length })
+                    { getLocalizationValue(caption) } ({ count })
                     <NitroIcon className="mb-px" icon={ isOpen ? 'icon-arrow-down-black' : 'icon-arrow-right-black' } />
                 </> }
             </AccordionTrigger>
             <AccordionContent unwrapped>
-                { friends.map(friend => (
-                    <FriendListItem key={ friend.playerId } friend={ friend } />
-                )) }
+                { children }
             </AccordionContent>
         </AccordionItem>
     );

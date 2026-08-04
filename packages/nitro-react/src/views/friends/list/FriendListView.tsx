@@ -3,12 +3,18 @@ import { useState } from "react";
 import { useLocalizationStore } from "#base/stores";
 import { Accordion, cn, Frame } from "#base/theme";
 
-import { FriendListFriends } from "./FriendListFriends";
-import { FriendListRequests } from "./FriendListRequests";
-import { FriendListSearch } from "./FriendListSearch";
+import { FriendListFriends } from "./tabs/FriendListFriends";
+import { FriendListRequests } from "./tabs/FriendListRequests";
+import { FriendListSearch } from "./tabs/FriendListSearch";
+
+const friendTabs = {
+    friends: 'friends',
+    requests: 'requests',
+    search: 'search'
+} as const;
 
 export const FriendListView = () => {
-    const [activeTab, setActiveTab] = useState<string>('friends');
+    const [activeTab, setActiveTab] = useState<string>(friendTabs.friends);
     const [tooltip, setTooltip] = useState<string>('');
 
     const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
@@ -26,11 +32,11 @@ export const FriendListView = () => {
 
     return (
         <>
-            <Frame variant="0" id="friendlist" className={ cn('w-57.5 min-h-26.75', activeTab ? 'h-87.5' : 'h-fit') } contentClassName="px-0! pt-0! -mt-px" caption={ getLocalizationValue('friendlist.friends') }>
+            <Frame variant="0" id="friendlist" className={ cn('w-57.5 min-h-26.75 leading-none', activeTab ? 'h-87.5' : 'h-fit') } contentClassName="px-0! pt-0! -mt-px" caption={ getLocalizationValue('friendlist.friends') }>
                 <Accordion collapsible value={ activeTab } onValueChange={ setActiveTab } className={cn('text-black border-t border-black bg-white -mx-0.5', activeTab ? 'flex-1 min-h-0' : 'h-fit')}>
-                    <FriendListFriends onTooltipChanged={ onTooltipChanged } />
-                    <FriendListRequests />
-                    <FriendListSearch />
+                    <FriendListFriends value={ friendTabs.friends } onTooltipChanged={ onTooltipChanged } />
+                    <FriendListRequests value={ friendTabs.requests } />
+                    <FriendListSearch value={ friendTabs.search } />
                 </Accordion>
                 <div className="w-full h-7 shrink-0 flex justify-end items-center pt-2 pr-8">
                     <span className="w-full ml-2 text-end text-white text-[0.655rem] font-aa text-nowrap overflow-hidden">

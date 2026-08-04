@@ -1072,6 +1072,48 @@
         height: 13px;
     }
 
+    &.icon-profile-small {
+        background-image: url('/assets/flash/friends/icon-profile-sm.png');
+        width: 13px;
+        height: 11px;
+    }
+
+    &.icon-message-small {
+        background-image: url('/assets/flash/friends/message.png');
+        width: 16px;
+        height: 14px;
+    }
+
+    &.icon-follow {
+        background-image: url('/assets/flash/friends/icon-follow.png');
+        width: 16px;
+        height: 14px;
+    }
+
+    &.icon-add {
+        background-image: url('/assets/flash/friends/icon-add.png');
+        width: 16px;
+        height: 15px;
+    }
+
+    &.icon-heart-relationship {
+        background-image: url('/assets/flash/friends/icon-heart.png');
+        width: 16px;
+        height: 14px;
+    }
+
+    &.icon-smile-relationship {
+        background-image: url('/assets/flash/friends/icon-smile.png');
+        width: 16px;
+        height: 14px;
+    }
+
+    &.icon-bobba-relationship {
+        background-image: url('/assets/flash/friends/icon-bobba.png');
+        width: 16px;
+        height: 14px;
+    }
+
     /* temporary */
 
     &.icon-currency {
