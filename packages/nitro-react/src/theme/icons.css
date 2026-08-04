@@ -1030,23 +1030,46 @@
         height: 15px;
     }
 
-    &.icon-arrow-right-small {
-        background-image: url('/assets/flash/icons/arrows-group.png');
-        background-position: -7px -5px;
+    &.icon-arrow-right-black {
+        background-image: url('/assets/flash/icons/arrow-right-black.png');
         width: 5px;
         height: 9px;
     }
 
-    &.icon-arrow-down-small {
-        background-position: -25px -7px;
-        background-image: url('/assets/flash/icons/arrows-group.png');
+    &.icon-arrow-down-black {
+        background-image: url('/assets/flash/icons/arrow-down-black.png');
         width: 9px;
         height: 5px;
     }
 
-    &.icon-arrow-down-small {
+    &.icon-close-gray {
+        background-image: url('/assets/flash/icons/close-gray.png');
         width: 9px;
-        height: 5px;
+        height: 9px;
+    }
+
+    &.icon-homepage-outline {
+        background-image: url('/assets/flash/friends/homepage.png');
+        width: 13px;
+        height: 11px;
+    }
+
+    &.icon-room-invite {
+        background-image: url('/assets/flash/friends/room-invite.png');
+        width: 19px;
+        height: 13px;
+    }
+
+    &.icon-search-outline {
+        background-image: url('/assets/flash/friends/search.png');
+        width: 12px;
+        height: 12px;
+    }
+
+    &.icon-trash-outline {
+        background-image: url('/assets/flash/friends/trash.png');
+        width: 13px;
+        height: 13px;
     }
 
     /* temporary */
