@@ -24,7 +24,7 @@ export const ActivityPointsView = () => {
     return (
         <>
             {kinds.map(({ amount, color, name, icon }) =>
-                <Border variant="9" className="pointer-events-auto cursor-pointer h-7.25 mt-0.75 flex justify-between w-full">
+                <Border key={name} variant="9" className="pointer-events-auto cursor-pointer h-7.25 mt-0.75 flex justify-between w-full">
                     <div className="flex flex-1 pl-1.75 pr-4 justify-between items-center">
                         <span className="font-ubuntu-bold text-[0.7rem]" style={{ color }}>{name}</span>
                         <span className={cn('font-ubuntu-bold text-[0.7rem] text-white', amount <= 0 && 'zero')}>
