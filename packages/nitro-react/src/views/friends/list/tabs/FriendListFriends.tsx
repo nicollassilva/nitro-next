@@ -2,6 +2,7 @@ import { IMessengerFriend } from "@nitrodevco/nitro-shared";
 import { useState } from "react";
 
 import { useOfflineFriendsSelector, useOnlineFriendsSelector } from "#base/context/user";
+import { useLocalizationStore } from "#base/stores";
 import { Accordion, ScrollArea } from "#base/theme";
 
 import { FriendListGroup } from "../components/FriendListGroup";
@@ -17,6 +18,8 @@ interface FriendListFriendsProps {
 export const FriendListFriends = (props: FriendListFriendsProps) => {
     const { value, onTooltipChanged } = props;
 
+    const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
+    
     const onlineFriends = useOnlineFriendsSelector();
     const offlineFriends = useOfflineFriendsSelector();
 
@@ -66,7 +69,7 @@ export const FriendListFriends = (props: FriendListFriendsProps) => {
             >
                 <Accordion unwrapped type="multiple" defaultValue={ ['online'] }>
                     { groups.map(group => (
-                        <FriendListGroup key={ group.value } value={ group.value } caption={ group.caption } count={ group.friends.length }>
+                        <FriendListGroup key={ group.value } value={ group.value } caption={ getLocalizationValue(group.caption) + ` (${group.friends.length})` }>
                             { group.friends.map((friend: IMessengerFriend) => <FriendListFriendItem key={ friend.playerId } friend={ friend } /> ) }
                         </FriendListGroup>
                     )) }

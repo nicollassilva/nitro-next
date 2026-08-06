@@ -4,6 +4,7 @@ export type AccordionType = 'single' | 'multiple';
 
 export interface AccordionContextValue {
     openValues: string[];
+    alwaysOpen: boolean;
     isOpen: (value: string) => boolean;
     toggle: (value: string) => void;
 }

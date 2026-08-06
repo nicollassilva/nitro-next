@@ -6,6 +6,7 @@ import { cn } from './utils';
 type AccordionBaseProps = Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> & {
     className?: string;
     unwrapped?: boolean;
+    alwaysOpen?: boolean;
 }
 
 type AccordionSingleProps = AccordionBaseProps & {
@@ -41,7 +42,7 @@ const toValues = (value: string | string[] | undefined) => {
 }
 
 export const Accordion = (props: AccordionProps) => {
-    const { className, unwrapped, type, collapsible, value, defaultValue, onValueChange, children, ...rest } = props as AccordionResolvedProps;
+    const { className, unwrapped, alwaysOpen = false, type, collapsible, value, defaultValue, onValueChange, children, ...rest } = props as AccordionResolvedProps;
 
     const isSingle = (type ?? 'single') === 'single';
     const isControlled = value !== undefined;
@@ -56,9 +57,11 @@ export const Accordion = (props: AccordionProps) => {
         onValueChange?.(isSingle ? values[0] ?? '' : values);
     }
 
-    const isOpen = (item: string) => openValues.includes(item);
+    const isOpen = (item: string) => alwaysOpen || openValues.includes(item);
 
     const toggle = (item: string) => {
+        if (alwaysOpen) return;
+
         if (isSingle) {
             if (!isOpen(item)) return setValues([item]);
             if (collapsible) return setValues([]);
@@ -69,7 +72,7 @@ export const Accordion = (props: AccordionProps) => {
         setValues(isOpen(item) ? openValues.filter(x => x !== item) : [...openValues, item]);
     }
 
-    const context = { openValues, isOpen, toggle };
+    const context = { openValues, alwaysOpen, isOpen, toggle };
 
     if (unwrapped) {
         return (

@@ -1,6 +1,6 @@
 import { forwardRef, type HTMLAttributes, type KeyboardEvent as ReactKeyboardEvent, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react';
 
-import { useAccordionItem } from './AccordionContext';
+import { useAccordion, useAccordionItem } from './AccordionContext';
 import { cn } from './utils';
 
 interface AccordionTriggerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
@@ -10,6 +10,7 @@ interface AccordionTriggerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'ch
 
 export const AccordionTrigger = forwardRef<HTMLDivElement, AccordionTriggerProps>(
     ({ className, children, onClick, onKeyDown, ...props }, ref) => {
+        const { alwaysOpen } = useAccordion();
         const { isOpen, toggle } = useAccordionItem();
 
         const onTriggerClick = (event: ReactMouseEvent<HTMLDivElement>) => {
@@ -33,11 +34,11 @@ export const AccordionTrigger = forwardRef<HTMLDivElement, AccordionTriggerProps
         return (
             <div
                 ref={ref}
-                role="button"
-                tabIndex={0}
-                aria-expanded={isOpen}
+                role={alwaysOpen ? undefined : 'button'}
+                tabIndex={alwaysOpen ? undefined : 0}
+                aria-expanded={alwaysOpen ? undefined : isOpen}
                 data-state={isOpen ? 'open' : 'closed'}
-                className={cn('cursor-pointer', className)}
+                className={cn(!alwaysOpen && 'cursor-pointer', className)}
                 onClick={onTriggerClick}
                 onKeyDown={onTriggerKeyDown}
                 {...props}
