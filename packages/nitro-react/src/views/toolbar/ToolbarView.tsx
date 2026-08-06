@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 
 import { AvatarImage } from '#base/components/AvatarImage';
-import { useOwnUserFigure, useOwnUserGender } from '#base/context';
+import { useOwnUserFigure, useOwnUserGender, useSystemContext } from '#base/context';
 import { cn, NitroIcon } from '#base/theme';
 
 import { ToolbarMeMenu } from './ToolbarMeMenu';
@@ -16,6 +16,7 @@ export const ToolbarView = () => {
     const ownGender = useOwnUserGender();
     const meElementRef = useRef<HTMLDivElement>(null);
     const progressionElementRef = useRef<HTMLDivElement>(null);
+    const { toggleWindow } = useSystemContext();
 
     const toggleMenu = (menu: string) => {
         setMeExpanded(menu == 'me' && !isMeExpanded);
@@ -34,7 +35,7 @@ export const ToolbarView = () => {
                     <NitroIcon icon="icon-progression" onClick={_ => toggleMenu('progression')} />
                     <NitroIcon icon="icon-catalog" />
                     <NitroIcon icon="icon-builders-club" />
-                    <NitroIcon icon="icon-inventory" />
+                    <NitroIcon icon="icon-inventory" onClick={() => toggleWindow('inventory')} />
                     <div className="nitro-icon icon-me-circle avatar-image" onClick={_ => toggleMenu('me')} >
                         <AvatarImage figure={ownFigure} gender={ownGender} direction={3} />
                     </div>

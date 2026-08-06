@@ -1,5 +1,6 @@
 export * from './AvatarImage';
 export * from './FurnitureImage';
+export * from './inventory/InventoryComponent';
 export * from './messenger/MessengerComponent';
 export * from './room/RoomCanvas';
 export * from './room/RoomContainer';
