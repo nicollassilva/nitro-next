@@ -28,7 +28,9 @@ const buttonVariantsConfig = {
         // unetched
         '103': '[border-image-source:var(--button-103-default-src)] [border-image-slice:8_4_8_6_fill] [border-image-width:8px_4px_8px_6px] nine-slice-border active:[border-image-source:var(--button-103-pressed-src)] active:[border-image-slice:8_4_8_6_fill] active:[border-image-width:8px_4px_8px_6px]  min-w-7 min-h-7 pl-3.25 pt-0.75 pr-3.25 pb-0.75 text-[#000000] text-style-il-button',
         // default
-        '200': '[border-image-source:var(--button-200-default-src)] [border-image-slice:4_4_5_4_fill] [border-image-width:4px_4px_5px_4px] nine-slice-border min-w-7 min-h-7 pl-3.25 pt-0.75 pr-3.25 pb-0.75 text-[#000000] text-style-id-button'
+        '200': '[border-image-source:var(--button-200-default-src)] [border-image-slice:4_4_5_4_fill] [border-image-width:4px_4px_5px_4px] nine-slice-border min-w-7 min-h-7 pl-3.25 pt-0.75 pr-3.25 pb-0.75 text-[#000000] text-style-id-button',
+        // borderless
+        '300': '[border-image-source:var(--button-300-default-src)] [border-image-slice:3_3_3_3_fill] [border-image-width:3px_3px_3px_3px] nine-slice-border hover:[border-image-source:var(--button-300-hovering-src)] hover:[border-image-slice:3_3_3_3_fill] hover:[border-image-width:3px_3px_3px_3px] active:[border-image-source:var(--button-300-pressed-src)] active:[border-image-slice:3_3_3_3_fill] active:[border-image-width:3px_3px_3px_3px]  aria-disabled:[border-image-source:var(--button-300-disabled-src)] aria-disabled:[border-image-slice:3_3_3_3_fill] aria-disabled:[border-image-width:3px_3px_3px_3px] aria-disabled:[border-image-repeat:stretch] min-w-5 min-h-5.5 pl-2 pt-0.5 pr-2 pb-0.75 text-[#000000] text-style-button-shiny-regular',
     },
 } as const;
 
@@ -58,6 +60,8 @@ const buttonOverlayVariantsConfig = {
         '103': '[background-image:var(--button-100-default-button-center-left-curve-src),_var(--button-100-default-button-center-right-curve-src)] [background-position:left_1px_center,_right_1px_center] [background-size:3px_5px,_3px_5px] bg-no-repeat [image-rendering:pixelated] active:[background-image:var(--bubble-0-default-spacer-src),_var(--bubble-0-default-spacer-src)] active:[background-position:left_1px_center,_right_1px_center] active:[background-size:1px_1px,_1px_1px]',
         // default
         '200': '',
+        //borderless
+        '300': ''
     },
 } as const;
 
@@ -77,6 +81,7 @@ const buttonTintableVars: Partial<Record<string, string[]>> = {
     '100': ['button-100-default-src', 'button-100-hovering-src'],
     '101': ['button-100-default-src', 'button-100-hovering-src'],
     '103': ['button-103-default-src', 'button-103-pressed-src'],
+    '300': ['button-300-default-src', 'button-300-hovering-src', 'button-300-pressed-src', 'button-300-disabled-src'],
 };
 
 const buttonVariants = cva('flex items-center justify-center pointer-events-auto leading-0 cursor-pointer', { variants: buttonVariantsConfig, defaultVariants: { variant: '0' } });

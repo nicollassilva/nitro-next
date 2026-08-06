@@ -111,5 +111,5 @@ export const RoomObjectMenuBubble = (props: RoomObjectInfoBubbleProps) => {
         fadeTime.current = 1;
     }, []);
 
-    return <div ref={elementRef} className="absolute z-50 invisible transition-[top,left] duration-60 ease-out">{children}</div>
+    return <div ref={elementRef} className="absolute z-50 invisible">{children}</div>
 }

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useOwnIsAmbassador, useOwnRespectData, useOwnRoomObjectId, useRoomPermissionsSelector, useRoomSelector, useRoomSettingsSelector, useWebSocketContext } from "#base/context";
 import { useRoomUserData } from "#base/hooks";
 import { useLocalizationStore } from "#base/stores";
-import { cn, NitroIcon } from "#base/theme";
+import { Bubble, Button, NitroIcon } from "#base/theme";
 
 interface InfoBubbleAvatarViewProps {
     objectData: ISimpleRoomObjectData;
@@ -143,132 +143,201 @@ export const InfoBubbleAvatarView = (props: InfoBubbleAvatarViewProps) => {
     const canRemoveRights = isRoomOwner && userData.controllerLevel === RoomControllerLevelEnum.Guest && !isGuildRoom;
     const canModerate = userData.canBeKicked || userData.canBeBanned || userData.canBeMuted || canGiveRights || canRemoveRights;
 
+
+    const MODE_BUTTONS = {
+        0: [
+            {
+                visible: canRequestFriend,
+                caption: 'infostand.button.friend',
+                action: 'friend'
+            },
+            {
+                visible: true,
+                caption: 'infostand.button.trade',
+                action: 'trade'
+            },
+            {
+                visible: true,
+                caption: 'infostand.button.whisper',
+                action: 'whisper'
+            },
+            {
+                visible: respectLeft > 0,
+                caption: getLocalizationValueParams('infostand.button.respect', ['count'], [respectLeft.toString()]),
+                action: 'respect'
+            },
+            {
+                visible: !canRequestFriend,
+                caption: 'infostand.link.relationship',
+                action: 'relationship'
+            },
+            {
+                visible: !userData.isIgnored,
+                caption: 'infostand.button.ignore',
+                action: 'ignore'
+            },
+            {
+                visible: userData.isIgnored,
+                caption: 'infostand.button.unignore',
+                action: 'unignore'
+            },
+            {
+                visible: true,
+                caption: 'infostand.button.report',
+                action: 'report'
+            },
+            {
+                visible: canModerate,
+                caption: 'infostand.link.moderate',
+                action: 'moderate'
+            },
+            {
+                visible: isAmbassador,
+                caption: 'infostand.link.ambassador',
+                action: 'ambassador'
+            },
+            {
+                visible: ownUserData && ownUserData.carryItem > 0,
+                caption: 'avatar.widget.pass_hand_item',
+                action: 'pass_hand_item'
+            }
+        ],
+        1: [
+            {
+                visible: userData.canBeKicked,
+                caption: 'infostand.button.kick',
+                action: 'kick'
+            },
+            {
+                visible: userData.canBeMuted,
+                caption: 'infostand.button.mute',
+                action: 'mute'
+            },
+            {
+                visible: userData.canBeBanned,
+                caption: 'infostand.button.ban',
+                action: 'ban'
+            },
+            {
+                visible: canGiveRights,
+                caption: 'infostand.button.giverights',
+                action: 'give_rights'
+            },
+            {
+                visible: canRemoveRights,
+                caption: 'infostand.button.removerights',
+                action: 'remove_rights'
+            },
+            {
+                visible: true,
+                caption: 'generic.back',
+                action: 'back'
+            }
+        ],
+        2: [
+            {
+                visible: true,
+                caption: 'infostand.button.ban_hour',
+                action: 'ban_hour'
+            },
+            {
+                visible: true,
+                caption: 'infostand.button.ban_day',
+                action: 'ban_day'
+            },
+            {
+                visible: true,
+                caption: 'infostand.button.perm_ban',
+                action: 'perm_ban'
+            },
+            {
+                visible: true,
+                caption: 'generic.back',
+                action: 'moderate'
+            }
+        ],
+        3: [
+            {
+                visible: true,
+                caption: 'infostand.button.mute_2min',
+                action: 'mute_2min'
+            },
+            {
+                visible: true,
+                caption: 'infostand.button.mute_5min',
+                action: 'mute_5min'
+            },
+            {
+                visible: true,
+                caption: 'infostand.button.mute_10min',
+                action: 'mute_10min'
+            },
+            {
+                visible: true,
+                caption: 'generic.back',
+                action: 'moderate'
+            }
+        ],
+        4: [
+            {
+                visible: true,
+                caption: 'infostand.button.alert',
+                action: 'ambassador_alert'
+            },
+            {
+                visible: true,
+                caption: 'infostand.button.kick',
+                action: 'ambassador_kick'
+            },
+            {
+                visible: true,
+                caption: 'infostand.button.mute',
+                action: 'ambassador_mute'
+            },
+            {
+                visible: true,
+                caption: 'generic.back',
+                action: 'back'
+            }
+        ],
+        5: [
+            {
+                visible: true,
+                caption: 'infostand.button.mute_2min',
+                action: 'ambassador_mute_2min'
+            },
+            {
+                visible: true,
+                caption: 'infostand.button.mute_10min',
+                action: 'ambassador_mute_10min'
+            },
+            {
+                visible: true,
+                caption: 'infostand.button.mute_18hour',
+                action: 'ambassador_mute_18hr'
+            },
+            {
+                visible: true,
+                caption: 'generic.back',
+                action: 'ambassador'
+            }
+        ],
+    };
+
     return (
-        <div className={cn('contextmenu-container', 'w-30', collapsed && 'menu-collapsed')}>
-            {!collapsed && <>
-                <div className="flex items-center justify-center menu-header">
-                    <p>{userData.name}</p>
+        <Bubble variant="0" tintColor="#6e6b67">
+            {!collapsed && <div className="min-w-30 max-w-30 flex flex-col mx-px overflow-hidden">
+                <div className="flex items-center justify-center min-h-6 max-h-6">
+                    <span className="text-style-u-bold font-[11px] text-white">{userData.name}</span>
                 </div>
-                <div className="menu-content">
-                    {mode === MODE_NORMAL && <>
-                        {canRequestFriend && <div className="flex items-center justify-center menu-item" onClick={() => processAction('friend')}>
-                            {getLocalizationValue('infostand.button.friend')}
-                        </div>}
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('trade')}>
-                            {getLocalizationValue('infostand.button.trade')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('whisper')}>
-                            {getLocalizationValue('infostand.button.whisper')}
-                        </div>
-                        {respectLeft > 0 && <div className="flex items-center justify-center menu-item" onClick={() => processAction('whisper')}>
-                            {getLocalizationValueParams('infostand.button.respect', ['count'], [respectLeft.toString()])}
-                        </div>}
-                        {!canRequestFriend && <div className="flex items-center justify-center menu-item" onClick={() => processAction('relationship')}>
-                            {getLocalizationValue('infostand.link.relationship')}
-                        </div>}
-                        {!userData.isIgnored && <div className="flex items-center justify-center menu-item" onClick={() => processAction('ignore')}>
-                            {getLocalizationValue('infostand.button.ignore')}
-                        </div>}
-                        {userData.isIgnored && <div className="flex items-center justify-center menu-item" onClick={() => processAction('unignore')}>
-                            {getLocalizationValue('infostand.button.unignore')}
-                        </div>}
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('report')}>
-                            {getLocalizationValue('infostand.button.report')}
-                        </div>
-                        {canModerate && <div className="flex items-center justify-center menu-item" onClick={() => processAction('moderate')}>
-                            {getLocalizationValue('infostand.link.moderate')}
-                        </div>}
-                        {isAmbassador && <div className="flex items-center justify-center menu-item" onClick={() => processAction('ambassador')}>
-                            {getLocalizationValue('infostand.link.ambassador')}
-                        </div>}
-                        {ownUserData && ownUserData.carryItem > 0 && <div className="flex items-center justify-center menu-item" onClick={() => processAction('pass_hand_item')}>
-                            {getLocalizationValue('avatar.widget.pass_hand_item')}
-                        </div>}
-                    </>}
-                    {mode === MODE_MODERATE && <>
-                        {userData.canBeKicked && <div className="flex items-center justify-center menu-item" onClick={() => processAction('kick')}>
-                            {getLocalizationValue('infostand.button.kick')}
-                        </div>}
-                        {userData.canBeMuted && <div className="flex items-center justify-center menu-item" onClick={() => processAction('mute')}>
-                            {getLocalizationValue('infostand.button.mute')}
-                        </div>}
-                        {userData.canBeBanned && <div className="flex items-center justify-center menu-item" onClick={() => processAction('ban')}>
-                            {getLocalizationValue('infostand.button.ban')}
-                        </div>}
-                        {canGiveRights && <div className="flex items-center justify-center menu-item" onClick={() => processAction('give_rights')}>
-                            {getLocalizationValue('infostand.button.giverights')}
-                        </div>}
-                        {canRemoveRights && <div className="flex items-center justify-center menu-item" onClick={() => processAction('remove_rights')}>
-                            {getLocalizationValue('infostand.button.removerights')}
-                        </div>}
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('back')}>
-                            {getLocalizationValue('generic.back')}
-                        </div>
-                    </>}
-                    {mode === MODE_MODERATE_BAN && <>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('ban_hour')}>
-                            {getLocalizationValue('infostand.button.ban_hour')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('ban_day')}>
-                            {getLocalizationValue('infostand.button.ban_day')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('perm_ban')}>
-                            {getLocalizationValue('infostand.button.perm_ban')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('moderate')}>
-                            {getLocalizationValue('generic.back')}
-                        </div>
-                    </>}
-                    {mode === MODE_MODERATE_MUTE && <>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('mute_2min')}>
-                            {getLocalizationValue('infostand.button.mute_2min')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('mute_5min')}>
-                            {getLocalizationValue('infostand.button.mute_5min')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('mute_10min')}>
-                            {getLocalizationValue('infostand.button.mute_10min')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('moderate')}>
-                            {getLocalizationValue('generic.back')}
-                        </div>
-                    </>}
-                    {mode === MODE_AMBASSADOR && <>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('ambassador_alert')}>
-                            {getLocalizationValue('infostand.button.alert')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('ambassador_kick')}>
-                            {getLocalizationValue('infostand.button.kick')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('ambassador_mute')}>
-                            {getLocalizationValue('infostand.button.mute')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('back')}>
-                            {getLocalizationValue('generic.back')}
-                        </div>
-                    </>}
-                    {mode === MODE_AMBASSADOR_MUTE && <>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('ambassador_mute_2min')}>
-                            {getLocalizationValue('infostand.button.mute_2min')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('ambassador_mute_10min')}>
-                            {getLocalizationValue('infostand.button.mute_10min')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('ambassador_mute_60min')}>
-                            {getLocalizationValue('infostand.button.mute_60min')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('ambassador_mute_18hr')}>
-                            {getLocalizationValue('infostand.button.mute_18hour')}
-                        </div>
-                        <div className="flex items-center justify-center menu-item" onClick={() => processAction('ambassador')}>
-                            {getLocalizationValue('generic.back')}
-                        </div>
-                    </>}
+                <div className="flex flex-col w-full overflow-hidden gap-px border-y border-black">
+                    {MODE_BUTTONS[mode].map(({ visible, caption, action }) =>
+                        visible ? <Button key={action} variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 text-white text-[11px] w-full" onClick={() => processAction(action)}>{getLocalizationValue(caption)}</Button> : null)}
                 </div>
-            </>}
-            <div className="flex items-center justify-center menu-bottom" onClick={() => setCollapsed(!collapsed)}>
+            </div>}
+            <div className="flex items-center justify-center min-h-4.5 max-h-4.5 p-2 w-full" onClick={() => setCollapsed(!collapsed)}>
                 <NitroIcon className="cursor-pointer" icon={!collapsed ? 'icon-context-menu-arrow-down' : 'icon-context-menu-arrow-up'} />
             </div>
-        </div>
+        </Bubble>
     );
 }

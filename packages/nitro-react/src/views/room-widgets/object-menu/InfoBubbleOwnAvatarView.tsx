@@ -33,7 +33,6 @@ export const InfoBubbleOwnAvatarView = (props: InfoBubbleOwnAvatarViewProps) => 
     if (!userData) return null;
 
     const isRidingHorse = userData.effectId === 77;
-    const canUseExpressions = userData.effectId !== 29 && userData.effectId !== 30 && userData.effectId !== 185;
 
     const processAction = (action: string) => {
         let hideMenu = true;
@@ -88,49 +87,6 @@ export const InfoBubbleOwnAvatarView = (props: InfoBubbleOwnAvatarViewProps) => 
         if (hideMenu && onClose) onClose();
     }
 
-    const MODE_NORMAL_ACTIONS = [
-        {
-            visible: canDecorate,
-            caption: 'widget.avatar.decorate',
-            action: undefined
-        },
-        {
-            visible: true,
-            caption: 'widget.memenu.myclothes',
-            action: undefined
-        },
-        {
-            visible: hasHabboClub && !isRidingHorse,
-            caption: 'widget.memenu.dance',
-            action: () => processAction('dance_menu')
-        },
-        {
-            visible: !isOwnDancing && !hasHabboClub && !isRidingHorse,
-            caption: 'widget.avatar.dance',
-            action: () => processAction('dance')
-        },
-        {
-            visible: isOwnDancing && !hasHabboClub && !isRidingHorse,
-            caption: 'widget.memenu.dance.stop',
-            action: () => processAction('dance_stop')
-        },
-        {
-            visible: true,
-            caption: 'infostand.link.expressions',
-            action: () => processAction('expressions')
-        },
-        {
-            visible: true,
-            caption: 'infostand.show.signs',
-            action: () => processAction('signs')
-        },
-        {
-            visible: userData.carryItem > 0,
-            caption: 'avatar.widget.drop_hand_item',
-            action: () => processAction('drop_hand_item')
-        }
-    ];
-
     const MODE_BUTTONS = {
         0: [
             {
@@ -159,7 +115,7 @@ export const InfoBubbleOwnAvatarView = (props: InfoBubbleOwnAvatarViewProps) => 
                 action: () => processAction('dance_stop')
             },
             {
-                visible: true,
+                visible: userData.effectId !== 29 && userData.effectId !== 30 && userData.effectId !== 185,
                 caption: 'infostand.link.expressions',
                 action: () => processAction('expressions')
             },
@@ -244,27 +200,73 @@ export const InfoBubbleOwnAvatarView = (props: InfoBubbleOwnAvatarViewProps) => 
             }
         ],
         4: [
-
+            {
+                visible: true,
+                caption: 'generic.back',
+                action: () => processAction('back')
+            }
         ]
     }
 
     return (
-        <Bubble className="min-w-28.75" variant="0" tintColor="#6e6b67">
-            <div className="flex flex-col mx-px overflow-hidden">
-                <div className="flex items-center justify-center py-1.5 px-4.5 m-h-7.5 max-h-7.5 z-20">
+        <Bubble variant="0" tintColor="#6e6b67">
+            {!collapsed && <div className="min-w-25 max-w-25 flex flex-col mx-px overflow-hidden">
+                <div className="flex items-center justify-center min-h-6 max-h-6">
                     <span className="text-style-u-bold font-[11px] text-white">{userData.name}</span>
                 </div>
-                <div className="h-px w-full bg-black z-20" />
-                <div className="flex flex-col w-[calc(100%+10px)] -ml-1.25 px-px overflow-hidden z-10 gap-px">
+                <div className="flex flex-col w-full overflow-hidden gap-px border-y border-black">
+                    {mode === MODE_SIGNS && <>
+                        <div className="flex justify-evenly gap-px">
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_1')}>1</Button>
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_2')}>2</Button>
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_3')}>3</Button>
+                        </div>
+                        <div className="flex justify-evenly gap-px">
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_4')}>4</Button>
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_5')}>5</Button>
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_6')}>6</Button>
+                        </div>
+                        <div className="flex justify-evenly gap-px">
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_7')}>7</Button>
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_8')}>8</Button>
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_9')}>9</Button>
+                        </div>
+                        <div className="flex justify-evenly gap-px">
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_10')}>10</Button>
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_11')}>
+                                <NitroIcon icon="icon-sign-heart" />
+                            </Button>
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_12')}>
+                                <NitroIcon icon="icon-sign-skull" />
+                            </Button>
+                        </div>
+                        <div className="flex justify-evenly gap-px">
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_0')}>0</Button>
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_13')}>
+                                <NitroIcon icon="icon-sign-exclamation" />
+                            </Button>
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_15')}>
+                                <NitroIcon icon="icon-sign-smile" />
+                            </Button>
+                        </div>
+                        <div className="flex justify-evenly gap-px">
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_14')}>
+                                <NitroIcon icon="icon-sign-soccer" />
+                            </Button>
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_17')}>
+                                <NitroIcon icon="icon-sign-yellow" />
+                            </Button>
+                            <Button variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 w-full text-white text-[11px]" onClick={() => processAction('sign_16')}>
+                                <NitroIcon icon="icon-sign-red" />
+                            </Button>
+                        </div>
+                    </>}
                     {MODE_BUTTONS[mode].map(({ visible, caption, action }) =>
-                        visible ? <div className="flex items-center justify-center min-h-6.5 max-h-6.5 overflow-hidden">
-                            <Button variant="3" tintColor="#2d2a27" className="min-h-8.75 max-h-[8.75] text-white text-[11px] w-full p-0!" onClick={action}>{getLocalizationValue(caption)}</Button>
-                        </div> : null)}
+                        visible ? <Button key={caption} variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 text-white text-[11px] w-full" onClick={action}>{getLocalizationValue(caption)}</Button> : null)}
                 </div>
-                <div className="h-px w-full bg-black z-20" />
-                <div className="flex items-center justify-center min-h-4.5 max-h-4.5 z-20" onClick={() => setCollapsed(!collapsed)}>
-                    <NitroIcon className="cursor-pointer" icon={!collapsed ? 'icon-context-menu-arrow-down' : 'icon-context-menu-arrow-up'} />
-                </div>
+            </div>}
+            <div className="flex items-center justify-center min-h-4.5 max-h-4.5 p-2 w-full" onClick={() => setCollapsed(!collapsed)}>
+                <NitroIcon className="cursor-pointer" icon={!collapsed ? 'icon-context-menu-arrow-down' : 'icon-context-menu-arrow-up'} />
             </div>
         </Bubble>
     );
