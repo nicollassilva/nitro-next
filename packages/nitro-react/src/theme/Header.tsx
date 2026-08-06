@@ -65,7 +65,6 @@ type HeaderVariantProps = VariantProps<typeof headerVariantsConfig>;
 interface HeaderProps extends HTMLAttributes<HTMLDivElement>, HeaderVariantProps {
     caption?: string;
     onClose?: () => void;
-
     className?: string;
     tintColor?: string;
     defaultVariant?: string;
