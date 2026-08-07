@@ -1,5 +1,5 @@
-import { useState } from "react";
 
+import { friendTabs, useFriendsContext, useSystemContext } from "#base/context";
 import { useLocalizationStore } from "#base/stores";
 import { Accordion, cn, Frame } from "#base/theme";
 
@@ -7,34 +7,19 @@ import { FriendListFriends } from "./tabs/FriendListFriends";
 import { FriendListRequests } from "./tabs/FriendListRequests";
 import { FriendListSearch } from "./tabs/FriendListSearch";
 
-const friendTabs = {
-    friends: 'friends',
-    requests: 'requests',
-    search: 'search'
-} as const;
-
 export const FriendListView = () => {
-    const [activeTab, setActiveTab] = useState<string>(friendTabs.friends);
-    const [tooltip, setTooltip] = useState<string>('');
+    const { activeTab, setActiveTab, tooltip } = useFriendsContext();
+    const { isWindowVisible, toggleWindow } = useSystemContext();
 
     const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
 
-    const onTooltipChanged = (value: string) => {
-        if(value === tooltip) return;
-
-        if(value.length < 1) {
-            setTooltip('');
-            return;
-        }
-
-        setTooltip(getLocalizationValue(value))
-    }
+    if(!isWindowVisible('friendlist')) return null;
 
     return (
         <>
-            <Frame variant="0" id="friendlist" className={ cn('w-57.5 min-h-26.75 leading-none', activeTab ? 'h-87.5' : 'h-fit') } contentClassName="px-0! pt-0! -mt-px" caption={ getLocalizationValue('friendlist.friends') }>
+            <Frame variant="0" id="friendlist" className={ cn('w-57.5 min-h-26.75 leading-none', activeTab ? 'h-87.5' : 'h-fit') } contentClassName="px-0! pt-0! -mt-px" caption={ getLocalizationValue('friendlist.friends') } onClose={ () => toggleWindow('friendlist') }>
                 <Accordion collapsible value={ activeTab } onValueChange={ setActiveTab } className={cn('text-black border-t border-black bg-white -mx-0.5', activeTab ? 'flex-1 min-h-0' : 'h-fit')}>
-                    <FriendListFriends value={ friendTabs.friends } onTooltipChanged={ onTooltipChanged } />
+                    <FriendListFriends value={ friendTabs.friends } />
                     <FriendListRequests value={ friendTabs.requests } />
                     <FriendListSearch value={ friendTabs.search } />
                 </Accordion>

@@ -1,6 +1,6 @@
 import { IMessengerFriend } from "@nitrodevco/nitro-shared";
-import { useState } from "react";
 
+import { useFriendsContext } from "#base/context";
 import { useOfflineFriendsSelector, useOnlineFriendsSelector } from "#base/context/user";
 import { useLocalizationStore } from "#base/stores";
 import { Accordion, ScrollArea } from "#base/theme";
@@ -12,32 +12,17 @@ import { FriendListFriendItem } from "../items/FriendListFriendItem";
 
 interface FriendListFriendsProps {
     value: string;
-    onTooltipChanged: (tooltip: string) => void;
 }
 
 export const FriendListFriends = (props: FriendListFriendsProps) => {
-    const { value, onTooltipChanged } = props;
+    const { value } = props;
+
+    const { filterValue } = useFriendsContext();
 
     const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
     
     const onlineFriends = useOnlineFriendsSelector();
     const offlineFriends = useOfflineFriendsSelector();
-
-    const [showSearch, setShowSearch] = useState<boolean>(false);
-
-    const [searchValue, setSearchValue] = useState<string>('');
-    const [searchDraft, setSearchDraft] = useState<string>('');
-
-    const search = searchValue.trim().toLowerCase();
-
-    const onSearchToggled = (showSearch: boolean) => {
-        setShowSearch(showSearch);
-
-        if (showSearch) return;
-
-        setSearchDraft('');
-        setSearchValue('');
-    }
 
     const groups = [
         {
@@ -52,8 +37,8 @@ export const FriendListFriends = (props: FriendListFriendsProps) => {
         }
     ].map(group => ({
         ...group,
-        friends: !search ? group.friends : group.friends.filter(
-            (friend: IMessengerFriend) => friend.name.toLowerCase().includes(search)
+        friends: !filterValue ? group.friends : group.friends.filter(
+            (friend: IMessengerFriend) => friend.name.toLowerCase().includes(filterValue)
         )
     }));
 
@@ -62,6 +47,7 @@ export const FriendListFriends = (props: FriendListFriendsProps) => {
             value={ value }
             caption="friendlist.friends"
             triggerClassName="from-[#8adaff] to-[#59bfff]"
+            tooltip="friendlist.tip.tab.1"
         >
             <ScrollArea
                 className="flex-1 min-h-0 p-1 pb-0 gap-1 text-[0.68rem]"
@@ -75,14 +61,7 @@ export const FriendListFriends = (props: FriendListFriendsProps) => {
                     )) }
                 </Accordion>
             </ScrollArea>
-            <FriendListFriendsFooter
-                showSearch={ showSearch }
-                onSearchToggled={ onSearchToggled }
-                searchDraft={ searchDraft }
-                onSearchDraftChanged={ setSearchDraft }
-                onSearchSubmitted={ () => setSearchValue(searchDraft) }
-                onTooltipChanged={ onTooltipChanged }
-            />
+            <FriendListFriendsFooter />
         </FriendListTab>
     );
 }

@@ -21,7 +21,7 @@ export const SystemContextProvider = ({ children }: ProviderProps) => {
             const index = results.indexOf(name);
 
             if (index >= 0) results.splice(index, 1);
-            results.push(name);
+            else results.push(name);
 
             return results;
         });
