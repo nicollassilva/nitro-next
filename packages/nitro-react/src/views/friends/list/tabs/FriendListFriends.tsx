@@ -1,8 +1,7 @@
 import { IMessengerFriend } from "@nitrodevco/nitro-shared";
 
-import { useFriendsContext } from "#base/context";
+import { useFriendsContext, useTranslation } from "#base/context";
 import { useOfflineFriendsSelector, useOnlineFriendsSelector } from "#base/context/user";
-import { useLocalizationStore } from "#base/stores";
 import { Accordion, ScrollArea } from "#base/theme";
 
 import { FriendListGroup } from "../components/FriendListGroup";
@@ -19,8 +18,8 @@ export const FriendListFriends = (props: FriendListFriendsProps) => {
 
     const { filterValue } = useFriendsContext();
 
-    const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
-    
+    const t = useTranslation();
+
     const onlineFriends = useOnlineFriendsSelector();
     const offlineFriends = useOfflineFriendsSelector();
 
@@ -44,7 +43,7 @@ export const FriendListFriends = (props: FriendListFriendsProps) => {
 
     return (
         <FriendListTab
-            value={ value }
+            value={value}
             caption="friendlist.friends"
             triggerClassName="from-[#8adaff] to-[#59bfff]"
             tooltip="friendlist.tip.tab.1"
@@ -53,12 +52,12 @@ export const FriendListFriends = (props: FriendListFriendsProps) => {
                 className="flex-1 min-h-0 p-1 pb-0 gap-1 text-[0.68rem]"
                 contentClassName="flex flex-col [&>*:nth-child(odd)]:bg-[#eee] [&>*:nth-child(even)]:bg-white"
             >
-                <Accordion unwrapped type="multiple" defaultValue={ ['online'] }>
-                    { groups.map(group => (
-                        <FriendListGroup key={ group.value } value={ group.value } caption={ getLocalizationValue(group.caption) + ` (${group.friends.length})` }>
-                            { group.friends.map((friend: IMessengerFriend) => <FriendListFriendItem key={ friend.playerId } friend={ friend } /> ) }
+                <Accordion unwrapped type="multiple" defaultValue={['online']}>
+                    {groups.map(group => (
+                        <FriendListGroup key={group.value} value={group.value} caption={t(group.caption) + ` (${group.friends.length})`}>
+                            {group.friends.map((friend: IMessengerFriend) => <FriendListFriendItem key={friend.playerId} friend={friend} />)}
                         </FriendListGroup>
-                    )) }
+                    ))}
                 </Accordion>
             </ScrollArea>
             <FriendListFriendsFooter />

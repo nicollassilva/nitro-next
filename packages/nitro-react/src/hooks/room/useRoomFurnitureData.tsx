@@ -1,14 +1,14 @@
 import { FurnitureUsagePolicyEnum, GetObjectDataForFlags, IFurnitureData, IRoomFurnitureData, RoomObjectCategoryEnum, RoomObjectVariableEnum } from "@nitrodevco/nitro-api";
 
-import { useRoomSelector } from "#base/context"
-import { useFurnitureDataStore, useLocalizationStore } from "#base/stores";
+import { useRoomSelector, useTranslation } from "#base/context"
+import { useFurnitureDataStore } from "#base/stores";
 
 export const useRoomFurnitureData = (objectId: number, category: RoomObjectCategoryEnum) => {
     const room = useRoomSelector();
     const floorItems = useFurnitureDataStore(x => x.floorItems);
     const wallItems = useFurnitureDataStore(x => x.wallItems);
     const roomObject = room?.getRoomObject(objectId, category);
-    const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
+    const t = useTranslation();
 
     if (!roomObject) return undefined;
 
@@ -29,8 +29,8 @@ export const useRoomFurnitureData = (objectId: number, category: RoomObjectCateg
     if (roomObject.type.indexOf('poster') === 0) {
         const posterId = parseInt(roomObject.type.replace('poster', ''));
 
-        name = getLocalizationValue(`poster_${posterId}_name`);
-        description = getLocalizationValue(`poster_${posterId}_desc`);
+        name = t(`poster_${posterId}_name`);
+        description = t(`poster_${posterId}_desc`);
     } else {
         switch (category) {
             case RoomObjectCategoryEnum.Floor: {

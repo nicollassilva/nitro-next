@@ -2,9 +2,8 @@ import { AvatarActionStateType, AvatarExpressionEnum, ISimpleRoomObjectData, Pos
 import { AvatarExpressionComposer, ChangePostureComposer, DanceComposer, DropCarryItemComposer, SignComposer } from "@nitrodevco/nitro-shared";
 import { useState } from "react";
 
-import { useOwnHasClub, useOwnIsDancing, useRoomCanDecorate, useWebSocketContext } from "#base/context";
+import { useOwnHasClub, useOwnIsDancing, useRoomCanDecorate, useTranslation, useWebSocketContext } from "#base/context";
 import { useRoomUserData } from "#base/hooks";
-import { useLocalizationStore } from "#base/stores";
 import { Bubble, Button, NitroIcon } from "#base/theme";
 
 interface InfoBubbleOwnAvatarViewProps {
@@ -27,7 +26,7 @@ export const InfoBubbleOwnAvatarView = (props: InfoBubbleOwnAvatarViewProps) => 
     const canDecorate = useRoomCanDecorate();
     const [mode, setMode] = useState<number>((isOwnDancing && hasHabboClub) ? MODE_CLUB_DANCES : MODE_NORMAL);
     const [collapsed, setCollapsed] = useState<boolean>(false);
-    const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
+    const t = useTranslation();
     const { send } = useWebSocketContext();
 
     if (!userData) return null;
@@ -262,7 +261,7 @@ export const InfoBubbleOwnAvatarView = (props: InfoBubbleOwnAvatarViewProps) => 
                         </div>
                     </>}
                     {MODE_BUTTONS[mode].map(({ visible, caption, action }) =>
-                        visible ? <Button key={caption} variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 text-white text-[11px] w-full" onClick={action}>{getLocalizationValue(caption)}</Button> : null)}
+                        visible ? <Button key={caption} variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 text-white text-[11px] w-full" onClick={action}>{t(caption)}</Button> : null)}
                 </div>
             </div>}
             <div className="flex items-center justify-center min-h-4.5 max-h-4.5 p-2 w-full" onClick={() => setCollapsed(!collapsed)}>

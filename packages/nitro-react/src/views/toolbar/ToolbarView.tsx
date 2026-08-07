@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 
 import { AvatarImage } from '#base/components/AvatarImage';
-import { useOwnUserFigure, useOwnUserGender, useSystemContext } from '#base/context';
+import { useOwnUserFigure, useOwnUserGender, useSystemActions } from '#base/context';
 import { cn, NitroIcon } from '#base/theme';
 
 import { ToolbarMeMenu } from './ToolbarMeMenu';
@@ -16,7 +16,7 @@ export const ToolbarView = () => {
     const ownGender = useOwnUserGender();
     const meElementRef = useRef<HTMLDivElement>(null);
     const progressionElementRef = useRef<HTMLDivElement>(null);
-    const { toggleWindow } = useSystemContext();
+    const { toggleWindow } = useSystemActions();
 
     const toggleMenu = (menu: string) => {
         setMeExpanded(menu == 'me' && !isMeExpanded);

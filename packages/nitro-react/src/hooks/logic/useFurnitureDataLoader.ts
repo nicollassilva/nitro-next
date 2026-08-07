@@ -2,16 +2,17 @@ import { NitroLogger } from '@nitrodevco/nitro-api';
 import { GetRoomContentLoader } from '@nitrodevco/nitro-renderer';
 import { useEffect, useState } from 'react';
 
-import { useConfigurationStore, useFurnitureDataStore, useLocalizationStore } from '#base/stores';
+import { useSystemActions } from '#base/context';
+import { useConfigurationStore, useFurnitureDataStore } from '#base/stores';
 
 export const useFurnitureDataLoader = () => {
     const [needsUpdate, setNeedsUpdate] = useState(true);
     const floorItems = useFurnitureDataStore(x => x.floorItems);
     const wallItems = useFurnitureDataStore(x => x.wallItems);
     const furnidataUrl = useConfigurationStore(state => state.config['furnituredata.url']) as string | undefined;
-    const setLocalizationForFurniture = useLocalizationStore(x => x.setLocalizationForFurniture);
     const parseFloorItems = useFurnitureDataStore(x => x.parseFloorItems);
     const parseWallItems = useFurnitureDataStore(x => x.parseWallItems);
+    const { setLocalizationForFurniture } = useSystemActions();
 
     const isFurnitureDataReady = () => {
         return !needsUpdate;

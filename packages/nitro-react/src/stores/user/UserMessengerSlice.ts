@@ -11,10 +11,11 @@ type State = {
 }
 
 type Actions = {
-    setLimits: (userFriendLimit: number, normalFriendLimit: number, extendedFriendLimit: number) => void;
+    setFriendLimits: (userFriendLimit: number, normalFriendLimit: number, extendedFriendLimit: number) => void;
     setFriendCategories: (categories: IMessengerCategory[]) => void;
     processFriends: (friends: IMessengerFriend[]) => void;
     processFriendUpdates: (updates: IMessengerUpdate[]) => void;
+    processFriendRequests: (requests: IFriendRequest[]) => void;
 };
 
 export const UserMessengerSlice: State = {
@@ -30,7 +31,7 @@ export type UserMessengerSlice = State & Actions;
 
 export const createUserMessengerSlice: StateCreator<UserMessengerSlice, [], [], UserMessengerSlice> = (set, get, store) => ({
     ...UserMessengerSlice,
-    setLimits: (userFriendLimit: number, normalFriendLimit: number, extendedFriendLimit: number) => set({ userFriendLimit, normalFriendLimit, extendedFriendLimit }),
+    setFriendLimits: (userFriendLimit: number, normalFriendLimit: number, extendedFriendLimit: number) => set({ userFriendLimit, normalFriendLimit, extendedFriendLimit }),
     setFriendCategories: (categories: IMessengerCategory[]) => set({ categories }),
     processFriends: (friends: IMessengerFriend[]) => set(x => {
         const updates = friends.reduce((acc, data) => ({
@@ -58,5 +59,15 @@ export const createUserMessengerSlice: StateCreator<UserMessengerSlice, [], [], 
         }
 
         return { friends };
-    })
+    }),
+    processFriendRequests: (requests: IFriendRequest[]) => set(x => {
+        const updates = requests.reduce((acc, data) => ({
+            ...acc,
+            [data.playerId]: data
+        }), {});
+
+        return {
+            requests: { ...x.requests, ...updates }
+        };
+    }),
 });

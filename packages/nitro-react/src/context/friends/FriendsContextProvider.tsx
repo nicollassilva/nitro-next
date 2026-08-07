@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 
-import { useLocalizationStore } from '#base/stores';
-
+import { useTranslation } from '../system';
 import { FriendsContext, friendTabs } from './FriendsContext';
 
 type ProviderProps = {
@@ -20,18 +19,18 @@ export const FriendsContextProvider = ({ children }: ProviderProps) => {
 
     const [selectedFriendsIds, setSelectedFriendsIds] = useState<number[]>([]);
     const [relationshipDropdownId, setRelationshipDropdownId] = useState<number>(0);
-    
-    const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
+
+    const t = useTranslation();
 
     const updateTooltip = (value: string) => {
-        if(value === tooltip) return;
+        if (value === tooltip) return;
 
-        if(value.length < 1) {
+        if (value.length < 1) {
             setTooltip('');
             return;
         }
 
-        setTooltip(getLocalizationValue(value))
+        setTooltip(t(value))
     }
 
     const toggleListSearchInput = (showSearch: boolean) => {

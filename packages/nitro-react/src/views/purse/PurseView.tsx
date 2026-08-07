@@ -1,10 +1,9 @@
-import { useWallet } from "#base/context";
-import { useLocalizationStore } from "#base/stores";
+import { useTranslation, useWallet } from "#base/context";
 import { Border, Button, NitroIcon } from "#base/theme";
 
 export const PurseView = () => {
     const currency = useWallet();
-    const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
+    const t = useTranslation();
 
     const kinds = [
         {
@@ -40,16 +39,16 @@ export const PurseView = () => {
             <div className="flex flex-col justify-center w-25.25 gap-1">
                 <Border className="flex items-center gap-1 opacity-90 p-1 hover:cursor-pointer [&:hover>*]:brightness-[1.6]" variant="1" tintColor="#FFE1CC">
                     <NitroIcon icon="icon-hc-small" />
-                    <span className="text-[#00C1C4] text-[12px] font-ubuntu-bold font-aa text-ellipsis text-nowrap overflow-hidden">{getLocalizationValue('purse.clubdays.zero.amount.text')}</span>
+                    <span className="text-[#00C1C4] text-[12px] font-ubuntu-bold font-aa text-ellipsis text-nowrap overflow-hidden">{t('purse.clubdays.zero.amount.text')}</span>
                 </Border>
                 <Border className="flex items-center gap-1 opacity-90 p-1 hover:cursor-pointer [&:hover>*]:brightness-[1.6]" variant="1" tintColor="#FFE1CC">
                     <NitroIcon icon="icon-earnings-small" />
-                    <span className="text-[#00C1C4] text-[12px] font-ubuntu-bold font-aa text-ellipsis text-nowrap overflow-hidden">{getLocalizationValue('earnings.title')}</span>
+                    <span className="text-[#00C1C4] text-[12px] font-ubuntu-bold font-aa text-ellipsis text-nowrap overflow-hidden">{t('earnings.title')}</span>
                 </Border>
             </div>
             <div className="flex flex-col justify-center gap-0.5 w-15.75 relative pl-0.75 after:content-[''] after:w-px after:h-13.75 after:bg-[#444] after:absolute after:-left-0.5 after:top-1">
                 <Button className="text-white w-full h-4.75 font-[12px]" variant="0" tintColor="#217bb5">
-                    {getLocalizationValue('toolbar.help')}
+                    {t('toolbar.help')}
                 </Button>
                 <Button className="text-white w-full h-4.75" variant="0" tintColor="#de5347">
                     <NitroIcon icon="icon-disconnect" />

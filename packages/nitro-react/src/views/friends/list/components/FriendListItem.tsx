@@ -26,18 +26,18 @@ export const FriendListItem = (props: FriendListItemProps) => {
     const { tooltipHandlers } = useFriendsContext();
 
     return (
-        <div className={ cn('flex gap-1.5 items-center h-5', selected && 'bg-[#b8e2fc]!') } onClick={ onClicked }>
+        <div className={cn('flex gap-1.5 items-center h-5', selected && 'bg-[#b8e2fc]!')} onClick={onClicked}>
             <div className="flex gap-0.5 items-center justify-center shrink-0">
-                { !hideAvatarElement && <div className="w-5 h-5 overflow-hidden">
-                    { showAvatarHead && <AvatarImage figure={ user.figure } gender={ user.gender ?? AvatarGenderType.Unisex } direction={2} small /> }
-                </div> }
-                <NitroIcon className="hover:brightness-150 cursor-pointer" icon="icon-profile-small" { ...tooltipHandlers('infostand.profile.link.tooltip') } />
+                {!hideAvatarElement && <div className="w-5 h-5 overflow-hidden">
+                    {showAvatarHead && <AvatarImage figure={user.figure} gender={user.gender ?? AvatarGenderType.Unisex} direction={2} />}
+                </div>}
+                <NitroIcon className="hover:brightness-150 cursor-pointer" icon="icon-profile-small" {...tooltipHandlers('infostand.profile.link.tooltip')} />
             </div>
             <span className="pt-0.5 flex-1 min-w-0 overflow-hidden whitespace-nowrap">
-                { user.name }
+                {user.name}
             </span>
             <div className="flex gap-0.5 items-center justify-around shrink-0 min-w-11.25 max-w-13">
-                { children }
+                {children}
             </div>
         </div>
     );

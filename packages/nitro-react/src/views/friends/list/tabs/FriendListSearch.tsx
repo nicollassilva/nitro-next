@@ -1,7 +1,6 @@
 import { IMessengerSearchResult } from "@nitrodevco/nitro-shared";
 
-import { useFriendsSelector } from "#base/context";
-import { useLocalizationStore } from "#base/stores";
+import { useFriendsSelector, useTranslation } from "#base/context";
 import { Accordion, ScrollArea } from "#base/theme";
 
 import { FriendListGroup } from "../components/FriendListGroup";
@@ -21,10 +20,10 @@ interface FriendListSearchGroupData {
 }
 
 export const FriendListSearch = (props: FriendListSearchProps) => {
-    const getLocalizationValueParams = useLocalizationStore(x => x.getLocalizationValueParams);
+    const t = useTranslation();
 
     const friends = useFriendsSelector();
-    
+
     const groups = [
         {
             value: 'friends',
@@ -41,12 +40,12 @@ export const FriendListSearch = (props: FriendListSearchProps) => {
     ] as FriendListSearchGroupData[];
 
     const getCaption = (group: FriendListSearchGroupData) => group.results.length < 1 ? group.emptyCaption : group.caption
-    const isFriend = (result: IMessengerSearchResult) => !! Object.values(friends).find(friend => friend.playerId === result.playerId)
+    const isFriend = (result: IMessengerSearchResult) => !!Object.values(friends).find(friend => friend.playerId === result.playerId)
 
     return (
         <FriendListTab
             darkHeader
-            value={ props.value }
+            value={props.value}
             caption="people.search.title"
             triggerClassName="from-[#6b6b6b] to-[#555555]"
             contentClassName="bg-[#b6b6b6]"
@@ -57,11 +56,11 @@ export const FriendListSearch = (props: FriendListSearchProps) => {
                 contentClassName="flex flex-col [&>*:nth-child(odd)]:bg-[#9f9f9f]"
             >
                 <Accordion type="multiple" unwrapped alwaysOpen>
-                    { groups.map(group => (
-                        <FriendListGroup key={ group.value } value={ group.value } caption={ getLocalizationValueParams(getCaption(group), ['cnt'], [String(group.results.length)]) } showArrows={ false }>
-                            { group.results.map((result: IMessengerSearchResult) => <FriendListSearchItem key={ result.playerId } isFriend={ isFriend(result) } showAvatarHead={ isFriend(result) && result.isOnline } result={ result } /> ) }
+                    {groups.map(group => (
+                        <FriendListGroup key={group.value} value={group.value} caption={t(getCaption(group), '', { 'cnt': group.results.length.toString() })} showArrows={false}>
+                            {group.results.map((result: IMessengerSearchResult) => <FriendListSearchItem key={result.playerId} isFriend={isFriend(result)} showAvatarHead={isFriend(result) && result.isOnline} result={result} />)}
                         </FriendListGroup>
-                    )) }
+                    ))}
                 </Accordion>
             </ScrollArea>
             <FriendListSearchFooter />

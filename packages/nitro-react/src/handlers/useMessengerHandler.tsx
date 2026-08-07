@@ -5,7 +5,7 @@ import { useUserMessengerActions } from "#base/context/user";
 import { useMessageListener } from "#base/hooks";
 
 export const useMessengerHandler = () => {
-    const { setLimits, setFriendCategories, processFriends, processFriendUpdates } = useUserMessengerActions();
+    const { setFriendLimits: setLimits, setFriendCategories, processFriends, processFriendUpdates, processFriendRequests } = useUserMessengerActions();
     const { send } = useWebSocketContext();
 
     useMessageListener(AcceptFriendResultMessage, data => {
@@ -36,6 +36,9 @@ export const useMessengerHandler = () => {
     });
 
     useMessageListener(FriendRequestsMessage, data => {
+        if (!data.requests.length) return;
+
+        processFriendRequests(data.requests);
     });
 
     useMessageListener(HabboSearchResultMessage, data => {
@@ -63,6 +66,7 @@ export const useMessengerHandler = () => {
     });
 
     useMessageListener(NewFriendRequestMessage, data => {
+        processFriendRequests([data.request]);
     });
 
     useMessageListener(RoomInviteErrorMessage, data => {

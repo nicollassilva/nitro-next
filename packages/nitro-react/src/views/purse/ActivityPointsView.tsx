@@ -1,10 +1,9 @@
-import { useWallet } from "#base/context";
-import { useLocalizationStore } from "#base/stores";
+import { useTranslation, useWallet } from "#base/context";
 import { Border, cn, NitroIcon } from "#base/theme";
 
 export const ActivityPointsView = () => {
     const { activityPoints } = useWallet();
-    const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
+    const t = useTranslation();
 
     const kinds = [
         {
@@ -22,7 +21,7 @@ export const ActivityPointsView = () => {
                     <div className="flex flex-1 pl-1.75 pr-4 justify-between items-center">
                         <span className="font-ubuntu-bold text-[0.7rem]" style={{ color }}>{name}</span>
                         <span className={cn('font-ubuntu-bold text-[0.7rem] text-white', amount <= 0 && 'underline')}>
-                            {amount > 0 ? amount : getLocalizationValue('purse.shells.zero.amount.text')}
+                            {amount > 0 ? amount : t('purse.shells.zero.amount.text')}
                         </span>
                     </div>
                     <Border tintColor={color} variant="9" className="w-7.25 h-7.25 flex justify-center items-center hover:brightness-[1.2]" style={{ backgroundColor: color, borderRadius: '6px' }}>
