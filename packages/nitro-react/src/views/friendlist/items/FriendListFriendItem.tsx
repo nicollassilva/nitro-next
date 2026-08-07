@@ -44,7 +44,7 @@ export const FriendListFriendItem = memo((props: FriendListFriendItemProps) => {
                 {showFollowIcon && <NitroIcon className="cursor-pointer" icon="icon-follow" {...tooltipHandlers('friendlist.tip.follow')} />}
             </div>
             <div className="w-4 h-3.5 shrink-0">
-                {showMessageIcon && <NitroIcon className="cursor-pointer" icon="icon-message-small" {...tooltipHandlers('friendlist.tip.imp')} />}
+                {showMessageIcon && <NitroIcon className="cursor-pointer" icon="icon-message-small" {...tooltipHandlers('friendlist.tip.im')} />}
             </div>
         </FriendListItem>
     );
