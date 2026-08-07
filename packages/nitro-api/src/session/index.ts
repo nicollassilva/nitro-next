@@ -1,5 +1,6 @@
 export * from './IAvatarUserInfo';
 export * from './IFurnitureData';
+export * from './IProductData';
 export * from './IRoomChatSettings';
 export * from './IRoomFurnitureData';
 export * from './IRoomModerationSettings';

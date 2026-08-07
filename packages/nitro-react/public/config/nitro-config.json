@@ -2,6 +2,7 @@
     "production.version": "WIN63-202601121721-391685409",
     "gamedata.urls.externalTexts": "https://assets.nitrodev.co/gamedata/ExternalTexts.json",
     "furnituredata.url": "https://assets.nitrodev.co/gamedata/FurnitureData.json",
+    "productdata.url": "https://assets.nitrodev.co/gamedata/ProductData.json",
     "figuredata.url": "https://assets.nitrodev.co/gamedata/FigureData.json",
     "figuremap.url": "https://assets.nitrodev.co/gamedata/FigureMap.json",
     "effectmap.url": "https://assets.nitrodev.co/gamedata/EffectMap.json",

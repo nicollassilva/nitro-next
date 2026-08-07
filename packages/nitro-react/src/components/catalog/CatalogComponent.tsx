@@ -16,7 +16,7 @@ export const CatalogComponent = () => {
 
         if (!page || page.catalogType !== catalogType || page.pageId !== activePageId) return;
 
-        console.log(page);
+
     });
 
     useMessageListener(CatalogIndexMessage, data => {

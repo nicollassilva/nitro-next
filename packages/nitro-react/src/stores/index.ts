@@ -22,7 +22,6 @@ export * from './system/SystemSelectors';
 export * from './system/SystemStore';
 export * from './useConfigurationStore';
 export * from './useFrameStackStore';
-export * from './useFurnitureDataStore';
 export * from './user/actions/UserInfoActions';
 export * from './user/actions/UserMessengerActions';
 export * from './user/actions/UserWalletActions';
