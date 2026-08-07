@@ -3,10 +3,10 @@ import { IMessengerSearchResult } from "@nitrodevco/nitro-shared";
 import { useFriendsSelector, useTranslation } from "#base/context";
 import { Accordion, ScrollArea } from "#base/theme";
 
-import { FriendListGroup } from "../components/FriendListGroup";
-import { FriendListTab } from "../components/FriendListTab";
-import { FriendListSearchFooter } from "../footers/FriendListSearchFooter";
-import { FriendListSearchItem } from "../items/FriendListSearchItem";
+import { FriendListGroup } from "./components/FriendListGroup";
+import { FriendListSearchFooter } from "./footers/FriendListSearchFooter";
+import { FriendListTab } from "./FriendListTab";
+import { FriendListSearchItem } from "./items/FriendListSearchItem";
 
 interface FriendListSearchProps {
     value: string;
@@ -20,9 +20,8 @@ interface FriendListSearchGroupData {
 }
 
 export const FriendListSearch = (props: FriendListSearchProps) => {
-    const t = useTranslation();
-
     const friends = useFriendsSelector();
+    const t = useTranslation();
 
     const groups = [
         {
@@ -39,8 +38,8 @@ export const FriendListSearch = (props: FriendListSearchProps) => {
         }
     ] as FriendListSearchGroupData[];
 
-    const getCaption = (group: FriendListSearchGroupData) => group.results.length < 1 ? group.emptyCaption : group.caption
-    const isFriend = (result: IMessengerSearchResult) => !!Object.values(friends).find(friend => friend.playerId === result.playerId)
+    const getCaption = (group: FriendListSearchGroupData) => group.results.length < 1 ? group.emptyCaption : group.caption;
+    const isFriend = (result: IMessengerSearchResult) => !!Object.values(friends).find(friend => friend.playerId === result.playerId);
 
     return (
         <FriendListTab
@@ -52,7 +51,7 @@ export const FriendListSearch = (props: FriendListSearchProps) => {
             tooltip="friendlist.tip.tab.3"
         >
             <ScrollArea
-                className="flex-1 min-h-0 p-1 pb-0 gap-1 text-[0.68rem]"
+                className="flex-1 min-h-0 p-1 gap-1 text-[0.68rem]"
                 contentClassName="flex flex-col [&>*:nth-child(odd)]:bg-[#9f9f9f]"
             >
                 <Accordion type="multiple" unwrapped alwaysOpen>

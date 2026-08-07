@@ -46,6 +46,8 @@ export const ScrollbarVertical = forwardRef<HTMLDivElement, ScrollbarVerticalPro
             }
         }
 
+        if (!controller.scrollable) return null;
+
         return (
             <div ref={ref} className={cn('flex w-fit flex-col items-stretch', className)} {...props}>
                 <VariantCascadeProvider map={ownCascade}>

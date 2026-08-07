@@ -1,5 +1,7 @@
-import { selectOfflineFriends } from "#base/stores";
+import { useFriendsSelector } from "./useFriendsSelector";
 
-import { useUserContext } from "../../useUserContext";
+export const useOfflineFriendsSelector = () => {
+    const friends = useFriendsSelector();
 
-export const useOfflineFriendsSelector = () => useUserContext(selectOfflineFriends);
+    return Object.values(friends).filter(x => !x.isOnline);
+}

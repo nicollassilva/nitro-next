@@ -1,10 +1,10 @@
 import { InfoRetrieveComposer } from "@nitrodevco/nitro-shared";
 import { useEffect, useState } from "react";
 
-import { InventoryComponent, MessengerComponent, RoomWrapper, WalletComponent } from "./components";
+import { InventoryComponent, RoomWrapper, WalletComponent } from "./components";
+import { FriendListComponent } from "./components/messenger/FriendListComponent";
 import { useWebSocketContext } from "./context";
 import { useMessengerHandler, useNavigatorHandler, useUserInfoHandler, useWalletHandler } from "./handlers";
-import { FriendsView } from "./views/friends/FriendsView";
 import { NotificationCenterView } from "./views/notification-center/NotificationCenterView";
 import { ActivityPointsView } from "./views/purse/ActivityPointsView";
 import { PurseView } from "./views/purse/PurseView";
@@ -51,10 +51,9 @@ export const MainView = () => {
                         <NotificationCenterView />
                     </div>
                 </div>
-                <FriendsView />
+                <FriendListComponent />
                 <ToolbarView />
                 <InventoryComponent />
-                <MessengerComponent />
                 <WalletComponent />
             </div>
         </>

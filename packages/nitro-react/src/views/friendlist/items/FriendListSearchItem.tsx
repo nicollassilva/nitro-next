@@ -1,7 +1,7 @@
 import { IMessengerSearchResult } from "@nitrodevco/nitro-shared";
 import { memo } from "react";
 
-import { useFriendsContext } from "#base/context";
+import { useFriendsActions } from "#base/context";
 import { NitroIcon } from "#base/theme";
 
 import { FriendListItem } from "../components/FriendListItem";
@@ -15,13 +15,13 @@ interface FriendListSearchItemProps {
 export const FriendListSearchItem = memo((props: FriendListSearchItemProps) => {
     const { result, isFriend, showAvatarHead } = props;
 
-    const { tooltipHandlers } = useFriendsContext();
+    const { tooltipHandlers } = useFriendsActions();
 
     return (
-        <FriendListItem user={ result } showAvatarHead={ showAvatarHead }>
-            { isFriend
-                ? <NitroIcon className="cursor-pointer ml-auto mr-1" icon="icon-message-small" { ...tooltipHandlers('friendlist.tip.im') } />
-                : <NitroIcon className="cursor-pointer ml-auto mr-1" icon="icon-add" { ...tooltipHandlers('friendlist.tip.addfriend') } />
+        <FriendListItem user={result} showAvatarHead={showAvatarHead}>
+            {isFriend
+                ? <NitroIcon className="cursor-pointer ml-auto mr-1" icon="icon-message-small" {...tooltipHandlers('friendlist.tip.im')} />
+                : <NitroIcon className="cursor-pointer ml-auto mr-1" icon="icon-add" {...tooltipHandlers('friendlist.tip.addfriend')} />
             }
         </FriendListItem>
     );

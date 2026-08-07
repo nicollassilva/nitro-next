@@ -1,10 +1,9 @@
-import { useFriendsContext, useTranslation } from "#base/context";
+import { useFriendsActions, useTranslation } from "#base/context";
 import { Border, Button, NitroIcon } from "#base/theme";
 
 export const FriendListSearchFooter = () => {
+    const { tooltipHandlers } = useFriendsActions();
     const t = useTranslation();
-
-    const { tooltipHandlers } = useFriendsContext();
 
     return (
         <div className="h-10 shrink-0 px-1.5 py-1.25">

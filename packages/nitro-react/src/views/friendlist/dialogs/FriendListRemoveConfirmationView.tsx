@@ -1,12 +1,13 @@
 import { RemoveFriendComposer } from "@nitrodevco/nitro-shared";
 
-import { useFriendsContext, useFriendsSelector, useIsWindowVisible, useSystemActions, useTranslation, useWebSocketContext } from "#base/context";
+import { useFriendsActions, useFriendsSelector, useFriendsSelectors, useIsWindowVisible, useSystemActions, useTranslation, useWebSocketContext } from "#base/context";
 import { Border, Button, Frame } from "#base/theme";
 
 export const FriendListRemoveConfirmationView = () => {
     const isVisible = useIsWindowVisible('friendlist_remove_confirmation');
     const { toggleWindow } = useSystemActions();
-    const { selectedFriendsIds, setSelectedFriendsIds } = useFriendsContext();
+    const { selectedFriendIds } = useFriendsSelectors();
+    const { setSelectedFriendIds } = useFriendsActions();
     const { send } = useWebSocketContext();
 
     const t = useTranslation();
@@ -14,16 +15,16 @@ export const FriendListRemoveConfirmationView = () => {
     const friends = useFriendsSelector();
 
     const usernames = Object.values(friends)
-        .filter(friend => selectedFriendsIds.includes(friend.playerId))
+        .filter(friend => selectedFriendIds.includes(friend.playerId))
         .map(friend => friend.name)
         .join(', ')
 
     const removeFriends = () => {
-        if (selectedFriendsIds.length < 1) return;
+        if (selectedFriendIds.length < 1) return;
 
-        send(new RemoveFriendComposer({ playerIds: selectedFriendsIds }));
+        send(new RemoveFriendComposer({ playerIds: selectedFriendIds }));
 
-        setSelectedFriendsIds([]);
+        setSelectedFriendIds([]);
         toggleWindow('friendlist_remove_confirmation');
     }
 

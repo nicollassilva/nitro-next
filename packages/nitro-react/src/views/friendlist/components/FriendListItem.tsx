@@ -2,7 +2,7 @@ import { AvatarGenderType } from "@nitrodevco/nitro-api";
 import { MouseEventHandler, ReactNode } from "react";
 
 import { AvatarImage } from "#base/components";
-import { useFriendsContext } from "#base/context";
+import { useFriendsActions } from "#base/context";
 import { cn, NitroIcon } from "#base/theme";
 
 interface FriendListItemUser {
@@ -23,7 +23,7 @@ interface FriendListItemProps {
 export const FriendListItem = (props: FriendListItemProps) => {
     const { user, selected = false, hideAvatarElement = false, showAvatarHead = true, onClicked, children } = props;
 
-    const { tooltipHandlers } = useFriendsContext();
+    const { tooltipHandlers } = useFriendsActions();
 
     return (
         <div className={cn('flex gap-1.5 items-center h-5', selected && 'bg-[#b8e2fc]!')} onClick={onClicked}>

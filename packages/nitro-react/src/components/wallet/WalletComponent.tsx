@@ -8,10 +8,6 @@ export const WalletComponent = () => {
     const { send } = useWebSocketContext();
 
     useEffect(() => {
-        console.log('changed', currency);
-    }, [currency]);
-
-    useEffect(() => {
         send(new GetCreditsInfoComposer({}));
         send(new GetNftCreditsComposer({}));
     }, []);

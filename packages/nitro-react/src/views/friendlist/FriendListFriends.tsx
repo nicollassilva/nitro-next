@@ -1,13 +1,13 @@
 import { IMessengerFriend } from "@nitrodevco/nitro-shared";
 
-import { useFriendsContext, useTranslation } from "#base/context";
+import { useFriendsSelectors, useTranslation } from "#base/context";
 import { useOfflineFriendsSelector, useOnlineFriendsSelector } from "#base/context/user";
 import { Accordion, ScrollArea } from "#base/theme";
 
-import { FriendListGroup } from "../components/FriendListGroup";
-import { FriendListTab } from "../components/FriendListTab";
-import { FriendListFriendsFooter } from "../footers/FriendListFriendsFooter";
-import { FriendListFriendItem } from "../items/FriendListFriendItem";
+import { FriendListGroup } from "./components/FriendListGroup";
+import { FriendListFriendsFooter } from "./footers/FriendListFriendsFooter";
+import { FriendListTab } from "./FriendListTab";
+import { FriendListFriendItem } from "./items/FriendListFriendItem";
 
 interface FriendListFriendsProps {
     value: string;
@@ -15,13 +15,10 @@ interface FriendListFriendsProps {
 
 export const FriendListFriends = (props: FriendListFriendsProps) => {
     const { value } = props;
-
-    const { filterValue } = useFriendsContext();
-
-    const t = useTranslation();
-
+    const { filterValue } = useFriendsSelectors();
     const onlineFriends = useOnlineFriendsSelector();
     const offlineFriends = useOfflineFriendsSelector();
+    const t = useTranslation();
 
     const groups = [
         {
@@ -49,7 +46,7 @@ export const FriendListFriends = (props: FriendListFriendsProps) => {
             tooltip="friendlist.tip.tab.1"
         >
             <ScrollArea
-                className="flex-1 min-h-0 p-1 pb-0 gap-1 text-[0.68rem]"
+                className="flex-1 min-h-0 p-1 gap-1 text-[0.68rem]"
                 contentClassName="flex flex-col [&>*:nth-child(odd)]:bg-[#eee] [&>*:nth-child(even)]:bg-white"
             >
                 <Accordion unwrapped type="multiple" defaultValue={['online']}>

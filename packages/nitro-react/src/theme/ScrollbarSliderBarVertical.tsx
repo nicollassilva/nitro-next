@@ -21,9 +21,9 @@ const scrollbarSliderBarVerticalVariantsConfig = {
 const scrollbarSliderBarVerticalOverlayVariantsConfig = {
     variant: {
         // default
-        '0': 'bg-(image:--scrollbarsliderbarvertical-0-default-grd-src) bg-position-[left_5px_top_0px] bg-size-[7px_10px] bg-no-repeat [image-rendering:pixelated] active:bg-(image:--scrollbarsliderbarvertical-0-pressed-grd-src) active:bg-position-[left_5px_top_0px] active:bg-size-[7px_10px] active:[background-repeat:no-repeat_repeat] ',
+        '0': 'bg-(image:--scrollbarsliderbarvertical-0-default-grd-src) bg-position-[left_5px_top_0px] bg-size-[7px_10px] bg-repeat-y [image-rendering:pixelated] active:bg-(image:--scrollbarsliderbarvertical-0-pressed-grd-src) active:bg-position-[left_5px_top_0px] active:bg-size-[7px_10px]',
         // black
-        '1': 'bg-(image:--scrollbarsliderbarvertical-1-default-grd-src) bg-position-[left_5px_top_0px] bg-size-[7px_10px] bg-no-repeat [image-rendering:pixelated] active:bg-(image:--scrollbarsliderbarvertical-1-default-grd-src) active:bg-position-[left_5px_top_0px] active:bg-size-[7px_10px] active:[background-repeat:no-repeat_repeat] ',
+        '1': 'bg-(image:--scrollbarsliderbarvertical-1-default-grd-src) bg-position-[left_5px_top_0px] bg-size-[7px_10px] bg-repeat-y [image-rendering:pixelated] active:bg-(image:--scrollbarsliderbarvertical-1-default-grd-src) active:bg-position-[left_5px_top_0px] active:bg-size-[7px_10px]',
         // default
         '3': '',
         // default
@@ -32,6 +32,11 @@ const scrollbarSliderBarVerticalOverlayVariantsConfig = {
         '200': '',
     },
 } as const;
+
+const scrollbarSliderBarVerticalOverlayInsetConfig: Partial<Record<string, string>> = {
+    '0': 'inset-x-0 top-1 bottom-1',
+    '1': 'inset-x-0 top-1 bottom-1',
+}
 
 const scrollbarSliderBarVerticalTintColors: Partial<Record<string, string>> = {
 
@@ -63,6 +68,7 @@ export const ScrollbarSliderBarVertical = forwardRef<HTMLDivElement, ScrollbarSl
         const ownCascade = VARIANT_CASCADE_CONFIG['scrollbarSliderBarVertical']?.[resolvedVariant as string];
         const resolvedTint = tintColor || scrollbarSliderBarVerticalTintColors[resolvedVariant as string];
         const overlayClassName = scrollbarSliderBarVerticalOverlayVariants({ variant: resolvedVariant });
+        const overlayInsetClassName = scrollbarSliderBarVerticalOverlayInsetConfig[resolvedVariant as string] ?? 'inset-0';
         const tintStyle = useTintedVars(scrollbarSliderBarVerticalTintableVars[resolvedVariant as string], resolvedTint);
 
         return (
@@ -72,7 +78,7 @@ export const ScrollbarSliderBarVertical = forwardRef<HTMLDivElement, ScrollbarSl
                 style={{ ...style, ...tintStyle }}
                 {...props}
             >
-                {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0', overlayClassName)} />}
+                {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute', overlayInsetClassName, overlayClassName)} />}
                 <VariantCascadeProvider map={ownCascade}>{children}</VariantCascadeProvider>
             </div>
         );
