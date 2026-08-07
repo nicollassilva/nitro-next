@@ -1028,6 +1028,90 @@
         height: 15px;
     }
 
+    &.icon-arrow-right-black {
+        background-image: url('/assets/flash/icons/arrow-right-black.png');
+        width: 5px;
+        height: 9px;
+    }
+
+    &.icon-arrow-down-black {
+        background-image: url('/assets/flash/icons/arrow-down-black.png');
+        width: 9px;
+        height: 5px;
+    }
+
+    &.icon-close-gray {
+        background-image: url('/assets/flash/icons/close-gray.png');
+        width: 9px;
+        height: 9px;
+    }
+
+    &.icon-homepage-outline {
+        background-image: url('/assets/flash/friends/homepage.png');
+        width: 13px;
+        height: 11px;
+    }
+
+    &.icon-room-invite {
+        background-image: url('/assets/flash/friends/room-invite.png');
+        width: 19px;
+        height: 13px;
+    }
+
+    &.icon-search-outline {
+        background-image: url('/assets/flash/friends/search.png');
+        width: 12px;
+        height: 12px;
+    }
+
+    &.icon-trash-outline {
+        background-image: url('/assets/flash/friends/trash.png');
+        width: 13px;
+        height: 13px;
+    }
+
+    &.icon-profile-small {
+        background-image: url('/assets/flash/friends/icon-profile-sm.png');
+        width: 13px;
+        height: 11px;
+    }
+
+    &.icon-message-small {
+        background-image: url('/assets/flash/friends/message.png');
+        width: 16px;
+        height: 14px;
+    }
+
+    &.icon-follow {
+        background-image: url('/assets/flash/friends/icon-follow.png');
+        width: 16px;
+        height: 14px;
+    }
+
+    &.icon-add {
+        background-image: url('/assets/flash/friends/icon-add.png');
+        width: 16px;
+        height: 15px;
+    }
+
+    &.icon-heart-relationship {
+        background-image: url('/assets/flash/friends/icon-heart.png');
+        width: 16px;
+        height: 14px;
+    }
+
+    &.icon-smile-relationship {
+        background-image: url('/assets/flash/friends/icon-smile.png');
+        width: 16px;
+        height: 14px;
+    }
+
+    &.icon-bobba-relationship {
+        background-image: url('/assets/flash/friends/icon-bobba.png');
+        width: 16px;
+        height: 14px;
+    }
+
     /* temporary */
 
     &.icon-currency {

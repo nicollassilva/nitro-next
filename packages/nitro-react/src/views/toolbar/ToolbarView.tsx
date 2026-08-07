@@ -43,7 +43,7 @@ export const ToolbarView = () => {
                     <NitroIcon icon="icon-camera" />
                 </div>
                 <div className="toolbar-right">
-                    <NitroIcon icon="icon-friendall" />
+                    <NitroIcon icon="icon-friendall" onClick={() => toggleWindow('friendlist')} />
                     <NitroIcon icon="icon-friendsearch" />
                     <div className={cn('toolbar-collapse', rightSideCollapsed && 'active')} onClick={_ => setRightSideCollapsed(!rightSideCollapsed)} />
                 </div>

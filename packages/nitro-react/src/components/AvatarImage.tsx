@@ -6,13 +6,14 @@ import { forwardRef, useEffect, useRef, useState } from 'react';
 type AvatarImageProps = {
     figure: string;
     gender: AvatarGenderType;
+    small?: boolean;
     headOnly?: boolean;
     direction?: number;
 };
 
 export const AvatarImage = forwardRef<HTMLDivElement, AvatarImageProps>(
     (props, ref) => {
-        const { figure, gender, headOnly = false, direction = 0 } = props;
+        const { figure, gender, headOnly = false, direction = 0, small = false } = props;
         const [randomValue, setRandomValue] = useState<number>(-1);
         const [imageData, setImageData] = useState<{
             width: number;
@@ -26,7 +27,7 @@ export const AvatarImage = forwardRef<HTMLDivElement, AvatarImageProps>(
 
             const avatarImage = GetAvatarRenderManager().createAvatarImage(
                 figure,
-                AvatarScaleType.Large,
+                small ? AvatarScaleType.Small : AvatarScaleType.Large,
                 gender,
                 {
                     resetFigure: (figure: string) => {

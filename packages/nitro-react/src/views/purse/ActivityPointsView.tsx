@@ -12,13 +12,7 @@ export const ActivityPointsView = () => {
             color: '#feee65',
             name: 'Stars',
             icon: 'stars'
-        },
-        {
-            amount: activityPoints[2] ?? 0,
-            color: '#f0c0d5',
-            name: 'Chairs',
-            icon: 'chairs'
-        },
+        }
     ];
 
     return (
@@ -27,7 +21,7 @@ export const ActivityPointsView = () => {
                 <Border key={name} variant="9" className="pointer-events-auto cursor-pointer h-7.25 mt-0.75 flex justify-between w-full">
                     <div className="flex flex-1 pl-1.75 pr-4 justify-between items-center">
                         <span className="font-ubuntu-bold text-[0.7rem]" style={{ color }}>{name}</span>
-                        <span className={cn('font-ubuntu-bold text-[0.7rem] text-white', amount <= 0 && 'zero')}>
+                        <span className={cn('font-ubuntu-bold text-[0.7rem] text-white', amount <= 0 && 'underline')}>
                             {amount > 0 ? amount : getLocalizationValue('purse.shells.zero.amount.text')}
                         </span>
                     </div>
