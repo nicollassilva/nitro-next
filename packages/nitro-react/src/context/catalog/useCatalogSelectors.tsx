@@ -5,5 +5,7 @@ import { useCatalogContext } from "./useCatalogContext";
 export const useCatalogSelectors = () => useCatalogContext(useShallow(x => ({
     catalogType: x.catalogType,
     rootNode: x.rootNode,
-    activeNodes: x.activeNodes
+    activeNodes: x.activeNodes,
+    isBusy: x.isBusy,
+    activePageId: x.activePageId
 })));

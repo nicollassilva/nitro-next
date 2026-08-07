@@ -2,6 +2,7 @@ export * from './catalog/CatalogContext';
 export * from './catalog/CatalogContextStore';
 export * from './catalog/useCatalogActions';
 export * from './catalog/useCatalogContext';
+export * from './catalog/useCatalogNavigation';
 export * from './catalog/useCatalogSelectors';
 export * from './communication/useWebSocketContext';
 export * from './communication/WebSocketContext';

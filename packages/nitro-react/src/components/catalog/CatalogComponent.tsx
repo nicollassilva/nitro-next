@@ -1,4 +1,4 @@
-import { BuildersClubQueryFurniCountComposer, CatalogIndexMessage, GetCatalogIndexComposer, GetClubGiftInfoComposer, GetGiftWrappingConfigurationComposer, ICatalogNode } from "@nitrodevco/nitro-shared";
+import { BuildersClubQueryFurniCountComposer, CatalogIndexMessage, CatalogPageMessage, GetCatalogIndexComposer, GetClubGiftInfoComposer, GetGiftWrappingConfigurationComposer, ICatalogNode } from "@nitrodevco/nitro-shared";
 import { useEffect } from "react";
 
 import { useCatalogActions, useCatalogSelectors, useIsWindowVisible, useWebSocketContext } from "#base/context";
@@ -7,9 +7,17 @@ import { CatalogView } from "#base/views/catalog/CatalogView";
 
 export const CatalogComponent = () => {
     const isVisible = useIsWindowVisible('catalog');
-    const { catalogType, rootNode } = useCatalogSelectors();
+    const { catalogType, rootNode, activePageId } = useCatalogSelectors();
     const { setRootNode, setOffersToNodes } = useCatalogActions();
     const { send } = useWebSocketContext();
+
+    useMessageListener(CatalogPageMessage, data => {
+        const page = data.page;
+
+        if (!page || page.catalogType !== catalogType || page.pageId !== activePageId) return;
+
+        console.log(page);
+    });
 
     useMessageListener(CatalogIndexMessage, data => {
         if (data.catalogType !== catalogType) return;
