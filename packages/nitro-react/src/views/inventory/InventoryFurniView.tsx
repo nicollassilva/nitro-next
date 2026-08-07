@@ -1,7 +1,7 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { useLocalizationStore } from "#base/stores";
+import { useTranslation } from "#base/context";
 import { Border, Button, Dropmenu, ScrollableItemGridVertical, ScrollbarVertical } from "#base/theme";
 
 const PAGE_SIZE = 24;
@@ -12,7 +12,7 @@ const ROW_GAP = 4;
 
 export const InventoryFurniView = (props: { scrollVariant: string }) => {
     const [itemCount, setItemCount] = useState(PAGE_SIZE);
-    const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
+    const t = useTranslation();
 
     const viewportRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
@@ -43,7 +43,7 @@ export const InventoryFurniView = (props: { scrollVariant: string }) => {
         <div className="flex flex-col gap-1 h-full">
             <Border variant="3" tintColor="#cacaca" className="flex gap-1.5 p-1 h-6.25 items-center">
                 <Border variant="0" className="w-34.75 h-5">
-                    <input type="text w-full overflow-hidden"></input>
+                    <input type="text w-full overflow-hidden px-2"></input>
                 </Border>
                 <Dropmenu variant="100" className="w-29.75 h-5.25" />
                 <Dropmenu variant="100" className="w-29.75 h-5.25" />
@@ -82,7 +82,7 @@ export const InventoryFurniView = (props: { scrollVariant: string }) => {
                 <div className="flex flex-col w-45 shrink-0">
                     <div className="flex-1">preview</div>
                     <div className="flex">
-                        <Button variant="102">{getLocalizationValue('inventory.furni.placetoroom')}</Button>
+                        <Button variant="102">{t('inventory.furni.placetoroom')}</Button>
                     </div>
                 </div>
             </div>

@@ -6,7 +6,7 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const contentAreaVariantsConfig = {
     variant: {
         // default
-        '0': 'relative flex flex-col w-full px-0.75 pb-0.75',
+        '0': 'flex flex-col w-full px-0.75 pb-0.75',
         // default
         '3': 'relative flex flex-col w-full px-0.75',
     },

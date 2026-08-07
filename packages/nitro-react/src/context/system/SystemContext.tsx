@@ -1,8 +1,6 @@
 import { createContext } from 'react';
+import { StoreApi } from 'zustand';
 
-type SystemContextStore = {
-    isWindowVisible: (name: string) => boolean;
-    toggleWindow: (name: string) => void;
-}
+import { SystemStore } from '#base/stores';
 
-export const SystemContext = createContext<SystemContextStore | undefined>(undefined);
+export const SystemContext = createContext<StoreApi<SystemStore> | null>(null);

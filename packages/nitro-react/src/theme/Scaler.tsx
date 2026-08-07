@@ -40,7 +40,7 @@ const scalerOverlayVariantsConfig = {
 const scalerOffsetVariantsConfig = {
     variant: {
         // default
-        '0': 'flex -bottom-1 -right-0.75 z-20',
+        '0': 'flex right-0 -bottom-px z-20',
         // black
         '1': '',
         // white

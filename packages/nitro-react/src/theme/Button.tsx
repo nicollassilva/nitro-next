@@ -84,7 +84,7 @@ const buttonTintableVars: Partial<Record<string, string[]>> = {
     '300': ['button-300-default-src', 'button-300-hovering-src', 'button-300-pressed-src', 'button-300-disabled-src'],
 };
 
-const buttonVariants = cva('flex items-center justify-center pointer-events-auto leading-0 cursor-pointer', { variants: buttonVariantsConfig, defaultVariants: { variant: '0' } });
+const buttonVariants = cva('flex items-center justify-center pointer-events-auto leading-0 not-aria-disabled:cursor-pointer', { variants: buttonVariantsConfig, defaultVariants: { variant: '0' } });
 const buttonOverlayVariants = cva('', { variants: buttonOverlayVariantsConfig, defaultVariants: { variant: '0' } });
 
 type ButtonVariantProps = VariantProps<typeof buttonVariantsConfig>;
@@ -96,7 +96,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, ButtonVar
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ className, variant, defaultVariant, tintColor, style, children, ...props }, ref) => {
+    ({ className, variant, defaultVariant, tintColor, style, children, disabled, ...props }, ref) => {
         const cascadedVariant = useCascadedVariant('button');
         const resolvedVariant = (variant ?? cascadedVariant ?? defaultVariant ?? '0') as never;
         const ownCascade = VARIANT_CASCADE_CONFIG['button']?.[resolvedVariant as string];
@@ -107,6 +107,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         return (
             <button
                 ref={ref}
+                disabled={disabled}
+                aria-disabled={disabled || undefined}
                 className={cn(buttonVariants({ variant: resolvedVariant }), overlayClassName && 'relative', className)}
                 style={{ ...style, ...tintStyle }}
                 {...props}

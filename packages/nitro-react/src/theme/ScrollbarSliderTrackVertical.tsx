@@ -12,9 +12,9 @@ const scrollbarSliderTrackVerticalVariantsConfig = {
         // default
         '3': 'sprite min-w-4.25 min-h-0.5 aria-disabled:pointer-events-none bg-(image:--scrollbarslidertrackvertical-3-default-src) bg-size-[100%_100%] active:bg-(image:--scrollbarslidertrackvertical-3-default-src) active:bg-size-[100%_100%] active:bg-no-repeat  aria-disabled:bg-(image:--scrollbarslidertrackvertical-3-disabled-src) aria-disabled:bg-size-[100%_100%] aria-disabled:bg-no-repeat ',
         // default
-        '100': '[border-image-source:var(--scrollbarslidertrackhorizontal-100-default-src)] [border-image-slice:2_0_2_0_fill] [border-image-width:2px_0px_2px_0px] nine-slice-border',
+        '100': 'min-w-2.5 min-h-px [border-image-source:var(--scrollbarslidertrackhorizontal-100-default-src)] [border-image-slice:2_0_2_0_fill] [border-image-width:2px_0px_2px_0px] nine-slice-border',
         // default
-        '200': '[border-image-source:var(--scrollbarslidertrackhorizontal-200-default-src)] [border-image-slice:3_0_3_0_fill] [border-image-width:3px_0px_3px_0px] nine-slice-border',
+        '200': 'min-w-2 min-h-px [border-image-source:var(--scrollbarslidertrackhorizontal-200-default-src)] [border-image-slice:3_0_3_0_fill] [border-image-width:3px_0px_3px_0px] nine-slice-border',
     },
 } as const;
 

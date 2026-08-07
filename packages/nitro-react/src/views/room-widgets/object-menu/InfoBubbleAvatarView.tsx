@@ -2,9 +2,8 @@ import { ISimpleRoomObjectData, RoomControllerLevelEnum } from "@nitrodevco/nitr
 import { AmbassadorAlertComposer, AssignRightsComposer, BanUserWithDurationComposer, IgnoreUserComposer, KickUserComposer, MuteUserComposer, RemoveRightsComposer, SetRelationshipStatusComposer, UnignoreUserComposer } from "@nitrodevco/nitro-shared";
 import { useState } from "react";
 
-import { useOwnIsAmbassador, useOwnRespectData, useOwnRoomObjectId, useRoomPermissionsSelector, useRoomSelector, useRoomSettingsSelector, useWebSocketContext } from "#base/context";
+import { useOwnIsAmbassador, useOwnRespectData, useOwnRoomObjectId, useRoomPermissionsSelector, useRoomSelector, useRoomSettingsSelector, useTranslation, useWebSocketContext } from "#base/context";
 import { useRoomUserData } from "#base/hooks";
-import { useLocalizationStore } from "#base/stores";
 import { Bubble, Button, NitroIcon } from "#base/theme";
 
 interface InfoBubbleAvatarViewProps {
@@ -33,8 +32,7 @@ export const InfoBubbleAvatarView = (props: InfoBubbleAvatarViewProps) => {
     const { isGuildRoom } = useRoomSettingsSelector();
     const { respectLeft } = useOwnRespectData();
     const isAmbassador = useOwnIsAmbassador();
-    const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
-    const getLocalizationValueParams = useLocalizationStore(x => x.getLocalizationValueParams);
+    const t = useTranslation();
     const { send } = useWebSocketContext();
 
     if (!room || !userData) return null;
@@ -163,7 +161,7 @@ export const InfoBubbleAvatarView = (props: InfoBubbleAvatarViewProps) => {
             },
             {
                 visible: respectLeft > 0,
-                caption: getLocalizationValueParams('infostand.button.respect', ['count'], [respectLeft.toString()]),
+                caption: t('infostand.button.respect', '', { 'count': respectLeft.toString() }),
                 action: 'respect'
             },
             {
@@ -332,7 +330,7 @@ export const InfoBubbleAvatarView = (props: InfoBubbleAvatarViewProps) => {
                 </div>
                 <div className="flex flex-col w-full overflow-hidden gap-px border-y border-black">
                     {MODE_BUTTONS[mode].map(({ visible, caption, action }) =>
-                        visible ? <Button key={action} variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 text-white text-[11px] w-full" onClick={() => processAction(action)}>{getLocalizationValue(caption)}</Button> : null)}
+                        visible ? <Button key={action} variant="300" tintColor="#2d2a27" className="min-h-6.25 max-h-6.25 text-white text-[11px] w-full" onClick={() => processAction(action)}>{t(caption)}</Button> : null)}
                 </div>
             </div>}
             <div className="flex items-center justify-center min-h-4.5 max-h-4.5 p-2 w-full" onClick={() => setCollapsed(!collapsed)}>

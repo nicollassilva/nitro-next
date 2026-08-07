@@ -1,32 +1,32 @@
 import { forwardRef } from 'react';
 
-import { useLocalizationStore } from '#base/stores';
+import { useTranslation } from '#base/context';
 import { NitroIcon } from '#base/theme';
 
 export const ToolbarMeMenu = forwardRef<HTMLDivElement>((props, ref) => {
-    const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
+    const t = useTranslation();
 
     return (
         <div className="toolbar-menu" ref={ref}>
             <div className="toolbar-menu-button">
                 <NitroIcon icon="icon-me-profile" />
-                <span>{getLocalizationValue('widget.memenu.profile')}</span>
+                <span>{t('widget.memenu.profile')}</span>
             </div>
             <div className="toolbar-menu-button">
                 <NitroIcon icon="icon-me-rooms" />
-                <span>{getLocalizationValue('widget.memenu.myrooms')}</span>
+                <span>{t('widget.memenu.myrooms')}</span>
             </div>
             <div className="toolbar-menu-button">
                 <NitroIcon icon="icon-me-clothing" />
-                <span>{getLocalizationValue('widget.memenu.myclothes')}</span>
+                <span>{t('widget.memenu.myclothes')}</span>
             </div>
             <div className="toolbar-menu-button">
                 <NitroIcon icon="icon-me-forums" />
-                <span>{getLocalizationValue('widget.memenu.forums')}</span>
+                <span>{t('widget.memenu.forums')}</span>
             </div>
             <div className="toolbar-menu-button">
                 <NitroIcon icon="icon-me-collectibles" />
-                <span>{getLocalizationValue('memenu.collectibles')}</span>
+                <span>{t('memenu.collectibles')}</span>
             </div>
         </div>
     );

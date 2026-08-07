@@ -8,11 +8,12 @@ type AvatarImageProps = {
     gender: AvatarGenderType;
     headOnly?: boolean;
     direction?: number;
+    scale?: number;
 };
 
 export const AvatarImage = forwardRef<HTMLDivElement, AvatarImageProps>(
     (props, ref) => {
-        const { figure, gender, headOnly = false, direction = 0 } = props;
+        const { figure, gender, headOnly = false, direction = 0, scale = 1 } = props;
         const [randomValue, setRandomValue] = useState<number>(-1);
         const [imageData, setImageData] = useState<{
             width: number;

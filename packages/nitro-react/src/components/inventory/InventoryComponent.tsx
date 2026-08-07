@@ -1,10 +1,10 @@
-import { useSystemContext } from "#base/context"
+import { useIsWindowVisible } from "#base/context/system";
 import { InventoryView } from "#base/views/inventory/InventoryView"
 
 export const InventoryComponent = () => {
-    const { isWindowVisible } = useSystemContext();
+    const isVisible = useIsWindowVisible('inventory');
 
-    if (!isWindowVisible('inventory')) return null;
+    if (!isVisible) return null;
 
     return <InventoryView />;
 }

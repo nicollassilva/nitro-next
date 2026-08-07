@@ -1,22 +1,11 @@
-import { FriendListUpdateComposer, MessengerInitComposer } from "@nitrodevco/nitro-shared";
-import { useEffect } from "react";
 
-import { useWebSocketContext } from "#base/context";
-import { useFriendsSelector } from "#base/context/user"
+import { useIsWindowVisible } from "#base/context";
+import { MessengerView } from "#base/views/messenger/MessengerView";
 
 export const MessengerComponent = () => {
-    const friends = useFriendsSelector();
-    const { send } = useWebSocketContext();
+    const isVisible = useIsWindowVisible('messenger');
 
-    useEffect(() => {
-        send(new MessengerInitComposer({}));
+    if (!isVisible) return null;
 
-        const interval = setInterval(() => send(new FriendListUpdateComposer({})), 120000);
-
-        return () => {
-            clearInterval(interval);
-        }
-    }, []);
-
-    return null;
+    return <MessengerView />;
 }

@@ -1,11 +1,14 @@
 import { useContext } from 'react';
+import { useStore } from 'zustand';
+
+import { SystemStore } from '#base/stores';
 
 import { SystemContext } from './SystemContext';
 
-export const useSystemContext = () => {
-    const ctx = useContext(SystemContext);
+export const useSystemContext = <T,>(selector: (state: SystemStore) => T) => {
+    const store = useContext(SystemContext);
 
-    if (!ctx) throw new Error('useSystemContext must be used within SystemContextProvider');
+    if (!store) throw new Error('useSystemContext must be used within SystemContextProvider');
 
-    return ctx;
+    return useStore(store, selector);
 }

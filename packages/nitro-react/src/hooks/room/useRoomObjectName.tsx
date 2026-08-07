@@ -1,7 +1,7 @@
 import { IFurnitureData, IRoomObjectNameData, ISimpleRoomObjectData, RoomObjectCategoryEnum, RoomObjectUserType, RoomObjectVariableEnum } from "@nitrodevco/nitro-api";
 
-import { useRoomSelector, useRoomUsersActions } from "#base/context";
-import { useFurnitureDataStore, useLocalizationStore } from "#base/stores";
+import { useRoomSelector, useRoomUsersActions, useTranslation } from "#base/context";
+import { useFurnitureDataStore } from "#base/stores";
 
 export const useRoomObjectName = (objectData: ISimpleRoomObjectData) => {
     const { objectId, category } = objectData;
@@ -10,7 +10,7 @@ export const useRoomObjectName = (objectData: ISimpleRoomObjectData) => {
     const floorItems = useFurnitureDataStore(x => x.floorItems);
     const wallItems = useFurnitureDataStore(x => x.wallItems);
     const { getUserDataByIndex } = useRoomUsersActions();
-    const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
+    const t = useTranslation();
 
     if (!roomObject) return undefined;
 
@@ -24,7 +24,7 @@ export const useRoomObjectName = (objectData: ISimpleRoomObjectData) => {
             if (roomObject.type.indexOf('poster') === 0) {
                 const posterId = parseInt(roomObject.type.replace('poster', ''));
 
-                name = getLocalizationValue(`poster_${posterId}_name`);
+                name = t(`poster_${posterId}_name`);
             } else {
                 const typeId = roomObject.model.getValue<number>(RoomObjectVariableEnum.FurnitureTypeId);
 

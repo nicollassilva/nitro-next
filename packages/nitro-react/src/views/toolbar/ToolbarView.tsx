@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 
 import { AvatarImage } from '#base/components/AvatarImage';
-import { useOwnUserFigure, useOwnUserGender, useSystemContext } from '#base/context';
+import { useOwnUserFigure, useOwnUserGender, useSystemActions } from '#base/context';
 import { cn, NitroIcon } from '#base/theme';
 
 import { ToolbarMeMenu } from './ToolbarMeMenu';
@@ -16,7 +16,7 @@ export const ToolbarView = () => {
     const ownGender = useOwnUserGender();
     const meElementRef = useRef<HTMLDivElement>(null);
     const progressionElementRef = useRef<HTMLDivElement>(null);
-    const { toggleWindow } = useSystemContext();
+    const { toggleWindow } = useSystemActions();
 
     const toggleMenu = (menu: string) => {
         setMeExpanded(menu == 'me' && !isMeExpanded);
@@ -43,7 +43,7 @@ export const ToolbarView = () => {
                     <NitroIcon icon="icon-camera" />
                 </div>
                 <div className="toolbar-right">
-                    <NitroIcon icon="icon-friendall" />
+                    <NitroIcon icon="icon-friendall" onClick={() => toggleWindow('friendlist')} />
                     <NitroIcon icon="icon-friendsearch" />
                     <div className={cn('toolbar-collapse', rightSideCollapsed && 'active')} onClick={_ => setRightSideCollapsed(!rightSideCollapsed)} />
                 </div>

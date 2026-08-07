@@ -1,15 +1,17 @@
 import type { UserStore } from "../UserStore";
 
 export type UserMessengerActions = {
-    setLimits: UserStore['setLimits'];
+    setFriendLimits: UserStore['setFriendLimits'];
     setFriendCategories: UserStore['setFriendCategories'];
     processFriends: UserStore['processFriends'];
     processFriendUpdates: UserStore['processFriendUpdates'];
+    processFriendRequests: UserStore['processFriendRequests'];
 }
 
 export const extractUserMessengerActions = (store: UserStore) => ({
-    setLimits: store.setLimits,
+    setFriendLimits: store.setFriendLimits,
     setFriendCategories: store.setFriendCategories,
     processFriends: store.processFriends,
-    processFriendUpdates: store.processFriendUpdates
+    processFriendUpdates: store.processFriendUpdates,
+    processFriendRequests: store.processFriendRequests
 });

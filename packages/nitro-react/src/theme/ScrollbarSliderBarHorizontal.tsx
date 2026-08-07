@@ -33,6 +33,10 @@ const scrollbarSliderBarHorizontalOverlayVariantsConfig = {
     },
 } as const;
 
+const scrollbarSliderBarHorizontalOverlayInsetConfig: Partial<Record<string, string>> = {
+    '0': 'inset-y-0 left-0.5 right-0.5',
+}
+
 const scrollbarSliderBarHorizontalTintColors: Partial<Record<string, string>> = {
 
 };
@@ -63,6 +67,7 @@ export const ScrollbarSliderBarHorizontal = forwardRef<HTMLDivElement, Scrollbar
         const ownCascade = VARIANT_CASCADE_CONFIG['scrollbarSliderBarHorizontal']?.[resolvedVariant as string];
         const resolvedTint = tintColor || scrollbarSliderBarHorizontalTintColors[resolvedVariant as string];
         const overlayClassName = scrollbarSliderBarHorizontalOverlayVariants({ variant: resolvedVariant });
+        const overlayInsetClassName = scrollbarSliderBarHorizontalOverlayInsetConfig[resolvedVariant as string] ?? 'inset-0';
         const tintStyle = useTintedVars(scrollbarSliderBarHorizontalTintableVars[resolvedVariant as string], resolvedTint);
 
         return (
@@ -72,7 +77,7 @@ export const ScrollbarSliderBarHorizontal = forwardRef<HTMLDivElement, Scrollbar
                 style={{ ...style, ...tintStyle }}
                 {...props}
             >
-                {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0', overlayClassName)} />}
+                {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute', overlayInsetClassName, overlayClassName)} />}
                 <VariantCascadeProvider map={ownCascade}>{children}</VariantCascadeProvider>
             </div>
         );

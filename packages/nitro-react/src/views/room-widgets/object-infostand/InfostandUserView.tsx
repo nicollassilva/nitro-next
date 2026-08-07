@@ -3,9 +3,8 @@ import { ChangeMottoComposer } from "@nitrodevco/nitro-shared";
 import { KeyboardEvent, useEffect, useState } from "react";
 
 import { AvatarImage } from "#base/components/AvatarImage";
-import { useWebSocketContext } from "#base/context";
+import { useTranslation, useWebSocketContext } from "#base/context";
 import { useConfigValue, useRoomUserData } from "#base/hooks";
-import { useLocalizationStore } from "#base/stores";
 import { Border, CloseButton, NitroIcon } from "#base/theme";
 
 type InfostandUserViewProps = {
@@ -20,7 +19,7 @@ export const InfostandUserView = (props: InfostandUserViewProps) => {
     const [isEditingMotto, setIsEditingMotto] = useState<boolean>(false);
     const [motto, setMotto] = useState<string>(userData?.motto ?? '');
     const mottoMaxLength = useConfigValue<number>('motto.max.length', 38) ?? 38;
-    const getLocalizationValue = useLocalizationStore(x => x.getLocalizationValue);
+    const t = useTranslation();
     const { send } = useWebSocketContext();
 
     const onMottoKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -82,7 +81,7 @@ export const InfostandUserView = (props: InfostandUserViewProps) => {
                 </div>
                 <hr className="infostand-separator" />
                 <Border variant="0" className="infostand-motto-container" tintColor="#666666">
-                    {!userData.isOwnUser && <p className="text-[9px] text-white">{motto.length === 0 ? getLocalizationValue('infostand.motto.change') : motto}</p>}
+                    {!userData.isOwnUser && <p className="text-[9px] text-white">{motto.length === 0 ? t('infostand.motto.change') : motto}</p>}
                     {userData.isOwnUser && <>
                         <NitroIcon icon="pencil-icon" className="cursor-pointer shrink-0" onClick={e => setIsEditingMotto(true)} />
                         {!isEditingMotto && <p className="text-[9px] text-white font-goldfish flex-1 min-w-0 overflow-hidden wrap-break-word">{motto}</p>}
@@ -91,7 +90,7 @@ export const InfostandUserView = (props: InfostandUserViewProps) => {
                 </Border>
                 <hr className="infostand-separator" />
                 <div className="flex w-full">
-                    <p className="text-[9px] text-white font-goldfish-bold">{getLocalizationValue('infostand.text.achievement_score')}<br />{userData.achievementScore}</p>
+                    <p className="text-[9px] text-white font-goldfish-bold">{t('infostand.text.achievement_score')}<br />{userData.achievementScore}</p>
                 </div>
             </Border>
         </div>

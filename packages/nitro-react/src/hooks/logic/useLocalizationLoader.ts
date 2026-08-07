@@ -1,13 +1,12 @@
 import { NitroLogger } from '@nitrodevco/nitro-api';
 import { useEffect, useState } from 'react';
 
-import { useConfigurationStore, useLocalizationStore } from '#base/stores';
+import { useSystemActions } from '#base/context';
+import { useConfigurationStore } from '#base/stores';
 
 export const useLocalizationLoader = () => {
     const [needsUpdate, setNeedsUpdate] = useState<boolean>(true);
-    const setLocalization = useLocalizationStore(x => x.setLocalization);
-    //const setBadgePointLimits = useLocalizationStore(state => state.setBadgePointLimits);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    const { setLocalization } = useSystemActions();
     const localizationUrl = useConfigurationStore(state => state.config['gamedata.urls.externalTexts']) as string | undefined;
 
     const isLocalizationReady = () => !needsUpdate;
@@ -27,7 +26,7 @@ export const useLocalizationLoader = () => {
 
                 if (typeof resolvedConfig[key] === 'string')
                     resolvedConfig[key] = resolvedConfig[key].replace(/\$\{([^}]+)\}/g, (_, refKey) =>
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+
                         getValue(refKey),);
             }
 
