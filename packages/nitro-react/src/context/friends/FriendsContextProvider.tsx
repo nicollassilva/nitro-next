@@ -66,7 +66,7 @@ export const FriendsContextProvider = ({ children }: ProviderProps) => {
     });
 
     return (
-        <FriendsContext value={{ activeTab, setActiveTab, tooltip, updateTooltip, showListSearchInput, toggleListSearchInput, listSearchValue, setListSearchValue, filterValue, setFilterValue, selectedFriendsIds, toggleSelectedFriendId, isFriendSelected, relationshipDropdownId, setRelationshipDropdownId, tooltipHandlers }}>
+        <FriendsContext value={{ activeTab, setActiveTab, tooltip, updateTooltip, showListSearchInput, toggleListSearchInput, listSearchValue, setListSearchValue, filterValue, setFilterValue, selectedFriendsIds, setSelectedFriendsIds, toggleSelectedFriendId, isFriendSelected, relationshipDropdownId, setRelationshipDropdownId, tooltipHandlers }}>
             {children}
         </FriendsContext>
     );

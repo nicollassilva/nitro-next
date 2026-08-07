@@ -27,7 +27,7 @@ export const FriendListFriendsFooter = () => {
                 <div className="flex-1 flex gap-1 justify-end">
                     <div className="flex relative" { ...tooltipHandlers('friendlist.tip.search') }>
                         { showListSearchInput ? <>
-                            <input className="w-27 pl-0.5 pr-4.5 bg-white h-5 mt-px border border-black text-[0.75rem] text-black" type="text" value={ listSearchValue } onChange={ e => setListSearchValue(e.target.value) } onKeyDown={ onInputKeyDown } />
+                            <input name="list_search" className="w-27 pl-0.5 pr-4.5 bg-white h-5 mt-px border border-black text-[0.75rem] text-black" type="text" value={ listSearchValue } onChange={ e => setListSearchValue(e.target.value) } onKeyDown={ onInputKeyDown } />
                             <NitroIcon className="absolute right-1 top-1.5 w-3! h-3! cursor-pointer" icon="icon-close-gray" onClick={ () => toggleListSearchInput(false) } />
                         </> : <>
                             <Button className="py-1.25! px-1.5!" onClick={ () => toggleListSearchInput(true) }>
@@ -35,7 +35,7 @@ export const FriendListFriendsFooter = () => {
                             </Button>
                         </> }
                     </div>
-                    <Button disabled={ selectedFriendsIds.length < 1 } className="py-1.25! px-1.5!" { ...tooltipHandlers('friendlist.tip.remove') }>
+                    <Button disabled={ selectedFriendsIds.length < 1 } className="py-1.25! px-1.5!" { ...tooltipHandlers('friendlist.tip.remove') } onClick={ () => toggleWindow('friendlist_remove_confirmation')}>
                         <NitroIcon icon="icon-trash-outline" />
                     </Button>
                 </div>

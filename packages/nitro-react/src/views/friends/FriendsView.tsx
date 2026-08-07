@@ -1,5 +1,6 @@
 import { FriendsContextProvider } from "#base/context";
 
+import { FriendListRemoveConfirmationView } from "./list/dialogs/FriendListRemoveConfirmationView";
 import { FriendListRoomInviteView } from "./list/dialogs/FriendListRoomInviteView";
 import { FriendListView } from "./list/FriendListView";
 
@@ -8,7 +9,9 @@ export const FriendsView = () => {
         <>
             <FriendsContextProvider>
                 <FriendListView />
+
                 <FriendListRoomInviteView />
+                <FriendListRemoveConfirmationView />
             </FriendsContextProvider>
         </>
     );

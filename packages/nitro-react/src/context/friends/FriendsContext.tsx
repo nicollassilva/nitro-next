@@ -23,6 +23,7 @@ type FriendsContextStore = {
     filterValue: string;
     setFilterValue: (value: string) => void;
     selectedFriendsIds: number[];
+    setSelectedFriendsIds: (value: number[]) => void;
     toggleSelectedFriendId: (friendId: number) => void;
     isFriendSelected: (friendId: number) => boolean;
     relationshipDropdownId: number;
