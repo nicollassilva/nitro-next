@@ -3,7 +3,7 @@ import { IOutgoingPacket } from '@nitrodevco/nitro-api';
 export type GetCatalogPageComposerType = {
     pageId: number;
     offerId: number;
-    catalogType: CatalogType;
+    catalogType: string;
 };
 
 export class GetCatalogPageComposer implements IOutgoingPacket<GetCatalogPageComposerType> {

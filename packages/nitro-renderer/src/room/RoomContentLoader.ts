@@ -8,7 +8,7 @@ import type {
     IRoomContentLoader,
 } from '@nitrodevco/nitro-api';
 import {
-    FurnitureType,
+    FurnitureTypeEnum,
     NitroLogger,
     RoomObjectCategoryEnum,
     RoomObjectUserType,
@@ -82,12 +82,12 @@ export class RoomContentLoader implements IRoomContentLoader {
 
             let name = furniture.className;
 
-            if (furniture.type === FurnitureType.FLOOR) {
+            if (furniture.type === FurnitureTypeEnum.Floor) {
                 this._activeObjectTypes.set(id, className);
                 this._activeObjectTypeIds.set(className, id);
 
                 if (!this._activeObjects[name]) this._activeObjects[name] = 1;
-            } else if (furniture.type === FurnitureType.WALL) {
+            } else if (furniture.type === FurnitureTypeEnum.Wall) {
                 if (name === 'post.it') {
                     className = 'post_it';
                     name = 'post_it';

@@ -1,11 +1,16 @@
 import type { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
 
-export type CatalogPageMessageType = {};
+import { CatalogPageParser } from './Data/CatalogPageParser';
+import { ICatalogPage } from './Data/ICatalogPage';
+
+export type CatalogPageMessageType = {
+    page: ICatalogPage
+};
 
 export class CatalogPageMessage implements IIncomingPacket<CatalogPageMessageType> {
     public parse(wrapper: IMessageDataWrapper): CatalogPageMessageType {
-        const packet: CatalogPageMessageType = {};
-
-        return packet;
+        return {
+            page: CatalogPageParser(wrapper)
+        }
     }
 }

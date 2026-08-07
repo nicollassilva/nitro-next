@@ -17,7 +17,8 @@ export const useRoomObjectValidation = () => {
     const getActiveSurfaceLocation = (roomObject: IRoomObject, event: RoomObjectMouseEvent) => {
         if (!room || !roomObject || !event) return undefined;
 
-        const furniData = floorItems.get(roomObject.type);
+        const typeId = roomObject.model.getValue<number>(RoomObjectVariableEnum.FurnitureTypeId);
+        const furniData = floorItems[typeId];
 
         if (!furniData || (!furniData.canStandOn && !furniData.canSitOn && !furniData.canLayOn)) return undefined;
 

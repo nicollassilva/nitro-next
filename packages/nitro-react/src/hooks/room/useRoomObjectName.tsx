@@ -32,11 +32,11 @@ export const useRoomObjectName = (objectData: ISimpleRoomObjectData) => {
 
                 switch (category) {
                     case RoomObjectCategoryEnum.Floor: {
-                        furnitureData = floorItems.get(typeId);
+                        furnitureData = floorItems[typeId];
                         break;
                     }
                     case RoomObjectCategoryEnum.Wall: {
-                        furnitureData = wallItems.get(typeId);
+                        furnitureData = wallItems[typeId];
                         break;
                     }
                 }

@@ -1,4 +1,4 @@
-import { FurnitureType, IFurnitureData } from '@nitrodevco/nitro-api';
+import { FurnitureTypeEnum, IFurnitureData } from '@nitrodevco/nitro-api';
 import { createStore } from 'zustand';
 
 type State = {
@@ -58,11 +58,11 @@ export const createSystemStore = () => createStore<SystemStore>()((set, get, sto
 
         for (const item of furniture) {
             switch (item.type) {
-                case FurnitureType.FLOOR:
+                case FurnitureTypeEnum.Floor:
                     locals.set(`roomitem.name.${item.id}`, item.localizedName);
                     locals.set(`roomitem.desc.${item.id}`, item.description);
                     break;
-                case FurnitureType.WALL:
+                case FurnitureTypeEnum.Wall:
                     locals.set(`wallitem.name.${item.id}`, item.localizedName);
                     locals.set(`wallitem.desc.${item.id}`, item.description);
                     break;

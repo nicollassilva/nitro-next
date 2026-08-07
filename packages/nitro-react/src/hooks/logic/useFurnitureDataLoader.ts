@@ -19,18 +19,18 @@ export const useFurnitureDataLoader = () => {
     }
 
     useEffect(() => {
-        if (!floorItems.size) return;
+        const items = Object.values(floorItems);
 
-        const items = floorItems.values().toArray();
+        if (!items.length) return;
 
         setLocalizationForFurniture(items);
         GetRoomContentLoader().processFurnitureData(items);
     }, [floorItems]);
 
     useEffect(() => {
-        if (!wallItems.size) return;
+        const items = Object.values(wallItems);
 
-        const items = wallItems.values().toArray();
+        if (!items.length) return;
 
         setLocalizationForFurniture(items);
         GetRoomContentLoader().processFurnitureData(items);
@@ -49,8 +49,8 @@ export const useFurnitureDataLoader = () => {
 
                 const responseData = await response.json();
 
-                parseFloorItems(responseData.roomitemtypes);
-                parseWallItems(responseData.wallitemtypes);
+                parseFloorItems(responseData.roomitemtypes.furnitype);
+                parseWallItems(responseData.wallitemtypes.furnitype);
                 setNeedsUpdate(false);
             } catch (e) {
                 NitroLogger.error(e);

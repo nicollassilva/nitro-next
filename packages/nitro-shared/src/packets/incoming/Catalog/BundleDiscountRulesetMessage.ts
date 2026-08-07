@@ -1,20 +1,16 @@
 import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
 
-// TODO(BundleDiscountRuleset: BundleDiscountRulesetSnapshot): Unknown type 'BundleDiscountRulesetSnapshot'. Add override mapping.
+import { BundleDiscountRulesetParser } from './Data/BundleDiscountRulesetParser';
+import { IBundleDiscountRuleset } from './Data/IBundleDiscountRuleset';
 
 export type BundleDiscountRulesetMessageType = {
-  bundleDiscountRuleset: any;
+    bundleDiscountRuleset: IBundleDiscountRuleset;
 };
 
-export class BundleDiscountRulesetMessage implements IIncomingPacket<BundleDiscountRulesetMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): BundleDiscountRulesetMessageType
-  {
-
-    const packet: BundleDiscountRulesetMessageType = {
-      bundleDiscountRuleset: undefined as any, // Unknown type 'BundleDiscountRulesetSnapshot'. Add override mapping.
-    };
-
-    return packet;
-  }
+export class BundleDiscountRulesetMessage implements IIncomingPacket<BundleDiscountRulesetMessageType> {
+    public parse(wrapper: IMessageDataWrapper): BundleDiscountRulesetMessageType {
+        return {
+            bundleDiscountRuleset: BundleDiscountRulesetParser(wrapper)
+        }
+    }
 }

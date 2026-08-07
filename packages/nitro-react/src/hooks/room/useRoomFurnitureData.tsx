@@ -34,11 +34,11 @@ export const useRoomFurnitureData = (objectId: number, category: RoomObjectCateg
     } else {
         switch (category) {
             case RoomObjectCategoryEnum.Floor: {
-                furnitureData = floorItems.get(typeId);
+                furnitureData = floorItems[typeId];
                 break;
             }
             case RoomObjectCategoryEnum.Wall: {
-                furnitureData = wallItems.get(typeId);
+                furnitureData = wallItems[typeId];
                 break;
             }
         }

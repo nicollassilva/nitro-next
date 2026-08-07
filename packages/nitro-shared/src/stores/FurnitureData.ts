@@ -1,12 +1,11 @@
-import type { FurnitureType, IFurnitureData } from '@nitrodevco/nitro-api';
+import type { FurnitureTypeEnum, IFurnitureData } from '@nitrodevco/nitro-api';
 
 export class FurnitureData implements IFurnitureData {
     constructor(
-        public readonly type: FurnitureType,
+        public readonly type: FurnitureTypeEnum,
         public readonly id: number,
-        public readonly objectId: number,
         public readonly fullName: string,
-        public className: string,
+        public readonly className: string,
         public readonly category: string,
         public readonly localizedName: string,
         public readonly description: string,

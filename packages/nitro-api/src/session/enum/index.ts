@@ -1,6 +1,6 @@
 export * from './ChangeUserNameResultMessageCode';
 export * from './ClubLevelEnum';
-export * from './FurnitureType';
+export * from './FurnitureTypeEnum';
 export * from './NoobnessLevelEnum';
 export * from './RoomChatBubbleWidthType';
 export * from './RoomChatFloodSensitivityType';

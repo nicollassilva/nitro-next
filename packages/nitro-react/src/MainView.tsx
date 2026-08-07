@@ -2,7 +2,7 @@ import { InfoRetrieveComposer } from "@nitrodevco/nitro-shared";
 import { useEffect, useState } from "react";
 
 import { InventoryComponent, RoomWrapper, WalletComponent } from "./components";
-import { CatalogComponent } from "./components/catalog/CatalogComponent";
+import { CatalogWrapper } from "./components/catalog/CatalogWrapper";
 import { FriendListComponent } from "./components/messenger/FriendListComponent";
 import { useWebSocketContext } from "./context";
 import { useMessengerHandler, useNavigatorHandler, useUserInfoHandler, useWalletHandler } from "./handlers";
@@ -54,7 +54,7 @@ export const MainView = () => {
                 </div>
                 <FriendListComponent />
                 <ToolbarView />
-                <CatalogComponent />
+                <CatalogWrapper catalogType="NORMAL" />
                 <InventoryComponent />
                 <WalletComponent />
             </div>

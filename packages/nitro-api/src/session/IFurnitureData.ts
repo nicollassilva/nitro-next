@@ -1,10 +1,11 @@
-import type { FurnitureType } from './enum';
+import type { FurnitureTypeEnum } from './enum';
 import { IRoomObjectData } from './IRoomObjectData';
 
-export interface IFurnitureData extends IRoomObjectData {
-    readonly type: FurnitureType;
+export interface IFurnitureData {
+    readonly type: FurnitureTypeEnum;
+    readonly id: number;
     readonly fullName: string;
-    className: string;
+    readonly className: string;
     readonly category: string;
     readonly localizedName: string;
     readonly description: string;

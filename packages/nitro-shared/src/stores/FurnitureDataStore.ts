@@ -1,41 +1,76 @@
-import type { IFurnitureData } from '@nitrodevco/nitro-api';
-import { FurnitureType } from '@nitrodevco/nitro-api';
+import { FurnitureTypeEnum, type IFurnitureData } from '@nitrodevco/nitro-api';
 import { createStore } from 'zustand';
 
 import { FurnitureData } from './FurnitureData';
 
+type FurnitureType = {
+    id: number;
+    classname: string;
+    revision: number;
+    /** Null on some entries (e.g. newer NFT/diamond items) */
+    category: string | null;
+    defaultdir: number;
+    xdim: number;
+    ydim: number;
+    /** Only present on a subset of items (~5078/17091 in this dataset) */
+    partcolors?: {
+        color: string[];
+    };
+    name: string | null;
+    description: string | null;
+    adurl: null;
+    offerid: number;
+    buyout: boolean;
+    rentofferid: number;
+    rentbuyout: boolean;
+    bc: boolean;
+    excludeddynamic: boolean;
+    bcofferid: number;
+    /** Colon-delimited coordinate/rotation strings, or a plain numeric string flag, or null */
+    customparams: string | null;
+    specialtype: number;
+    canstandon: boolean;
+    cansiton: boolean;
+    canlayon: boolean;
+    canputstuffon: boolean;
+    height: number;
+    furniline: string | null;
+    environment: string | null;
+    rare: boolean;
+    tradeable: boolean;
+    recyclable: boolean;
+}
+
 type State = {
-    floorItems: Map<number, IFurnitureData>;
-    wallItems: Map<number, IFurnitureData>;
+    floorItems: Record<number, IFurnitureData>;
+    wallItems: Record<number, IFurnitureData>;
     furnitureLoaded: boolean;
 };
 
 type Actions = {
-    parseFloorItems: (data: any) => void;
-    parseWallItems: (data: any) => void;
+    parseFloorItems: (data: FurnitureType[]) => void;
+    parseWallItems: (data: FurnitureType[]) => void;
 };
 
 const initialState: State = {
-    floorItems: new Map(),
-    wallItems: new Map(),
+    floorItems: {},
+    wallItems: {},
     furnitureLoaded: false,
 };
 
 export const FurnitureDataStore = createStore<State & Actions>((set, get) => ({
     ...initialState,
-    parseFloorItems: (data: any) => {
-        if (!data || !data.furnitype) return;
+    parseFloorItems: (data: FurnitureType[]) => set(x => {
+        const floorItems = { ...x.floorItems };
 
-        const floorItems: IFurnitureData[] = [];
-
-        for (const furniture of data.furnitype) {
+        for (const furniture of data) {
             if (!furniture) continue;
 
             const colors: number[] = [];
 
             if (furniture.partcolors) {
                 for (const color of furniture.partcolors.color) {
-                    let colorCode = color as string;
+                    let colorCode = color;
 
                     if (colorCode.charAt(0) === '#') {
                         colorCode = colorCode.replace('#', '');
@@ -47,20 +82,19 @@ export const FurnitureDataStore = createStore<State & Actions>((set, get) => ({
                 }
             }
 
-            const classSplit = (furniture.classname as string).split('*');
+            const classSplit = furniture.classname.split('*');
             const className = classSplit[0];
             const colorIndex = classSplit.length > 1 ? parseInt(classSplit[1]) : 0;
             const hasColorIndex = classSplit.length > 1;
 
-            const furnitureData = new FurnitureData(
-                FurnitureType.FLOOR,
-                furniture.id,
+            floorItems[furniture.id] = new FurnitureData(
+                FurnitureTypeEnum.Floor,
                 furniture.id,
                 furniture.classname,
                 className,
-                furniture.category,
-                furniture.name,
-                furniture.description,
+                furniture.category ?? '',
+                furniture.name ?? '',
+                furniture.description ?? '',
                 furniture.revision,
                 furniture.xdim,
                 furniture.ydim,
@@ -68,53 +102,40 @@ export const FurnitureDataStore = createStore<State & Actions>((set, get) => ({
                 colors,
                 hasColorIndex,
                 colorIndex,
-                furniture.adurl,
+                furniture.adurl ?? '',
                 furniture.offerid,
                 furniture.buyout,
                 furniture.rentofferid,
                 furniture.rentbuyout,
                 furniture.bc,
-                furniture.customparams,
+                furniture.customparams ?? '',
                 furniture.specialtype,
                 furniture.canstandon,
                 furniture.cansiton,
                 furniture.canlayon,
                 furniture.excludeddynamic,
-                furniture.furniline,
-                furniture.environment,
+                furniture.furniline ?? '',
+                furniture.environment ?? '',
                 furniture.rare,
             );
-
-            floorItems.push(furnitureData);
         }
 
-        if (!floorItems.length) return;
+        return { floorItems };
+    }),
+    parseWallItems: (data: FurnitureType[]) => set(x => {
+        const wallItems = { ...x.wallItems };
 
-        set(() => {
-            const map = new Map(floorItems.map(x => {
-                return [x.id, x]
-            }));
-
-            return { floorItems: map };
-        });
-    },
-    parseWallItems: (data: any) => {
-        if (!data || !data.furnitype) return;
-
-        const wallItems: IFurnitureData[] = [];
-
-        for (const furniture of data.furnitype) {
+        for (const furniture of data) {
             if (!furniture) continue;
 
-            const furnitureData = new FurnitureData(
-                FurnitureType.WALL,
-                furniture.id,
+            wallItems[furniture.id] = new FurnitureData(
+                FurnitureTypeEnum.Wall,
                 furniture.id,
                 furniture.classname,
                 furniture.classname,
-                furniture.category,
-                furniture.name,
-                furniture.description,
+                furniture.category ?? '',
+                furniture.name ?? '',
+                furniture.description ?? '',
                 furniture.revision,
                 0,
                 0,
@@ -122,7 +143,7 @@ export const FurnitureDataStore = createStore<State & Actions>((set, get) => ({
                 [],
                 false,
                 0,
-                furniture.adurl,
+                furniture.adurl ?? '',
                 furniture.offerid,
                 furniture.buyout,
                 furniture.rentofferid,
@@ -134,22 +155,12 @@ export const FurnitureDataStore = createStore<State & Actions>((set, get) => ({
                 false,
                 false,
                 furniture.excludeddynamic,
-                furniture.furniline,
-                furniture.environment,
+                furniture.furniline ?? '',
+                furniture.environment ?? '',
                 furniture.rare,
             );
-
-            wallItems.push(furnitureData);
         }
 
-        if (!wallItems.length) return;
-
-        set(() => {
-            const map = new Map(wallItems.map(x => {
-                return [x.id, x]
-            }));
-
-            return { wallItems: map };
-        });
-    },
+        return { wallItems };
+    })
 }));
