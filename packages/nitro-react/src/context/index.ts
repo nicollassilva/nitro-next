@@ -1,3 +1,6 @@
+export * from './catalog/CatalogContext';
+export * from './catalog/CatalogContextStore';
+export * from './catalog/useCatalogContext';
 export * from './communication/useWebSocketContext';
 export * from './communication/WebSocketContext';
 export * from './communication/WebSocketContextProvider';

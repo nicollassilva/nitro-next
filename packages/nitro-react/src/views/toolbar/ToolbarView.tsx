@@ -33,7 +33,7 @@ export const ToolbarView = () => {
                     <NitroIcon icon="icon-habbo" />
                     <NitroIcon icon="icon-rooms" />
                     <NitroIcon icon="icon-progression" onClick={_ => toggleMenu('progression')} />
-                    <NitroIcon icon="icon-catalog" />
+                    <NitroIcon icon="icon-catalog" onClick={() => toggleWindow('catalog')} />
                     <NitroIcon icon="icon-builders-club" />
                     <NitroIcon icon="icon-inventory" onClick={() => toggleWindow('inventory')} />
                     <div className="nitro-icon icon-me-circle avatar-image" onClick={_ => toggleMenu('me')} >
