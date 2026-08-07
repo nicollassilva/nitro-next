@@ -1,10 +1,15 @@
 @utility nine-slice-border {
-    @apply [border-image-repeat:stretch] [image-rendering:pixelated];
+    @apply [border-image-repeat:stretch] pixel-art;
 }
 
 @utility sprite {
-    display: inline-block;
-    background-repeat: no-repeat;
+    @apply inline-block bg-no-repeat pixel-art;
+}
+
+@utility pixel-art {
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
     image-rendering: pixelated;
 }
 
@@ -17,14 +22,17 @@
 
 @utility font-ubuntu {
     font-family: Ubuntu;
+    @apply pixel-text;
 }
 
 @utility font-ubuntu-bold {
     font-family: UbuntuBold;
+    @apply pixel-text;
 }
 
 @utility font-ubuntu-italic {
     font-family: UbuntuItalics;
+    @apply pixel-text;
 }
 
 @utility font-goldfish {
@@ -42,7 +50,7 @@
 }
 
 @utility text-style-regular {
-    @apply font-goldfish text-[9px];
+    @apply font-goldfish text-[0.68rem];
 }
 
 @utility text-style-u-regular {

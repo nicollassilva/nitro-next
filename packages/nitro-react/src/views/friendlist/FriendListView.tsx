@@ -21,8 +21,8 @@ export const FriendListView = () => {
                 <FriendListRequests value="requests" />
                 <FriendListSearch value="search" />
             </Accordion>
-            <div className="w-full h-7 shrink-0 flex justify-end items-center pt-2 pr-8">
-                <span className="w-full ml-2 text-end text-white text-[0.655rem] font-aa text-nowrap overflow-hidden">
+            <div className="w-full h-5 shrink-0 flex justify-end items-center pt-2 pr-8">
+                <span className=" text-white text-[0.655rem] font-aa text-nowrap overflow-hidden">
                     {t(tooltip)}
                 </span>
             </div>

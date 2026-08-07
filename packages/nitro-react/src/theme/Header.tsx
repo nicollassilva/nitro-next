@@ -27,11 +27,11 @@ const headerVariantsConfig = {
 const headerOverlayVariantsConfig = {
     variant: {
         // blue
-        '0': 'bg-(image:--header-0-default-shine-src) bg-size-[6px_15px] bg-repeat-x [image-rendering:pixelated]',
+        '0': 'bg-(image:--header-0-default-shine-src) bg-size-[6px_15px] bg-repeat-x pixel-art',
         // black
-        '1': 'bg-(image:--header-0-default-shine-src) bg-size-[6px_15px] bg-repeat-x [image-rendering:pixelated]',
+        '1': 'bg-(image:--header-0-default-shine-src) bg-size-[6px_15px] bg-repeat-x pixel-art',
         // yellow
-        '2': 'bg-(image:--header-0-default-shine-src) bg-size-[6px_15px] bg-repeat-x [image-rendering:pixelated]',
+        '2': 'bg-(image:--header-0-default-shine-src) bg-size-[6px_15px] bg-repeat-x pixel-art',
         // default
         '3': '',
         // light
@@ -88,11 +88,11 @@ export const Header = forwardRef<HTMLDivElement, HeaderProps>(
             >
                 {overlayClassName && <div aria-hidden className={cn('pointer-events-none absolute inset-0 z-10', overlayClassName)} />}
                 <VariantCascadeProvider map={ownCascade}>
-                    <div className="flex items-center justify-center h-full">
+                    <div className="relative flex items-center justify-center h-full">
                         <div className="flex flex-1 items-center justify-center z-20 w-full">
                             <span className="text-center leading-3.75 px-2" style={{ backgroundColor: resolvedTint }}>{caption}</span>
                         </div>
-                        <div className="flex shrink-0 items-center justify-center z-20" style={{ backgroundColor: resolvedTint }}>
+                        <div className="flex shrink-0 items-center justify-center z-20 absolute right-0" style={{ backgroundColor: resolvedTint }}>
                             <CloseButton className="" onClick={onClose} data-no-drag />
                         </div>
                     </div>

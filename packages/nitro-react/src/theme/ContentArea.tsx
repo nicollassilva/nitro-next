@@ -13,7 +13,7 @@ const contentAreaVariantsConfig = {
 } as const;
 
 const contentArea = cva(
-    'flex size-full overflow-hidden',
+    'flex size-full overflow-hidden z-20',
     {
         variants: contentAreaVariantsConfig,
         defaultVariants: {

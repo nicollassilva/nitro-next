@@ -117,7 +117,8 @@ export const useFrameDrag = (id: string | undefined) => {
     }
 
     const style: CSSProperties = {
-        transform: offset.dx || offset.dy ? `translate(${offset.dx}px, ${offset.dy}px)` : undefined,
+        transform: offset.dx || offset.dy ? `translate(${~~offset.dx}px, ${~~offset.dy}px)` : undefined,
+        transformOrigin: `top left`,
         zIndex,
     };
 
