@@ -33,11 +33,13 @@ export const InventoryFurniView = (props: { scrollVariant: string }) => {
 
     const virtualRows = rowVirtualizer.getVirtualItems();
 
+    // getVirtualItems() returns a fresh array every render; depend on the numeric last-row index
+    // so the effect only fires when the visible range actually reaches the end.
+    const lastRowIndex = virtualRows.length ? virtualRows[virtualRows.length - 1].index : -1;
+
     useEffect(() => {
-        const lastRow = virtualRows[virtualRows.length - 1];
-        if (!lastRow) return;
-        if (lastRow.index >= rowCount - 1 && itemCount < MAX_ITEMS) loadMore();
-    }, [virtualRows, rowCount, itemCount, loadMore]);
+        if (lastRowIndex >= rowCount - 1 && itemCount < MAX_ITEMS) loadMore();
+    }, [lastRowIndex, rowCount, itemCount, loadMore]);
 
     return (
         <div className="flex flex-col gap-1 h-full">
