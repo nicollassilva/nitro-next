@@ -28,14 +28,11 @@ export const createRoomUsersSlice: StateCreator<RoomUsersSlice, [], [], RoomUser
         return get().usersByRoomObjectId[objectId];
     },
     updateUsers: (datas: IRoomUserData[]) => set(x => {
-        const updates = datas.reduce((acc, data) => ({
-            ...acc,
-            [data.objectId]: data
-        }), {});
+        const usersByRoomObjectId = { ...x.usersByRoomObjectId };
 
-        return {
-            usersByRoomObjectId: { ...x.usersByRoomObjectId, ...updates }
-        };
+        for (const data of datas) usersByRoomObjectId[data.objectId] = data;
+
+        return { usersByRoomObjectId };
     }),
     updateUser: (data: IRoomUserData) => set(x => ({
         usersByRoomObjectId: { ...x.usersByRoomObjectId, [data.objectId]: data }
