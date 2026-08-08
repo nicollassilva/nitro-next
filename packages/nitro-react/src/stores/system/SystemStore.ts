@@ -212,8 +212,10 @@ export const createSystemStore = () => createStore<SystemStore>()((set, get, sto
 
         return { floorItems };
     }),
-    parseWallItems: (data: FurnitureType[]) => set(x => {
-        const wallItems = { ...x.wallItems };
+    parseWallItems: (data: FurnitureType[]) => set(() => {
+        // Replace (like parseFloorItems) rather than merge, so a furnidata reload doesn't keep
+        // stale wall entries and grow the map unbounded.
+        const wallItems: Record<number, IFurnitureData> = {};
 
         for (const furniture of data) {
             if (!furniture) continue;
