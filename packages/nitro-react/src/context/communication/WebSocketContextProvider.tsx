@@ -188,7 +188,14 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
                 consumed += length + 4;
             }
         } catch (err) {
-            NitroLogger.error(err);
+            // Fragmentation (incomplete packet) is handled by the `break` above, so any throw here
+            // means the stream is desynced/corrupt. Continuing would re-parse the same bad bytes on
+            // every frame (livelock) while the buffer grows unbounded — drop it and close instead.
+            NitroLogger.error('WebSocket: corrupt packet stream, dropping buffer and closing socket', err);
+            wsBuffer.current = new ArrayBuffer(0);
+            ws.current?.close();
+
+            return wrappers;
         }
 
         if (consumed) wsBuffer.current = wsBuffer.current.slice(consumed);
