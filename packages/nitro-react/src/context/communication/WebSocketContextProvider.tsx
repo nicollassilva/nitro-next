@@ -25,7 +25,11 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
     //const socketUrl = useConfigurationStore(x => x.config['socket.url'] as string) ?? undefined;
     const production = useConfigurationStore(x => x.config['production.version'] as string) ?? undefined;
     const ws = useRef<WebSocket | undefined>(undefined);
-    const wsBuffer = useRef<ArrayBuffer>(new ArrayBuffer(0));
+    // Incoming bytes are kept as a list of chunks instead of one contiguous buffer, so appending a
+    // frame is O(1) and a packet fragmented across many frames is only materialized once it is
+    // complete (avoids re-copying a growing buffer on every frame).
+    const wsChunks = useRef<Uint8Array[]>([]);
+    const wsLength = useRef<number>(0);
     const listeners = useRef<Map<IncomingPacketConstructor<object>, Array<(data: object) => void>>>(new Map());
     const pendingClientMessages = useRef<IOutgoingPacket<object>[]>([]);
     const pendingServerMessages = useRef<IMessageDataWrapper[]>([]);
@@ -78,7 +82,8 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
                 if (ws.current !== socket) return;
 
                 ws.current = undefined;
-                wsBuffer.current = new ArrayBuffer(0);
+                wsChunks.current = [];
+                wsLength.current = 0;
 
                 pendingClientMessages.current = [];
                 pendingServerMessages.current = [];
@@ -87,12 +92,10 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
             };
 
             socket.onmessage = (event: MessageEvent<ArrayBuffer>) => {
-                const array = new Uint8Array(wsBuffer.current.byteLength + event.data.byteLength);
+                if (!event.data.byteLength) return;
 
-                array.set(new Uint8Array(wsBuffer.current), 0);
-                array.set(new Uint8Array(event.data), wsBuffer.current.byteLength);
-
-                wsBuffer.current = array.buffer;
+                wsChunks.current.push(new Uint8Array(event.data));
+                wsLength.current += event.data.byteLength;
 
                 processBuffer();
             };
@@ -103,7 +106,7 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
 
     const processBuffer = () => {
         try {
-            if (wsBuffer.current.byteLength === 0) return;
+            if (wsLength.current === 0) return;
 
             dispatchWrappers(decodeWrappers());
         } catch (err) {
@@ -160,45 +163,83 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
         return new BinaryWriter().writeInt(buffer.byteLength).writeBytes(buffer);
     }
 
+    // Read the big-endian int32 length prefix from the front of the chunk list without consuming it.
+    // Caller guarantees wsLength.current >= 4. Handles a prefix split across chunk boundaries.
+    const peekPacketLength = () => {
+        const b: number[] = [];
+
+        for (let ci = 0; b.length < 4 && ci < wsChunks.current.length; ci++) {
+            const chunk = wsChunks.current[ci];
+
+            for (let oi = 0; b.length < 4 && oi < chunk.byteLength; oi++) b.push(chunk[oi]);
+        }
+
+        return (b[0] << 24) | (b[1] << 16) | (b[2] << 8) | b[3];
+    }
+
+    // Remove the first `count` bytes from the chunk list and return them as one contiguous array
+    // (a single O(count) copy). Caller guarantees wsLength.current >= count.
+    const takeFront = (count: number): Uint8Array => {
+        const out = new Uint8Array(count);
+
+        let filled = 0;
+
+        while (filled < count) {
+            const chunk = wsChunks.current[0];
+            const need = count - filled;
+
+            if (chunk.byteLength <= need) {
+                out.set(chunk, filled);
+                filled += chunk.byteLength;
+                wsChunks.current.shift();
+            } else {
+                out.set(chunk.subarray(0, need), filled);
+                wsChunks.current[0] = chunk.subarray(need);
+                filled += need;
+            }
+        }
+
+        wsLength.current -= count;
+
+        return out;
+    }
+
     const decodeWrappers = () => {
         const wrappers: IMessageDataWrapper[] = [];
 
-        if (!wsBuffer.current || !wsBuffer.current.byteLength) return wrappers;
+        while (wsLength.current >= 4) {
+            const length = peekPacketLength();
 
-        const reader = new BinaryReader(wsBuffer.current);
+            if (length < 2) {
+                NitroLogger.error(`WebSocket: Malformed packet length: ${length}`);
+                wsChunks.current = [];
+                wsLength.current = 0;
+                ws.current?.close();
+                break;
+            }
 
-        let consumed = 0;
+            // Incomplete packet: wait for more frames without materializing the growing buffer.
+            if (wsLength.current < 4 + length) break;
 
-        try {
-            while (wsBuffer.current.byteLength - consumed >= 4) {
-                const length = reader.readInt();
+            try {
+                const bytes = takeFront(4 + length);
+                const reader = new BinaryReader(bytes.buffer as ArrayBuffer);
 
-                if (length < 2) {
-                    NitroLogger.error(`WebSocket: Malformed packet length: ${length}`);
-                    ws.current?.close();
-                    break;
-                }
-                
-                if (length > reader.remaining()) break;
+                reader.readInt();
 
                 const extracted = reader.readBytes(length);
 
                 wrappers.push(new EvaWireDataWrapper(extracted.readShort(), extracted));
-
-                consumed += length + 4;
+            } catch (err) {
+                // A throw here (after a completeness check) means the stream is desynced/corrupt.
+                // Continuing would re-parse bad bytes forever — drop everything and close instead.
+                NitroLogger.error('WebSocket: corrupt packet stream, dropping buffer and closing socket', err);
+                wsChunks.current = [];
+                wsLength.current = 0;
+                ws.current?.close();
+                break;
             }
-        } catch (err) {
-            // Fragmentation (incomplete packet) is handled by the `break` above, so any throw here
-            // means the stream is desynced/corrupt. Continuing would re-parse the same bad bytes on
-            // every frame (livelock) while the buffer grows unbounded — drop it and close instead.
-            NitroLogger.error('WebSocket: corrupt packet stream, dropping buffer and closing socket', err);
-            wsBuffer.current = new ArrayBuffer(0);
-            ws.current?.close();
-
-            return wrappers;
         }
-
-        if (consumed) wsBuffer.current = wsBuffer.current.slice(consumed);
 
         return wrappers;
     }
