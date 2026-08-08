@@ -35,10 +35,15 @@ export const useFrameDrag = (id: string | undefined) => {
 
     const zIndex = useFrameStackStore((state) => state.zIndexById[stackId] ?? 100);
     const bringToFront = useFrameStackStore((state) => state.bringToFront);
+    const releaseFrame = useFrameStackStore((state) => state.releaseFrame);
 
     useEffect(() => {
         bringToFront(stackId);
-    }, [stackId, bringToFront]);
+
+        // Prune this frame's z-index entry when it unmounts (or its id changes) so zIndexById
+        // doesn't grow unbounded across a long session of opening/closing windows.
+        return () => releaseFrame(stackId);
+    }, [stackId, bringToFront, releaseFrame]);
 
     const stopDragging = () => {
         const listeners = activeListenersRef.current;
