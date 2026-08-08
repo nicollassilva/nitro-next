@@ -3,8 +3,10 @@ import { GetRoomEngine } from "@nitrodevco/nitro-renderer";
 
 import { useConfigurationStore } from "#base/stores";
 
-export const useProductIconUrl = (product: IProduct) => {
+export const useProductIconUrl = (product: IProduct | undefined | null) => {
     const catalogAssetUrl = useConfigurationStore(x => x.config['catalog.asset.url'] as string) ?? undefined;
+
+    if (!product) return '';
 
     switch (product.productType) {
         case FurnitureTypeEnum.Floor:

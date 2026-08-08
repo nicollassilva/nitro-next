@@ -10,7 +10,7 @@ type CatalogItemGridWidgetItemViewProps = {
 export const CatalogItemGridWidgetItemView = (props: CatalogItemGridWidgetItemViewProps) => {
     const { offer } = props;
     const product = useCatalogOfferProduct(offer);
-    const iconUrl = useProductIconUrl(product!);
+    const iconUrl = useProductIconUrl(product);
     const { activeOffer } = useCatalogSelectors();
     const { selectOffer } = useCatalogNavigation();
 
