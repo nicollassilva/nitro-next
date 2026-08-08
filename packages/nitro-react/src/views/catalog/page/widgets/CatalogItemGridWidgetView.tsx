@@ -7,8 +7,6 @@ import { Border, ScrollbarVertical } from "#base/theme"
 
 import { CatalogItemGridWidgetItemView } from "./CatalogItemGridWidgetItemView";
 
-const PAGE_SIZE = 24;
-const MAX_ITEMS = 200;
 const COLUMNS = 6;
 const ROW_GAP = 4;
 
