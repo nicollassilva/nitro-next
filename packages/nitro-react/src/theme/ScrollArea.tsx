@@ -51,18 +51,19 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(
                         {children}
                     </div>
                 </div>
-                <ScrollbarVertical
-                    viewportRef={viewportRef}
-                    contentRef={contentRef}
-                    variant={variant}
-                    defaultVariant={defaultVariant}
-                    tintColor={tintColor}
-                    step={step}
-                    minThumbSize={minThumbSize}
-                    reachThreshold={orientation === 'both' ? undefined : reachThreshold}
-                    onReachStart={orientation === 'both' ? undefined : onReachStart}
-                    onReachEnd={orientation === 'both' ? undefined : onReachEnd}
-                />
+                {showVertical && (
+                    <ScrollbarVertical
+                        viewportRef={viewportRef}
+                        contentRef={contentRef}
+                        variant={variant}
+                        defaultVariant={defaultVariant}
+                        tintColor={tintColor}
+                        step={step}
+                        minThumbSize={minThumbSize}
+                        reachThreshold={orientation === 'both' ? undefined : reachThreshold}
+                        onReachStart={orientation === 'both' ? undefined : onReachStart}
+                        onReachEnd={orientation === 'both' ? undefined : onReachEnd}
+                    />)}
                 {showHorizontal && (
                     <ScrollbarHorizontal
                         viewportRef={viewportRef}
