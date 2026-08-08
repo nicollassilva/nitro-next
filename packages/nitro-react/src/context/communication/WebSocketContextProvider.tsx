@@ -289,7 +289,13 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
     const sendRaw = <T extends object,>(...packets: IOutgoingPacket<T>[]) => {
         if (!packets?.length) return;
 
-        if (!ws.current || ws.current.readyState !== WebSocket.OPEN) return;
+        if (!ws.current || ws.current.readyState !== WebSocket.OPEN) {
+            // Dropping is silent otherwise; surface it so a lost composer during a non-OPEN
+            // window (connecting/closed) is at least diagnosable.
+            NitroLogger.warn(`WebSocket not open (state ${ws.current?.readyState ?? 'none'}); dropping ${packets.length} outgoing packet(s):`, packets.map(p => p.constructor.name).join(', '));
+
+            return;
+        }
 
         for (const outgoing of packets) {
             try {
