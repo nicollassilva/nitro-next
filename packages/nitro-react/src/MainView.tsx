@@ -23,12 +23,9 @@ export const MainView = () => {
     useEffect(() => {
         if (!isReady) return;
 
+        // Runs after the isReady re-render, so children (and their message handlers) are mounted
+        // before setReady flushes any buffered server messages.
         send(new InfoRetrieveComposer({}));
-    }, [isReady]);
-
-    useEffect(() => {
-        if (!isReady) return;
-
         setReady();
     }, [isReady]);
 

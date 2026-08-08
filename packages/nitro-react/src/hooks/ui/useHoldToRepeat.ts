@@ -8,6 +8,12 @@ export const useHoldToRepeat = (callback: () => void) => {
     const intervalRef = useRef<ReturnType<typeof setInterval>>(undefined);
     const callbackRef = useRef(callback);
 
+    // Keep the ref pointing at the latest callback; otherwise the repeat fires the
+    // callback captured on first render (stale closure over changed props/state).
+    useEffect(() => {
+        callbackRef.current = callback;
+    });
+
     const stop = () => {
         clearTimeout(timeoutRef.current);
         clearInterval(intervalRef.current);

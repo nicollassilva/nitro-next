@@ -34,7 +34,7 @@ export const FriendListFriends = (props: FriendListFriendsProps) => {
     ].map(group => ({
         ...group,
         friends: !filterValue ? group.friends : group.friends.filter(
-            (friend: IMessengerFriend) => friend.name.toLowerCase().includes(filterValue)
+            (friend: IMessengerFriend) => friend.name.toLowerCase().includes(filterValue.toLowerCase())
         )
     }));
 

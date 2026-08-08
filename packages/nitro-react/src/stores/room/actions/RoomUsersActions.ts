@@ -1,7 +1,7 @@
 import type { RoomStore } from "../RoomStore"
 
 export type RoomUsersActions = {
-    getUserByRoomObjectId: RoomStore['getUserByRoomObjectId'];
+    getUserDataByIndex: RoomStore['getUserByRoomObjectId'];
     updateUsers: RoomStore['updateUsers'];
     updateUser: RoomStore['updateUser'];
     updateUserPartial: RoomStore['updateUserPartial'];

@@ -10,6 +10,7 @@ type FrameStackState = {
 
 type FrameStackActions = {
     bringToFront: (id: string) => void;
+    releaseFrame: (id: string) => void;
 };
 
 export const useFrameStackStore = create<FrameStackState & FrameStackActions>((set, get) => ({
@@ -26,6 +27,24 @@ export const useFrameStackStore = create<FrameStackState & FrameStackActions>((s
                 topZIndex: nextZIndex,
                 topId: id,
                 zIndexById: { ...state.zIndexById, [id]: nextZIndex },
+            };
+        });
+    },
+    releaseFrame: (id: string) => {
+        set((state) => {
+            if (!(id in state.zIndexById)) return state;
+
+            const zIndexById = { ...state.zIndexById };
+
+            delete zIndexById[id];
+
+            // Reset the counter once every frame is gone so it doesn't climb forever.
+            const isEmpty = Object.keys(zIndexById).length === 0;
+
+            return {
+                zIndexById,
+                topId: state.topId === id ? undefined : state.topId,
+                topZIndex: isEmpty ? BASE_FRAME_Z_INDEX : state.topZIndex,
             };
         });
     },

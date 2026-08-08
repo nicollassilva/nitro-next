@@ -57,7 +57,11 @@ export const FriendListSearch = (props: FriendListSearchProps) => {
                 <Accordion type="multiple" unwrapped alwaysOpen>
                     {groups.map(group => (
                         <FriendListGroup key={group.value} value={group.value} caption={t(getCaption(group), '', { 'cnt': group.results.length.toString() })} showArrows={false}>
-                            {group.results.map((result: IMessengerSearchResult) => <FriendListSearchItem key={result.playerId} isFriend={isFriend(result)} showAvatarHead={isFriend(result) && result.isOnline} result={result} />)}
+                            {group.results.map((result: IMessengerSearchResult) => {
+                                const friend = isFriend(result);
+
+                                return <FriendListSearchItem key={result.playerId} isFriend={friend} showAvatarHead={friend && result.isOnline} result={result} />;
+                            })}
                         </FriendListGroup>
                     ))}
                 </Accordion>

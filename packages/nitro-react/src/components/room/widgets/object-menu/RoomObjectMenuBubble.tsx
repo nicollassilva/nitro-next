@@ -13,9 +13,6 @@ const FADE_DELAY = 5000;
 const FADE_LENGTH = 75;
 const SPACE_AROUND_EDGES = 10;
 
-let FIXED_STACK: FixedSizeStack | undefined = undefined;
-let MAX_STACK = -1000000;
-
 type RoomObjectInfoBubbleProps = {
     objectData: ISimpleRoomObjectData;
     userType: RoomObjectUserType;
@@ -30,12 +27,26 @@ export const RoomObjectMenuBubble = (props: RoomObjectInfoBubbleProps) => {
     const room = useRoomSelector();
     const isFading = useRef<boolean>(false);
     const fadeTime = useRef<number>(1);
+    const lastFrameTime = useRef<number | undefined>(undefined);
     const elementRef = useRef<HTMLDivElement>(null);
+    // Per-instance position smoothing state; must not be shared across bubbles.
+    const fixedStackRef = useRef<FixedSizeStack | undefined>(undefined);
+    const maxStackRef = useRef<number>(-1000000);
 
     const updateFade = (time: number) => {
         if (!onClose || !isFading.current || !elementRef?.current) return;
 
-        fadeTime.current += time;
+        // `time` is the ticker's absolute timestamp, not a per-frame delta. Accumulate the
+        // delta between frames; without this, fadeTime jumps to a huge value on the first
+        // frame and the bubble closes instantly instead of fading.
+        if (lastFrameTime.current === undefined) {
+            lastFrameTime.current = time;
+
+            return;
+        }
+
+        fadeTime.current += (time - lastFrameTime.current);
+        lastFrameTime.current = time;
 
         const newOpacity = ((1 - (fadeTime.current / FADE_LENGTH)) * 1);
 
@@ -49,20 +60,20 @@ export const RoomObjectMenuBubble = (props: RoomObjectInfoBubbleProps) => {
     }
 
     const updatePosition = (bounds: Rectangle, location: PointData) => {
-        if (!bounds || !location || !FIXED_STACK || !elementRef?.current) return;
+        if (!bounds || !location || !fixedStackRef.current || !elementRef?.current) return;
 
         let offset = -(elementRef.current.offsetHeight ?? 0);
 
         if (userType === RoomObjectUserType.User || userType === RoomObjectUserType.Bot || userType === RoomObjectUserType.RentableBot) offset = (offset + ((bounds.height > 50) ? 15 : 0));
         else offset = (offset - 14);
 
-        FIXED_STACK.addValue((location.y - bounds.top));
+        fixedStackRef.current.addValue((location.y - bounds.top));
 
-        let maxStack = FIXED_STACK.getMax();
+        let maxStack = fixedStackRef.current.getMax();
 
-        if (maxStack < (MAX_STACK - BUBBLE_DROP_SPEED)) maxStack = (MAX_STACK - BUBBLE_DROP_SPEED);
+        if (maxStack < (maxStackRef.current - BUBBLE_DROP_SPEED)) maxStack = (maxStackRef.current - BUBBLE_DROP_SPEED);
 
-        MAX_STACK = maxStack;
+        maxStackRef.current = maxStack;
 
         const deltaY = (location.y - maxStack);
 
@@ -106,9 +117,10 @@ export const RoomObjectMenuBubble = (props: RoomObjectInfoBubbleProps) => {
     }, [fades]);
 
     useEffect(() => {
-        FIXED_STACK = new FixedSizeStack(LOCATION_STACK_SIZE);
-        MAX_STACK = -1000000;
+        fixedStackRef.current = new FixedSizeStack(LOCATION_STACK_SIZE);
+        maxStackRef.current = -1000000;
         fadeTime.current = 1;
+        lastFrameTime.current = undefined;
     }, []);
 
     return <div ref={elementRef} className="absolute z-50 invisible">{children}</div>

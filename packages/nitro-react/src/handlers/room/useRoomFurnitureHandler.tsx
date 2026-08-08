@@ -4,11 +4,26 @@ import { LegacyWallGeometry, ObjectMoveUpdateMessage } from "@nitrodevco/nitro-r
 import type { IRoomFloorItem, IRoomWallItem } from "@nitrodevco/nitro-shared";
 import { DiceValueMessage, ItemAddMessage, ItemDataUpdateMessage, ItemRemoveMessage, ItemsMessage, ItemsStateUpdateMessage, ItemStateUpdateMessage, ItemUpdateMessage, ObjectAddMessage, ObjectDataUpdateMessage, ObjectRemoveMessage, ObjectRemoveMultipleMessage, ObjectsDataUpdateMessage, ObjectsMessage, ObjectUpdateMessage, OneWayDoorStatusMessage, SlideObjectBundleMessage, WiredMovementsMessage } from "@nitrodevco/nitro-shared";
 
+import { useEffect, useRef } from "react";
+
 import { useRoomSelector } from "#base/context";
 import { useMessageListener } from "#base/hooks";
 
 export const useRoomFurnitureHandler = () => {
     const room = useRoomSelector();
+    const pendingRemovals = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
+
+    // Cancel any delayed removals when the room changes or the handler unmounts, so a timer
+    // captured on an old room never fires against a disposed room object.
+    useEffect(() => {
+        const timers = pendingRemovals.current;
+
+        return () => {
+            for (const timer of timers) clearTimeout(timer);
+
+            timers.clear();
+        };
+    }, [room]);
 
     const addRoomObjectFloor = (item: IRoomFloorItem) => {
         if (!room) return;
@@ -94,11 +109,13 @@ export const useRoomFurnitureHandler = () => {
         const isOwner = false;
 
         if (data.delay > 0) {
-            setTimeout(() => {
-                if (!room) return;
+            const timer = setTimeout(() => {
+                pendingRemovals.current.delete(timer);
 
                 room.removeRoomObjectFloor(data.objectId, isOwner);
             }, data.delay);
+
+            pendingRemovals.current.add(timer);
         } else {
             room.removeRoomObjectFloor(data.objectId, isOwner);
         }

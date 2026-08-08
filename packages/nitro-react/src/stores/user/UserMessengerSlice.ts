@@ -34,14 +34,11 @@ export const createUserMessengerSlice: StateCreator<UserMessengerSlice, [], [], 
     setFriendLimits: (userFriendLimit: number, normalFriendLimit: number, extendedFriendLimit: number) => set({ userFriendLimit, normalFriendLimit, extendedFriendLimit }),
     setFriendCategories: (categories: IMessengerCategory[]) => set({ categories }),
     processFriends: (friends: IMessengerFriend[]) => set(x => {
-        const updates = friends.reduce((acc, data) => ({
-            ...acc,
-            [data.playerId]: data
-        }), {});
+        const next = { ...x.friends };
 
-        return {
-            friends: { ...x.friends, ...updates }
-        };
+        for (const data of friends) next[data.playerId] = data;
+
+        return { friends: next };
     }),
     processFriendUpdates: (updates: IMessengerUpdate[]) => set(x => {
         const friends = { ...x.friends };
@@ -61,13 +58,10 @@ export const createUserMessengerSlice: StateCreator<UserMessengerSlice, [], [], 
         return { friends };
     }),
     processFriendRequests: (requests: IFriendRequest[]) => set(x => {
-        const updates = requests.reduce((acc, data) => ({
-            ...acc,
-            [data.playerId]: data
-        }), {});
+        const next = { ...x.requests };
 
-        return {
-            requests: { ...x.requests, ...updates }
-        };
+        for (const data of requests) next[data.playerId] = data;
+
+        return { requests: next };
     }),
 });

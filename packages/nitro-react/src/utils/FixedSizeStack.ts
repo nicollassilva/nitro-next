@@ -22,10 +22,22 @@ export class FixedSizeStack {
     }
 
     public getMax(): number {
-        return this._data.length > 0 ? Math.max(...this._data) : -Infinity;
+        if (this._data.length === 0) return -Infinity;
+
+        let max = this._data[0];
+
+        for (let i = 1; i < this._data.length; i++) if (this._data[i] > max) max = this._data[i];
+
+        return max;
     }
 
     public getMin(): number {
-        return this._data.length > 0 ? Math.min(...this._data) : Infinity;
+        if (this._data.length === 0) return Infinity;
+
+        let min = this._data[0];
+
+        for (let i = 1; i < this._data.length; i++) if (this._data[i] < min) min = this._data[i];
+
+        return min;
     }
 }

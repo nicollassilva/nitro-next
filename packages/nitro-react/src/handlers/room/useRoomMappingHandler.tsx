@@ -271,21 +271,9 @@ export const useRoomMappingHandler = () => {
                 break;
             }
             case SpecialRoomEffectType.Disco: {
-                const colors = [
-                    0x0072BB, 0xFF953B, 0xFFD700, 0x9B59B6,
-                    0x0072BB, 0xFF953B, 0xFFD700, 0x9B59B6,
-                    0x000000
-                ];
-
-                let index = 0;
-                const timer = setInterval(() => {
-                    const isLastColor = index === colors.length;
-                    //roomEngine.updateObjectRoomColor(objectId, colors[index], 176, isLastColor);
-
-                    if (++index > colors.length) clearInterval(timer);
-                }, 1000);
-
-                clearInterval(timer);
+                // TODO: disco effect not implemented. The previous code created a setInterval that
+                // was cleared on the very next line (dead) and whose color update was commented out,
+                // so it never ran and would have leaked with no cleanup. Removed the broken timer.
                 break;
             }
         }

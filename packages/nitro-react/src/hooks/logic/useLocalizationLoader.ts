@@ -68,6 +68,9 @@ export const useLocalizationLoader = () => {
             for (const url of urls) {
                 try {
                     const response = await fetch(url);
+
+                    if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
+
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const responseData = (await response.json()) as Record<string, any>;
 
