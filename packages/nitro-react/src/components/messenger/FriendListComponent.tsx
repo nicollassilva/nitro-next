@@ -23,13 +23,15 @@ export const FriendListComponent = () => {
         }
     }, []);
 
-    if (!isVisible) return null;
-
     return (
         <FriendsContext value={friendCtx}>
-            <FriendListView />
-            <FriendListRoomInviteView />
-            <FriendListRemoveConfirmationView />
+            {isVisible && (
+                <>
+                    <FriendListView />
+                    <FriendListRoomInviteView />
+                    <FriendListRemoveConfirmationView />
+                </>
+            )}
             <MessengerComponent />
         </FriendsContext>
     );
