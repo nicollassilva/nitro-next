@@ -1,11 +1,35 @@
 import { type CSSProperties, useEffect, useState } from 'react';
 
-import { tintImage } from './pixiTint';
+import { getTintedImageSync, tintImage } from './pixiTint';
 import { THEME_URLS } from './themeUrls';
+
+// Build the CSS vars synchronously from already-resolved tints (if any), so a warm cache paints
+// the tinted border on first render instead of flashing the untinted one.
+const computeSyncStyle = (key: string | undefined, tintColor: string | undefined): CSSProperties | undefined => {
+    if (!key || !tintColor) return undefined;
+
+    const next: Record<string, string> = {};
+    let any = false;
+
+    for (const name of key.split(',')) {
+        const url = THEME_URLS[name];
+
+        if (!url) continue;
+
+        const dataUrl = getTintedImageSync(url, tintColor);
+
+        if (dataUrl) {
+            next[`--${name}`] = `url(${dataUrl})`;
+            any = true;
+        }
+    }
+
+    return any ? next : undefined;
+};
 
 export const useTintedVars = (varNames: string[] | undefined, tintColor: string | undefined) => {
     const key = varNames && varNames.length > 0 ? varNames.join(',') : undefined;
-    const [style, setStyle] = useState<CSSProperties | undefined>(undefined);
+    const [style, setStyle] = useState<CSSProperties | undefined>(() => computeSyncStyle(key, tintColor));
 
     useEffect(() => {
         if (!key || !tintColor) {
