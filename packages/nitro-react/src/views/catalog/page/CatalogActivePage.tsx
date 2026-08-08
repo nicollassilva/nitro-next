@@ -8,8 +8,9 @@ export const CatalogActivePage = () => {
     if (!activePage) return null;
 
     switch (activePage.layoutCode) {
-        case 'default_3x3': {
+        case 'default_3x3':
             return <CatalogLayoutDefaultView />;
-        }
+        default:
+            return <CatalogLayoutDefaultView />;
     }
 }
