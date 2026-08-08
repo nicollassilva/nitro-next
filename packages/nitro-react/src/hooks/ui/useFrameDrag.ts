@@ -62,6 +62,10 @@ export const useFrameDrag = (id: string | undefined) => {
 
         if (!node) return;
 
+        // Tear down any in-progress drag first: a second pointerdown without an intervening
+        // pointerup would otherwise overwrite activeListenersRef and leak the first listener pair.
+        stopDragging();
+
         const rect = node.getBoundingClientRect();
 
         dragStateRef.current = {
