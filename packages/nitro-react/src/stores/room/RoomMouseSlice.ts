@@ -26,18 +26,21 @@ export type RoomMouseSlice = State & Actions;
 
 export const createRoomMouseSlice: StateCreator<RoomMouseSlice, [], [], RoomMouseSlice> = (set, get, store) => ({
     ...RoomMouseSliceInitialState,
+    // Never share the module-level `eventIds` Map: give every store instance its own.
+    eventIds: new Map(),
     getMouseEventId: (category: RoomObjectCategoryEnum, type: string) => {
         return get().eventIds.get(category)?.get(type);
     },
     setMouseEventId: (category: RoomObjectCategoryEnum, type: string, eventId: number) => {
-        let map = get().eventIds.get(category);
+        set(x => {
+            const eventIds = new Map(x.eventIds);
+            const inner = new Map(eventIds.get(category));
 
-        if (!map) {
-            map = new Map();
-            get().eventIds.set(category, map);
-        }
+            inner.set(type, eventId);
+            eventIds.set(category, inner);
 
-        map.set(type, eventId);
+            return { eventIds };
+        });
     },
     addCursorOwner: (objectId: number, category: RoomObjectCategoryEnum) => {
         const key = `${category}_${objectId}`;

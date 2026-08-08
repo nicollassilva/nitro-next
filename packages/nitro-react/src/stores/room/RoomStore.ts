@@ -39,6 +39,8 @@ export const createRoomStore = () => createStore<RoomStore>()((set, get, store) 
 
         return {
             ...RoomMouseSliceInitialState,
+            // Fresh Map on every room change so mouse event IDs don't leak across rooms.
+            eventIds: new Map(),
             ...RoomSessionSliceInitialState,
             ...RoomCameraSliceInitialState,
             ...RoomSelectedObjectSliceInitialState,
