@@ -15,14 +15,11 @@ Achados marcados com ⧉ foram apontados de forma independente por mais de um re
 
 ## 🔴 Crítico
 
-### C1. WebSocket nunca reconecta — uma queda "brica" a sessão inteira ✔︎
-- **Arquivo:** `src/context/communication/WebSocketContextProvider.tsx:40-42` (guard) e `:75-87` (`onclose`)
-- **Categoria:** correção / ciclo de vida
-- `connect()` seta `hasConnected.current = true` e passa a retornar cedo para sempre. O `onclose`
-  limpa `ws.current` e os buffers e vai para a fase `'closed'`, mas **nunca reseta `hasConnected`**
-  e nada volta a chamar `connect()`. Não existe nenhuma lógica de reconnect/backoff no módulo.
-- **Falha:** o emulador reinicia, ou cai a rede por 1s → o socket fecha → `isAuthenticated` vira
-  `false` → `MainView` desmonta → **a conexão nunca mais se restabelece sem recarregar a página**.
+> **C1. WebSocket não reconecta automaticamente — intencional (não é defeito).**
+> `WebSocketContextProvider.tsx:40-42,75-87` guardam `hasConnected` e não rechamam `connect()` após
+> `onclose`. Isso é **por design**: o SSO auth ticket é single-use — cada tentativa de conexão o consome,
+> então reconectar com o mesmo ticket falharia na autenticação. A recuperação correta é **recarregar a
+> página** (novo ticket). Registrado aqui apenas para não ser re-sinalizado em auditorias futuras.
 
 ### C2. Vazamento de RenderTextures no `AvatarImage` — nunca é feito `dispose()` ✔︎
 - **Arquivo:** `src/components/AvatarImage.tsx:25-69`
@@ -80,9 +77,11 @@ Achados marcados com ⧉ foram apontados de forma independente por mais de um re
 - Em erro de socket o handler apenas loga (sem estado de falha, sem retry). E se `decode` lançar por
   motivo diferente de fragmentação, `consumed` fica no último offset bom e os bytes corrompidos
   permanecem em `wsBuffer`; todo frame seguinte re-anexa e re-tenta decodificar o mesmo prefixo corrompido.
-- **Falha:** um único pacote dessincronizado → o cliente para de processar **todas** as mensagens
-  seguintes enquanto `wsBuffer` cresce sem limite. Combinado com C1, qualquer erro que feche o socket
-  deixa o app preso na tela de loading para sempre.
+- **Falha:** um único pacote dessincronizado (que não seja `length < 2`, único caso que fecha o socket)
+  → o cliente **trava silenciosamente** o processamento de todas as mensagens seguintes enquanto `wsBuffer`
+  cresce sem limite, **sem fechar o socket** — ou seja, sem sequer sinalizar ao usuário que é preciso
+  recarregar (C1). O cliente fica congelado sem feedback. Deve-se descartar/limpar bytes corrompidos e/ou
+  fechar o socket em qualquer falha de decode não-fragmentária.
 
 ### A5. `AvatarImage`: load assíncrono sem cancelamento → imagem obsoleta + deps faltando ✔︎
 - **Arquivo:** `src/components/AvatarImage.tsx:56-69`
@@ -273,8 +272,9 @@ do servidor) sem escaping. Um `extraParam` com `)`/`;` quebra o valor do `url()`
 
 ## Prioridade de correção sugerida
 
-1. **C1 + A4** — reconexão de WebSocket + descarte de pacote corrompido: juntos, qualquer queda ou 1 pacote ruim
-   deixa o cliente permanentemente inutilizável. É o conserto de maior impacto.
+1. **A4** — descarte/limpeza de pacote corrompido: 1 pacote ruim trava o cliente em silêncio (sem fechar o
+   socket, sem sinalizar F5) e cresce o buffer sem limite. É o conserto de maior impacto no módulo de comunicação.
+   *(C1/reconexão é intencional — recuperação é recarregar a página, pois o SSO ticket é single-use.)*
 2. **C2 + A5** — `dispose()` no `AvatarImage` e cancelamento por token de geração: para o vazamento de VRAM e as imagens obsoletas.
 3. **A1 + A2** — os dois crashes garantidos do catálogo em interações comuns.
 4. **C3 + A3** — `RoomMouseSlice`: `Map` per-instância (não singleton), usar `set()` na mutação e corrigir `index === -1`.
