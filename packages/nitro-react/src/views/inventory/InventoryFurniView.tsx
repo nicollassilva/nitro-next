@@ -43,7 +43,7 @@ export const InventoryFurniView = (props: { scrollVariant: string }) => {
         <div className="flex flex-col gap-1 h-full">
             <Border variant="3" tintColor="#cacaca" className="flex gap-1.5 p-1 h-6.25 items-center">
                 <Border variant="0" className="w-34.75 h-5">
-                    <input type="text w-full overflow-hidden px-2"></input>
+                    <input type="text" className="w-full overflow-hidden px-2" />
                 </Border>
                 <Dropmenu variant="100" className="w-29.75 h-5.25" />
                 <Dropmenu variant="100" className="w-29.75 h-5.25" />
