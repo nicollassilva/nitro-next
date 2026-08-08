@@ -26,15 +26,26 @@ export const RoomCameraSliceInitialState: State = {
 
 export type RoomCameraSlice = State & Actions;
 
-export const createRoomCameraSlice: StateCreator<RoomCameraSlice, [], [], RoomCameraSlice> = (set, get, store) => ({
-    ...RoomCameraSliceInitialState,
-    setTargetId: (id: number) => set({ targetId: id }),
-    setTargetCategory: (category: RoomObjectCategoryEnum) => set({ targetCategory: category }),
-    setTarget: (id: number, category: RoomObjectCategoryEnum) => set({ targetId: id, targetCategory: category }),
-    setCameraFollowDisabled: (disabled: boolean) => set({ cameraFollowDisabled: disabled }),
-    setFollowDuration: (duration: number) => set({ followDuration: duration }),
-    disableFollowTemporarily: (duration: number) => {
-        set({ cameraFollowDisabled: true, followDuration: duration });
-        setTimeout(() => set({ cameraFollowDisabled: false }), duration);
-    }
-});
+export const createRoomCameraSlice: StateCreator<RoomCameraSlice, [], [], RoomCameraSlice> = (set, get, store) => {
+    // Per-instance handle so repeated calls don't stack timers and race each other.
+    let followTimer: ReturnType<typeof setTimeout> | undefined;
+
+    return {
+        ...RoomCameraSliceInitialState,
+        setTargetId: (id: number) => set({ targetId: id }),
+        setTargetCategory: (category: RoomObjectCategoryEnum) => set({ targetCategory: category }),
+        setTarget: (id: number, category: RoomObjectCategoryEnum) => set({ targetId: id, targetCategory: category }),
+        setCameraFollowDisabled: (disabled: boolean) => set({ cameraFollowDisabled: disabled }),
+        setFollowDuration: (duration: number) => set({ followDuration: duration }),
+        disableFollowTemporarily: (duration: number) => {
+            if (followTimer) clearTimeout(followTimer);
+
+            set({ cameraFollowDisabled: true, followDuration: duration });
+
+            followTimer = setTimeout(() => {
+                followTimer = undefined;
+                set({ cameraFollowDisabled: false });
+            }, duration);
+        }
+    };
+};
