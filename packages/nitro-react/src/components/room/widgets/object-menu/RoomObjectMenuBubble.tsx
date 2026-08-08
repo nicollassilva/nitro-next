@@ -30,12 +30,23 @@ export const RoomObjectMenuBubble = (props: RoomObjectInfoBubbleProps) => {
     const room = useRoomSelector();
     const isFading = useRef<boolean>(false);
     const fadeTime = useRef<number>(1);
+    const lastFrameTime = useRef<number | undefined>(undefined);
     const elementRef = useRef<HTMLDivElement>(null);
 
     const updateFade = (time: number) => {
         if (!onClose || !isFading.current || !elementRef?.current) return;
 
-        fadeTime.current += time;
+        // `time` is the ticker's absolute timestamp, not a per-frame delta. Accumulate the
+        // delta between frames; without this, fadeTime jumps to a huge value on the first
+        // frame and the bubble closes instantly instead of fading.
+        if (lastFrameTime.current === undefined) {
+            lastFrameTime.current = time;
+
+            return;
+        }
+
+        fadeTime.current += (time - lastFrameTime.current);
+        lastFrameTime.current = time;
 
         const newOpacity = ((1 - (fadeTime.current / FADE_LENGTH)) * 1);
 
@@ -109,6 +120,7 @@ export const RoomObjectMenuBubble = (props: RoomObjectInfoBubbleProps) => {
         FIXED_STACK = new FixedSizeStack(LOCATION_STACK_SIZE);
         MAX_STACK = -1000000;
         fadeTime.current = 1;
+        lastFrameTime.current = undefined;
     }, []);
 
     return <div ref={elementRef} className="absolute z-50 invisible">{children}</div>
