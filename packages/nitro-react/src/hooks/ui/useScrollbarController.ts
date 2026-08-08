@@ -101,10 +101,22 @@ export function useScrollbarController({
         const content = contentRef.current;
         if (content) observer.observe(content);
 
-        viewport.addEventListener('scroll', recompute, { passive: true });
+        // Coalesce scroll events to at most one layout-read + setState per frame.
+        let rafId = 0;
+        const onScroll = () => {
+            if (rafId) return;
+
+            rafId = requestAnimationFrame(() => {
+                rafId = 0;
+                recompute();
+            });
+        };
+
+        viewport.addEventListener('scroll', onScroll, { passive: true });
         return () => {
             observer.disconnect();
-            viewport.removeEventListener('scroll', recompute);
+            viewport.removeEventListener('scroll', onScroll);
+            if (rafId) cancelAnimationFrame(rafId);
         };
     }, [viewportRef, contentRef, recompute]);
 
