@@ -106,7 +106,6 @@ export const createSystemStore = () => createStore<SystemStore>()((set, get, sto
         set(state => {
             return {
                 localizations: { ...state.localizations, ...localizations },
-                localizationNeedsUpdate: false,
             };
         }),
     setLocalizationForFurniture: (furniture: IFurnitureData[]) => {
