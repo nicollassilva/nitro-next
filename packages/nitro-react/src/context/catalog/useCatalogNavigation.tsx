@@ -97,9 +97,15 @@ export const useCatalogNavigation = () => {
         if (targetNode.pageId > -1) loadCatalogPage(targetNode.pageId, offerId);
     }
 
+    const selectOffer = (offer: IPurchasableOffer) => {
+        if (offer.isLazy) return;
+
+        setActiveOffer(offer);
+    }
+
     const hideCatalog = () => {
         hideWindow('catalog');
     }
 
-    return { isNodeActive, loadCatalogPage, showCatalogPage, activateNode, hideCatalog };
+    return { isNodeActive, loadCatalogPage, showCatalogPage, activateNode, selectOffer, hideCatalog };
 }

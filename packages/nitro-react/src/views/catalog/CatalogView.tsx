@@ -1,8 +1,11 @@
 import { useCatalogNavigation, useCatalogSelectors, useTranslation } from "#base/context";
-import { Frame, TabButton, TabContent, TabContext } from "#base/theme";
+import { Border, Frame, TabButton, TabContext } from "#base/theme";
+
+import { CatalogNavigationView } from "./navigation/CatalogNavigationView";
+import { CatalogActivePage } from "./page/CatalogActivePage";
 
 export const CatalogView = () => {
-    const { rootNode } = useCatalogSelectors();
+    const { rootNode, activeNodes } = useCatalogSelectors();
     const { activateNode, hideCatalog } = useCatalogNavigation();
     const t = useTranslation();
 
@@ -14,8 +17,20 @@ export const CatalogView = () => {
                 {rootNode.children.map(x =>
                     x.visible ? <TabButton key={x.pageId} className="w-full" aria-selected={x.isActive} onClick={_ => activateNode(x)}>{x.localization.length ? x.localization : x.pageName}</TabButton> : null)}
             </TabContext>
-            <TabContent>
-            </TabContent>
+            <div className="flex w-full min-h-22.5 max-h-22.5" style={{ backgroundColor: '#376275' }}>
+
+            </div>
+            <div className="flex h-full p-1 gap-1.5 overflow-hidden">
+                <div className="flex flex-col flex-4 w-full gap-0.5">
+                    <Border variant="105" className="flex items-center justify-center h-6">
+                        <input name="habbo_search" className="flex-1 min-w-0 px-1 text-[0.75rem] text-black" type="text" />
+                    </Border>
+                    <CatalogNavigationView node={activeNodes[0]} />
+                </div>
+                <div className="flex flex-col flex-8 size-full">
+                    <CatalogActivePage />
+                </div>
+            </div>
         </Frame>
     );
 }

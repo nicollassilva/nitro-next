@@ -38,7 +38,7 @@ const borderVariantsConfig = {
         // raised
         '104': '[border-image-source:var(--border-104-default-src)] [border-image-slice:7_7_7_7_fill] [border-image-width:7px_7px_7px_7px] nine-slice-border',
         // input
-        '105': 'sprite min-w-7.25 min-h-7.25 bg-(image:--border-105-default-src) bg-size-[100%_100%] pixel-art',
+        '105': ' [border-image-source:var(--border-105-default-src)] [border-image-slice:5_5_5_5_fill] [border-image-width:5px_5px_5px_5px] nine-slice-border',
         // chat bubblemin-w-7.25min-h-7.25bg-size-[100%_100%]bg-no-repeat
         '106': '[background-image:var(--border-106-default-top-left-src),_var(--border-106-default-top-center-src),_var(--border-106-default-top-right-src),_var(--border-106-default-center-src),_var(--border-106-default-bottom-left-src),_var(--border-106-default-bottom-center-src),_var(--border-106-default-bottom-right-src)] [background-position:left_0px_top_0px,_left_4px_top_0px,_right_0px_top_0px,_left_0px_top_5px,_left_0px_bottom_0px,_left_4px_bottom_0px,_right_0px_bottom_0px] [background-size:4px_5px,_calc(100%_-_4px_-_4px)_5px,_4px_5px,_100%_calc(100%_-_5px_-_7px),_4px_7px,_calc(100%_-_4px_-_4px)_7px,_4px_7px] bg-no-repeat pixel-art',
         // balloon
@@ -85,7 +85,7 @@ const borderOverlayVariantsConfig = {
         // raised
         '104': '[background-image:var(--border-104-default-border-top-left-src),_var(--border-104-default-border-top-center-src),_var(--border-104-default-border-top-right-src),_var(--border-104-default-border-center-left-src),_var(--border-104-default-border-center-left-src),_var(--border-104-default-border-bottom-left-src),_var(--border-104-default-border-bottom-center-src),_var(--border-104-default-border-bottom-right-src)] [background-position:left_0px_top_0px,_left_4px_top_0px,_right_0px_top_0px,_left_0px_top_4px,_right_0px_top_4px,_left_0px_bottom_0px,_left_4px_bottom_0px,_right_0px_bottom_0px] [background-size:4px_4px,_calc(100%_-_4px_-_4px)_4px,_4px_4px,_1px_calc(100%_-_4px_-_5px),_1px_calc(100%_-_4px_-_5px),_4px_5px,_calc(100%_-_4px_-_4px)_5px,_4px_5px] bg-no-repeat pixel-art',
         // input
-        '105': 'bg-(image:--border-105-default-shine-src) bg-size-[100%_100%] pixel-art',
+        '105': '[border-image-source:var(--border-105-default-shine-src)] [border-image-slice:5_5_5_5_fill] [border-image-width:5px_5px_5px_5px] nine-slice-border',
         // chat bubblebg-size-[100%_100%]bg-no-repeat
         '106': '',
         // balloon

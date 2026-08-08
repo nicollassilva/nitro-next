@@ -1,3 +1,5 @@
+export * from './catalog/useCatalogOfferProduct';
+export * from './catalog/useProductIconUrl';
 export * from './communication/useCommunicationIncoming';
 export * from './communication/useCommunicationOutgoing';
 export * from './events/useMessageListener';

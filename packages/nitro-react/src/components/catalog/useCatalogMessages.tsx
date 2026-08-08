@@ -85,6 +85,7 @@ export const useCatalogMessages = () => {
             clubLevel: offer.clubLevel,
             products,
             bundlePurchaseAllowed: offer.canBundle,
+            isLazy: false,
             page: undefined,
             badgeCode: badgeCode
         } as IPurchasableOffer;

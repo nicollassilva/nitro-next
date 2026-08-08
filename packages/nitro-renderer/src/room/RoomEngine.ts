@@ -44,6 +44,20 @@ export class RoomEngine implements IRoomEngine {
         return room;
     }
 
+    public getFurnitureFloorIconUrl(typeId: number): string | undefined {
+        const type = GetRoomContentLoader().getFurnitureFloorNameForTypeId(typeId);
+        const color = GetRoomContentLoader().getFurnitureFloorColorIndex(typeId).toString();
+
+        return GetRoomContentLoader().getAssetIconUrl(type, color);
+    }
+
+    public getFurnitureWallIconUrl(typeId: number, extra: string | undefined): string | undefined {
+        const type = GetRoomContentLoader().getFurnitureWallNameForTypeId(typeId, extra);
+        const color = GetRoomContentLoader().getFurnitureWallColorIndex(typeId).toString();
+
+        return GetRoomContentLoader().getAssetIconUrl(type, color);
+    }
+
     public async getGenericRoomObjectImage(
         type: string,
         value: string,

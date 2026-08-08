@@ -9,5 +9,6 @@ export const useCatalogSelectors = () => useCatalogContext(useShallow(x => ({
     isBusy: x.isBusy,
     activePageId: x.activePageId,
     activePage: x.activePage,
+    activeOffer: x.activeOffer,
     frontPageItems: x.frontPageItems
 })));

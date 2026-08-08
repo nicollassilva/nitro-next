@@ -16,6 +16,7 @@ export interface IPurchasableOffer {
     readonly clubLevel: number;
     readonly products: IProduct[];
     readonly bundlePurchaseAllowed: boolean;
+    readonly isLazy: boolean;
     badgeCode: string | undefined;
     page: IActivePage | undefined;
 }
