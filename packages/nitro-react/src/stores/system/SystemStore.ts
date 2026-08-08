@@ -12,9 +12,12 @@ type State = {
 
 type Actions = {
     toggleWindow: (name: string) => void;
+    hideWindow: (name: string) => void;
     getLocalizationValue: (key: string, defaultValue?: string, replacements?: Record<string, string>) => string;
     setLocalization: (localization: Record<string, string>) => void;
     setLocalizationForFurniture: (furniture: IFurnitureData[]) => void;
+    getFurnitureData: (classId: number, productType: FurnitureTypeEnum) => IFurnitureData | undefined;
+    getProductData: (localizationId: string) => IProductData | undefined;
     parseFloorItems: (data: FurnitureType[]) => void;
     parseWallItems: (data: FurnitureType[]) => void;
     parseProductData: (data: IProductData[]) => void;
@@ -80,6 +83,14 @@ export const createSystemStore = () => createStore<SystemStore>()((set, get, sto
 
         return { visibleWindows };
     }),
+    hideWindow: (name: string) => set(x => {
+        const visibleWindows = [...x.visibleWindows];
+        const index = visibleWindows.indexOf(name);
+
+        if (index >= 0) visibleWindows.splice(index, 1);
+
+        return { visibleWindows };
+    }),
     getLocalizationValue: (key: string, defaultValue?: string, replacements?: Record<string, string>) => {
         let value = get().localizations[key] ?? defaultValue;
 
@@ -125,6 +136,19 @@ export const createSystemStore = () => createStore<SystemStore>()((set, get, sto
 
             return { localizations };
         });
+    },
+    getFurnitureData: (classId: number, productType: FurnitureTypeEnum) => {
+        switch (productType) {
+            case FurnitureTypeEnum.Floor:
+                return get().floorItems[classId];
+            case FurnitureTypeEnum.Wall:
+                return get().wallItems[classId];
+        }
+
+        return undefined;
+    },
+    getProductData: (localizationId: string) => {
+        return get().productData[localizationId];
     },
     parseFloorItems: (data: FurnitureType[]) => set(x => {
         const floorItems: Record<number, IFurnitureData> = {};

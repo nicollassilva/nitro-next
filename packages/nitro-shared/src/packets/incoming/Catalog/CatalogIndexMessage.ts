@@ -1,12 +1,11 @@
-import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
+import { CatalogTypeEnum, ICatalogNode, IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
 
 import { CatalogNodeParser } from './Data/CatalogNodeParser';
-import { ICatalogNode } from './Data/ICatalogNode';
 
 export type CatalogIndexMessageType = {
     root: ICatalogNode;
     newAdditionsAvailable: boolean;
-    catalogType: string;
+    catalogType: CatalogTypeEnum;
 };
 
 export class CatalogIndexMessage implements IIncomingPacket<CatalogIndexMessageType> {
@@ -14,7 +13,7 @@ export class CatalogIndexMessage implements IIncomingPacket<CatalogIndexMessageT
         return {
             root: CatalogNodeParser(wrapper),
             newAdditionsAvailable: wrapper.readBoolean(),
-            catalogType: wrapper.readString()
+            catalogType: wrapper.readString() as CatalogTypeEnum
         }
     }
 }

@@ -1,7 +1,4 @@
-import { IMessageDataWrapper } from "@nitrodevco/nitro-api";
-
-import { CatalogFrontPageItemType } from "./CatalogFrontPageItemType";
-import { ICatalogFrontPageItem } from "./ICatalogFrontPageItem";
+import { CatalogFrontPageItemType, ICatalogFrontPageItem, IMessageDataWrapper } from "@nitrodevco/nitro-api";
 
 export const CatalogFrontPageItemParser = (wrapper: IMessageDataWrapper) => {
     const result = {

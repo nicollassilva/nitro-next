@@ -1,6 +1,4 @@
-import { FurnitureTypeEnum, IMessageDataWrapper } from "@nitrodevco/nitro-api";
-
-import { ICatalogProduct } from "./ICatalogProduct";
+import { FurnitureTypeEnum, ICatalogProduct, IMessageDataWrapper } from "@nitrodevco/nitro-api";
 
 export const CatalogProductParser = (wrapper: IMessageDataWrapper): ICatalogProduct => {
     const result = {

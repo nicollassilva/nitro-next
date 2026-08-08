@@ -8,4 +8,8 @@ export const useCatalogActions = () => useCatalogContext(useShallow(x => ({
     setActiveNodes: x.setActiveNodes,
     setIsBusy: x.setIsBusy,
     setActivePageId: x.setActivePageId,
+    setActivePage: x.setActivePage,
+    setActiveOffer: x.setActiveOffer,
+    setFrontPageItems: x.setFrontPageItems,
+    resetCatalog: x.resetCatalog
 })));

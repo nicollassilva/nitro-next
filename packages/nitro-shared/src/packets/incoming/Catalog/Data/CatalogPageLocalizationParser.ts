@@ -1,7 +1,6 @@
-import { IMessageDataWrapper } from "@nitrodevco/nitro-api";
+import { ICatalogPageLocalization, IMessageDataWrapper } from "@nitrodevco/nitro-api";
 
 import { ParseStrings } from "../../../Data";
-import { ICatalogPageLocalization } from "./ICatalogPageLocalization";
 
 export const CatalogPageLocalizationParser = (wrapper: IMessageDataWrapper): ICatalogPageLocalization => {
     return {

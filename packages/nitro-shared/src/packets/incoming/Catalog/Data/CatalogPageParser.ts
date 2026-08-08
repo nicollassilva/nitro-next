@@ -1,10 +1,9 @@
-import { IMessageDataWrapper } from "@nitrodevco/nitro-api";
+import { ICatalogPage, IMessageDataWrapper } from "@nitrodevco/nitro-api";
 
 import { ParseArray } from "../../../Data";
 import { CatalogFrontPageItemParser } from "./CatalogFrontPageItemParser";
 import { CatalogOfferParser } from "./CatalogOfferParser";
 import { CatalogPageLocalizationParser } from "./CatalogPageLocalizationParser";
-import { ICatalogPage } from "./ICatalogPage";
 
 export const CatalogPageParser = (wrapper: IMessageDataWrapper): ICatalogPage => {
     return {

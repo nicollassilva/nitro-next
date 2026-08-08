@@ -1,12 +1,15 @@
-import { GetCatalogPageComposer, ICatalogNode } from "@nitrodevco/nitro-shared";
+import { IActivePage, ICatalogNode, ICatalogPageLocalization, IPurchasableOffer } from "@nitrodevco/nitro-api";
+import { GetCatalogPageComposer } from "@nitrodevco/nitro-shared";
 
 import { useWebSocketContext } from "../communication";
+import { useSystemActions } from "../system";
 import { useCatalogActions } from "./useCatalogActions";
 import { useCatalogSelectors } from "./useCatalogSelectors"
 
 export const useCatalogNavigation = () => {
     const { catalogType, activeNodes } = useCatalogSelectors();
-    const { setActiveNodes, setIsBusy, setActivePageId } = useCatalogActions();
+    const { setActiveNodes, setIsBusy, setActivePageId, setActivePage, setActiveOffer } = useCatalogActions();
+    const { hideWindow } = useSystemActions();
     const { send } = useWebSocketContext();
 
     const isNodeActive = (node: ICatalogNode) => activeNodes.indexOf(node) >= 0;
@@ -18,6 +21,31 @@ export const useCatalogNavigation = () => {
         setActivePageId(pageId);
 
         send(new GetCatalogPageComposer({ pageId, offerId, catalogType }));
+    }
+
+    const showCatalogPage = (pageId: number, layoutCode: string, localization: ICatalogPageLocalization, offers: IPurchasableOffer[], offerId: number, acceptSeasonCurrencyAsCredits: boolean, mode: number = -1) => {
+        const page = {
+            pageId,
+            layoutCode,
+            localization,
+            offers,
+            acceptSeasonCurrencyAsCredits,
+            mode: mode === -1 ? 0 : mode
+        } as IActivePage;
+
+        for (const offer of page.offers) offer.page = page;
+
+        setActivePage(page);
+
+        if (offerId > -1 && page.offers.length) {
+            for (const offer of page.offers) {
+                if (offer.offerId !== offerId) continue;
+
+                setActiveOffer(offer);
+
+                break;
+            }
+        }
     }
 
     const activateNode = (targetNode: ICatalogNode, offerId: number = -1) => {
@@ -69,5 +97,9 @@ export const useCatalogNavigation = () => {
         if (targetNode.pageId > -1) loadCatalogPage(targetNode.pageId, offerId);
     }
 
-    return { isNodeActive, loadCatalogPage, activateNode };
+    const hideCatalog = () => {
+        hideWindow('catalog');
+    }
+
+    return { isNodeActive, loadCatalogPage, showCatalogPage, activateNode, hideCatalog };
 }

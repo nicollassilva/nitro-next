@@ -1,6 +1,4 @@
-import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
-
-import { CatalogPurchaseErrorType } from './Data/CatalogPurchaseErrorType';
+import { CatalogPurchaseErrorType, IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
 
 export type PurchaseNotAllowedMessageType = {
     errorType: CatalogPurchaseErrorType;

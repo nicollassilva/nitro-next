@@ -1,7 +1,6 @@
-import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
+import { IBundleDiscountRuleset, IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
 
 import { BundleDiscountRulesetParser } from './Data/BundleDiscountRulesetParser';
-import { IBundleDiscountRuleset } from './Data/IBundleDiscountRuleset';
 
 export type BundleDiscountRulesetMessageType = {
     bundleDiscountRuleset: IBundleDiscountRuleset;

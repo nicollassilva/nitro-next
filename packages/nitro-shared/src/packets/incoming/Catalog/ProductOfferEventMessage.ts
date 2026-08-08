@@ -1,7 +1,6 @@
-import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
+import { ICatalogOffer, IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
 
 import { CatalogOfferParser } from './Data/CatalogOfferParser';
-import { ICatalogOffer } from './Data/ICatalogOffer';
 
 export type ProductOfferEventMessageType = {
     offer: ICatalogOffer;
