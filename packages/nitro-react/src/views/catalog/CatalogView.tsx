@@ -15,7 +15,7 @@ export const CatalogView = () => {
         <Frame id="catalog" variant="3" className="w-142.5 h-150" caption={t('catalog.title')} onClose={hideCatalog}>
             <TabContext data-name="tabs">
                 {rootNode.children.map(x =>
-                    x.visible ? <TabButton key={x.pageId} className="w-full" aria-selected={x.isActive} onClick={_ => activateNode(x)}>{x.localization.length ? x.localization : x.pageName}</TabButton> : null)}
+                    x.visible ? <TabButton key={`${x.pageId}:${x.pageName}`} className="w-full" aria-selected={x.isActive} onClick={_ => activateNode(x)}>{x.localization.length ? x.localization : x.pageName}</TabButton> : null)}
             </TabContext>
             <div className="flex w-full min-h-22.5 max-h-22.5" style={{ backgroundColor: '#376275' }}>
 

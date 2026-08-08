@@ -15,7 +15,7 @@ export const CatalogNavigationSetView = (props: CatalogNavigationSetViewProps) =
     return (
         <div className="flex flex-col gap-0.5">
             {node.children.map(x => {
-                return x.visible ? <CatalogNavigationSetItemView key={x.pageId} node={x} child={child} /> : null;
+                return x.visible ? <CatalogNavigationSetItemView key={`${x.pageId}:${x.pageName}`} node={x} child={child} /> : null;
             })}
         </div>
     )
