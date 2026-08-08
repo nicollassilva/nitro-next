@@ -32,12 +32,14 @@ export const createRoomStore = () => createStore<RoomStore>()((set, get, store) 
     room: undefined,
     ownUserId: -1,
     landingViewVisible: true,
-    setRoom: (room: IRoom | undefined) => set(x => {
-        if (x.room && x.room !== room) {
-            x.room.dispose();
-        }
+    setRoom: (room: IRoom | undefined) => {
+        // Dispose outside the set() updater: updaters must be pure (React/zustand may run them
+        // more than once, e.g. under StrictMode), which would double-dispose the room.
+        const previous = get().room;
 
-        return {
+        if (previous && previous !== room) previous.dispose();
+
+        set({
             ...RoomMouseSliceInitialState,
             // Fresh Map on every room change so mouse event IDs don't leak across rooms.
             eventIds: new Map(),
@@ -47,8 +49,8 @@ export const createRoomStore = () => createStore<RoomStore>()((set, get, store) 
             ...RoomStackingHeightMapSliceInitialState,
             ...RoomUsersSliceInitialState,
             room
-        };
-    }),
+        });
+    },
     setOwnUserId: (ownUserId: number) => set({ ownUserId }),
     setLandingViewVisible: (landingViewVisible: boolean) => set({ landingViewVisible }),
     ...createRoomMouseSlice(set, get, store),
