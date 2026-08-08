@@ -2,7 +2,7 @@ import { RoomGeometryScaleType } from '@nitrodevco/nitro-api';
 import { GetRenderer, GetStage, GetTicker } from '@nitrodevco/nitro-renderer';
 import { RoomRenderedEvent } from '@nitrodevco/nitro-shared';
 import type { Ticker } from 'pixi.js';
-import { forwardRef, useEffect } from 'react';
+import { forwardRef, useEffect, useRef } from 'react';
 
 import { useRoomMouseActions, useRoomSelector } from '#base/context';
 import { useRoomCamera, useRoomMouse } from '#base/hooks';
@@ -15,6 +15,19 @@ export const RoomCanvas = forwardRef<HTMLDivElement>((props, ref) => {
     const maxFPS = useConfigurationStore<number>(state => state.config['fps.limit'] as number) ?? 60;
     const { updateRoomCamera } = useRoomCamera();
     const { hasAndResetCursorUpdate, hasCursorOwners } = useRoomMouseActions();
+
+    // The tick loop reads these through refs so the loop's effect can depend on [room] alone.
+    // Otherwise updateRoomCamera's identity changes on every camera-target change, tearing down and
+    // rebuilding the ticker/ResizeObserver/canvas-append each time (frame hitch + camera snap).
+    const updateRoomCameraRef = useRef(updateRoomCamera);
+    const hasAndResetCursorUpdateRef = useRef(hasAndResetCursorUpdate);
+    const hasCursorOwnersRef = useRef(hasCursorOwners);
+
+    useEffect(() => {
+        updateRoomCameraRef.current = updateRoomCamera;
+        hasAndResetCursorUpdateRef.current = hasAndResetCursorUpdate;
+        hasCursorOwnersRef.current = hasCursorOwners;
+    });
 
     useEffect(() => {
         if (!room) return;
@@ -31,7 +44,7 @@ export const RoomCanvas = forwardRef<HTMLDivElement>((props, ref) => {
                 canvas.initialize(width, height);
             }
 
-            updateRoomCamera(-1);
+            updateRoomCameraRef.current(-1);
 
             if (canvas.master && canvas.master.parent !== stage) stage.addChild(canvas.master);
 
@@ -70,7 +83,7 @@ export const RoomCanvas = forwardRef<HTMLDivElement>((props, ref) => {
 
             room.update(time, update);
 
-            if (!mouseData.isDragged) updateRoomCamera(time);
+            if (!mouseData.isDragged) updateRoomCameraRef.current(time);
 
             if (mouseData.wasDragged) {
                 const offsetX = ~~(room.canvas?.screenOffsetX || 0);
@@ -81,7 +94,7 @@ export const RoomCanvas = forwardRef<HTMLDivElement>((props, ref) => {
                 mouseData.dragXY = { x: 0, y: 0 }
             }
 
-            if (hasAndResetCursorUpdate()) renderer.canvas.style.cursor = hasCursorOwners() ? 'pointer' : 'auto';
+            if (hasAndResetCursorUpdateRef.current()) renderer.canvas.style.cursor = hasCursorOwnersRef.current() ? 'pointer' : 'auto';
 
             renderer.render(stage);
 
@@ -95,7 +108,7 @@ export const RoomCanvas = forwardRef<HTMLDivElement>((props, ref) => {
             clearTimeout(timer);
             ticker.remove(tick);
         }
-    }, [room, mouseDataRef, hasAndResetCursorUpdate, hasCursorOwners, updateRoomCamera]);
+    }, [room, mouseDataRef]);
 
     useEffect(() => {
         const ticker = GetTicker();
