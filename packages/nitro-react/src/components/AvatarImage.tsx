@@ -1,7 +1,7 @@
 import type { AvatarGenderType } from '@nitrodevco/nitro-api';
 import { AvatarScaleType, AvatarSetType } from '@nitrodevco/nitro-api';
 import { GetAvatarRenderManager } from '@nitrodevco/nitro-renderer';
-import { forwardRef, useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 
 type AvatarImageProps = {
     figure: string;
@@ -20,10 +20,11 @@ export const AvatarImage = forwardRef<HTMLDivElement, AvatarImageProps>(
             height: number;
             url: string;
         }>({ width: 0, height: 0, url: '' });
-        const disposed = useRef<boolean>(false);
 
         useEffect(() => {
             if (!figure) return;
+
+            let cancelled = false;
 
             const avatarImage = GetAvatarRenderManager().createAvatarImage(
                 figure,
@@ -31,14 +32,14 @@ export const AvatarImage = forwardRef<HTMLDivElement, AvatarImageProps>(
                 gender,
                 {
                     resetFigure: (figure: string) => {
-                        if (disposed.current) return;
+                        if (cancelled) return;
 
                         setRandomValue(Math.random());
                     },
                 },
                 {
                     resetEffect: (effect: number) => {
-                        if (disposed.current) return;
+                        if (cancelled) return;
 
                         setRandomValue(Math.random());
                     },
@@ -51,28 +52,31 @@ export const AvatarImage = forwardRef<HTMLDivElement, AvatarImageProps>(
 
             if (headOnly) setType = AvatarSetType.Head;
 
-            avatarImage?.setDirection(setType, direction);
+            avatarImage.setDirection(setType, direction);
 
             const load = async () => {
-                const image = await avatarImage.getCroppedImageAsync(setType, false, 1);
+                try {
+                    const image = await avatarImage.getCroppedImageAsync(setType, false, 1);
 
-                if (!image) return;
+                    if (!image || cancelled) return;
 
-                setImageData({
-                    width: image.width,
-                    height: image.height,
-                    url: image.src,
-                });
+                    setImageData({
+                        width: image.width,
+                        height: image.height,
+                        url: image.src,
+                    });
+                } catch {
+                    // avatar image was disposed mid-load (prop change/unmount) — ignore
+                }
             };
 
             void load();
-        }, [figure, direction, randomValue]);
 
-        useEffect(() => {
             return () => {
-                disposed.current = true;
+                cancelled = true;
+                avatarImage.dispose();
             };
-        }, []);
+        }, [figure, gender, headOnly, direction, randomValue]);
 
         return (
             <div
