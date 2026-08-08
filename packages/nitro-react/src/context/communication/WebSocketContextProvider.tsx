@@ -372,10 +372,18 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
         sendRaw(...pendingClient);
     }
 
-    useEffect(() => {
+    // Register packet constructors during render (once), not in an effect: React flushes child
+    // effects before parent effects, so a consumer mounted in the same commit would otherwise call
+    // subscribe() before the ctors exist and get a no-op. registerMany* only populate ref maps.
+    const packetsRegistered = useRef(false);
+
+    if (!packetsRegistered.current) {
+        packetsRegistered.current = true;
         registerManyIncoming(GetIncomingPackets());
         registerManyOutgoing(GetOutgoingPackets());
+    }
 
+    useEffect(() => {
         return subscribe(AuthenticationOKMessage, () => setPhase('awaitingHandlers'));
     }, []);
 
