@@ -1,5 +1,6 @@
 export * from './IAvatarUserInfo';
 export * from './IFurnitureData';
+export * from './IProductData';
 export * from './IRoomChatSettings';
 export * from './IRoomFurnitureData';
 export * from './IRoomModerationSettings';
@@ -11,7 +12,7 @@ export * from './ISimpleRoomObjectData';
 export * from './IUserInfo';
 export * from './enum/ChangeUserNameResultMessageCode';
 export * from './enum/ClubLevelEnum';
-export * from './enum/FurnitureType';
+export * from './enum/FurnitureTypeEnum';
 export * from './enum/NoobnessLevelEnum';
 export * from './enum/RoomChatBubbleWidthType';
 export * from './enum/RoomChatFloodSensitivityType';

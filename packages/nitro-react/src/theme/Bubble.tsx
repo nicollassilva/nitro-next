@@ -16,7 +16,7 @@ const bubbleVariantsConfig = {
 const bubbleOverlayVariantsConfig = {
     variant: {
         // default
-        '0': 'bg-(image:--bubble-0-default-spacer-src) bg-position-[right_0px_bottom_0px] bg-size-[1px_1px] bg-no-repeat [image-rendering:pixelated]',
+        '0': 'bg-(image:--bubble-0-default-spacer-src) bg-position-[right_0px_bottom_0px] bg-size-[1px_1px] bg-no-repeat pixel-art',
         // default
         '7': '',
     },

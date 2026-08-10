@@ -2,16 +2,14 @@ import { NitroLogger } from '@nitrodevco/nitro-api';
 import { GetRoomContentLoader } from '@nitrodevco/nitro-renderer';
 import { useEffect, useState } from 'react';
 
-import { useSystemActions } from '#base/context';
-import { useConfigurationStore, useFurnitureDataStore } from '#base/stores';
+import { useFurnitureData, useFurnitureDataActions, useSystemActions } from '#base/context';
+import { useConfigurationStore } from '#base/stores';
 
 export const useFurnitureDataLoader = () => {
     const [needsUpdate, setNeedsUpdate] = useState(true);
-    const floorItems = useFurnitureDataStore(x => x.floorItems);
-    const wallItems = useFurnitureDataStore(x => x.wallItems);
+    const { floorItems, wallItems } = useFurnitureData();
+    const { parseFloorItems, parseWallItems } = useFurnitureDataActions();
     const furnidataUrl = useConfigurationStore(state => state.config['furnituredata.url']) as string | undefined;
-    const parseFloorItems = useFurnitureDataStore(x => x.parseFloorItems);
-    const parseWallItems = useFurnitureDataStore(x => x.parseWallItems);
     const { setLocalizationForFurniture } = useSystemActions();
 
     const isFurnitureDataReady = () => {
@@ -19,18 +17,18 @@ export const useFurnitureDataLoader = () => {
     }
 
     useEffect(() => {
-        if (!floorItems.size) return;
+        const items = Object.values(floorItems);
 
-        const items = floorItems.values().toArray();
+        if (!items.length) return;
 
         setLocalizationForFurniture(items);
         GetRoomContentLoader().processFurnitureData(items);
     }, [floorItems]);
 
     useEffect(() => {
-        if (!wallItems.size) return;
+        const items = Object.values(wallItems);
 
-        const items = wallItems.values().toArray();
+        if (!items.length) return;
 
         setLocalizationForFurniture(items);
         GetRoomContentLoader().processFurnitureData(items);
@@ -49,8 +47,8 @@ export const useFurnitureDataLoader = () => {
 
                 const responseData = await response.json();
 
-                parseFloorItems(responseData.roomitemtypes);
-                parseWallItems(responseData.wallitemtypes);
+                parseFloorItems(responseData.roomitemtypes.furnitype);
+                parseWallItems(responseData.wallitemtypes.furnitype);
                 setNeedsUpdate(false);
             } catch (e) {
                 NitroLogger.error(e);

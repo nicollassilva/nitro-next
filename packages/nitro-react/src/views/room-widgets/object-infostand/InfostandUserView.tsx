@@ -53,7 +53,7 @@ export const InfostandUserView = (props: InfostandUserViewProps) => {
         <div className="flex flex-col items-end gap-2">
             <Border variant="1" className="infostand-container">
                 <div className="infostand-header">
-                    <div className="flex grow gap-1.25 items-center leading-0">
+                    <div className="flex grow gap-1.25 items-center">
                         <NitroIcon icon="icon-profile-house" />
                         {userData.name}
                     </div>

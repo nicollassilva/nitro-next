@@ -9,7 +9,7 @@ import {
 import { AnimatePresence, motion } from 'motion/react';
 import { type FC, useEffect, useState } from 'react';
 
-import { useConfigLoader, useFurnitureDataLoader, useLocalizationLoader } from '#base/hooks';
+import { useConfigLoader, useFurnitureDataLoader, useLocalizationLoader, useProductDataLoader } from '#base/hooks';
 import { GetPixelRatio } from '#base/utils';
 
 import { useWebSocketContext } from './context';
@@ -23,6 +23,7 @@ export const Nitro: FC = () => {
     const { isConfigReady } = useConfigLoader();
     const { isLocalizationReady } = useLocalizationLoader();
     const { isFurnitureDataReady } = useFurnitureDataLoader();
+    const { isProductDataReady } = useProductDataLoader();
     const { isAuthenticated, connect } = useWebSocketContext();
 
     useAvatarLoader();
@@ -70,7 +71,7 @@ export const Nitro: FC = () => {
         void setup(Math.floor(window.innerWidth), Math.floor(window.innerHeight));
     }, []);
 
-    const isReady = isEngineReady && isAuthenticated && isLocalizationReady() && isFurnitureDataReady();
+    const isReady = isEngineReady && isAuthenticated && isLocalizationReady() && isFurnitureDataReady() && isProductDataReady();
 
     return (
         <>

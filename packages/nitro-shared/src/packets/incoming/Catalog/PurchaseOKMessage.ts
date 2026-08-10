@@ -1,20 +1,15 @@
-import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
+import { ICatalogOffer, IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
 
-// TODO(Offer: CatalogOfferSnapshot): Unknown type 'CatalogOfferSnapshot'. Add override mapping.
+import { CatalogOfferParser } from './Data/CatalogOfferParser';
 
 export type PurchaseOKMessageType = {
-  offer: any;
+    offer: ICatalogOffer;
 };
 
-export class PurchaseOKMessage implements IIncomingPacket<PurchaseOKMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): PurchaseOKMessageType
-  {
-
-    const packet: PurchaseOKMessageType = {
-      offer: undefined as any, // Unknown type 'CatalogOfferSnapshot'. Add override mapping.
-    };
-
-    return packet;
-  }
+export class PurchaseOKMessage implements IIncomingPacket<PurchaseOKMessageType> {
+    public parse(wrapper: IMessageDataWrapper): PurchaseOKMessageType {
+        return {
+            offer: CatalogOfferParser(wrapper)
+        }
+    }
 }

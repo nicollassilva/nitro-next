@@ -1,3 +1,5 @@
+export * from './catalog/useCatalogOfferProduct';
+export * from './catalog/useProductIconUrl';
 export * from './communication/useCommunicationIncoming';
 export * from './communication/useCommunicationOutgoing';
 export * from './events/useMessageListener';
@@ -5,6 +7,7 @@ export * from './logic/useAvatarLoader';
 export * from './logic/useConfigLoader';
 export * from './logic/useFurnitureDataLoader';
 export * from './logic/useLocalizationLoader';
+export * from './logic/useProductDataLoader';
 export * from './room/useRoomCamera';
 export * from './room/useRoomCursorUpdate';
 export * from './room/useRoomEventDispatcher';

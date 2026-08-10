@@ -1,14 +1,12 @@
 import { IFurnitureData, IRoomObjectNameData, ISimpleRoomObjectData, RoomObjectCategoryEnum, RoomObjectUserType, RoomObjectVariableEnum } from "@nitrodevco/nitro-api";
 
-import { useRoomSelector, useRoomUsersActions, useTranslation } from "#base/context";
-import { useFurnitureDataStore } from "#base/stores";
+import { useFurnitureData, useRoomSelector, useRoomUsersActions, useTranslation } from "#base/context";
 
 export const useRoomObjectName = (objectData: ISimpleRoomObjectData) => {
     const { objectId, category } = objectData;
     const room = useRoomSelector();
     const roomObject = room?.getRoomObject(objectId, category);
-    const floorItems = useFurnitureDataStore(x => x.floorItems);
-    const wallItems = useFurnitureDataStore(x => x.wallItems);
+    const { floorItems, wallItems } = useFurnitureData();
     const { getUserDataByIndex } = useRoomUsersActions();
     const t = useTranslation();
 
@@ -32,11 +30,11 @@ export const useRoomObjectName = (objectData: ISimpleRoomObjectData) => {
 
                 switch (category) {
                     case RoomObjectCategoryEnum.Floor: {
-                        furnitureData = floorItems.get(typeId);
+                        furnitureData = floorItems[typeId];
                         break;
                     }
                     case RoomObjectCategoryEnum.Wall: {
-                        furnitureData = wallItems.get(typeId);
+                        furnitureData = wallItems[typeId];
                         break;
                     }
                 }

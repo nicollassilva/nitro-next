@@ -15,9 +15,9 @@ const droplistVariantsConfig = {
 const droplistOverlayVariantsConfig = {
     variant: {
         // default
-        '0': 'bg-(image:--dropmenu-0-default-arrow-src) bg-position-[right_5px_top_2px] bg-size-[16px_16px] bg-no-repeat [image-rendering:pixelated]',
+        '0': 'bg-(image:--dropmenu-0-default-arrow-src) bg-position-[right_5px_top_2px] bg-size-[16px_16px] bg-no-repeat pixel-art',
         // white
-        '1': 'bg-(image:--droplist-1-default-arrow-src) bg-position-[right_4px_top_10px] bg-size-[16px_16px] bg-no-repeat [image-rendering:pixelated]',
+        '1': 'bg-(image:--droplist-1-default-arrow-src) bg-position-[right_4px_top_10px] bg-size-[16px_16px] bg-no-repeat pixel-art',
     },
 } as const;
 

@@ -53,7 +53,7 @@ export const createFriendsContextStore = () => createStore<FriendsContextStore>(
         return results;
     }),
     toggleSelectedFriendId: (friendId: number) => set(x => {
-        const selectedFriendIds = { ...x.selectedFriendIds };
+        const selectedFriendIds = [...x.selectedFriendIds];
         const index = selectedFriendIds.indexOf(friendId);
 
         if (index >= 0) selectedFriendIds.splice(index, 1);

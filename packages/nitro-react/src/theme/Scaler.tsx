@@ -23,11 +23,11 @@ const scalerVariantsConfig = {
 const scalerOverlayVariantsConfig = {
     variant: {
         // default
-        '0': 'bg-(image:--scaler-0-default-shine-src) bg-size-[15px_15px] [image-rendering:pixelated]',
+        '0': 'bg-(image:--scaler-0-default-shine-src) bg-size-[15px_15px] pixel-art',
         // black
-        '1': 'bg-(image:--scaler-0-default-shine-src) bg-size-[15px_15px] [image-rendering:pixelated]',
+        '1': 'bg-(image:--scaler-0-default-shine-src) bg-size-[15px_15px] pixel-art',
         // white
-        '2': 'bg-(image:--scaler-0-default-shine-src) bg-size-[15px_15px] [image-rendering:pixelated]',
+        '2': 'bg-(image:--scaler-0-default-shine-src) bg-size-[15px_15px] pixel-art',
         // default
         '3': '',
         // light
@@ -40,7 +40,7 @@ const scalerOverlayVariantsConfig = {
 const scalerOffsetVariantsConfig = {
     variant: {
         // default
-        '0': 'flex right-0 -bottom-px z-20',
+        '0': 'flex right-0 bottom-0 z-20',
         // black
         '1': '',
         // white

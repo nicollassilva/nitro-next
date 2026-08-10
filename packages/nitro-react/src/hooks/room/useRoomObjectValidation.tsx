@@ -2,12 +2,11 @@ import type { IRoomObject, IRoomObjectController, ISelectedRoomObjectData, IVect
 import { RoomGeometryScaleType, RoomObjectUserTypeName, RoomObjectVariableEnum, Vector3d } from "@nitrodevco/nitro-api";
 import type { RoomObjectMouseEvent } from "@nitrodevco/nitro-shared";
 
-import { useRoomSelector, useRoomStackingHeightMapActions } from "#base/context";
-import { useFurnitureDataStore } from "#base/stores";
+import { useFurnitureData, useRoomSelector, useRoomStackingHeightMapActions } from "#base/context";
 
 export const useRoomObjectValidation = () => {
     const room = useRoomSelector();
-    const floorItems = useFurnitureDataStore(x => x.floorItems);
+    const { floorItems } = useFurnitureData();
     const { getTileHeight, validateLocation } = useRoomStackingHeightMapActions();
 
     const setFurnitureAlphaMultiplier = (object: IRoomObjectController, multiplier: number) => {
@@ -17,7 +16,8 @@ export const useRoomObjectValidation = () => {
     const getActiveSurfaceLocation = (roomObject: IRoomObject, event: RoomObjectMouseEvent) => {
         if (!room || !roomObject || !event) return undefined;
 
-        const furniData = floorItems.get(roomObject.type);
+        const typeId = roomObject.model.getValue<number>(RoomObjectVariableEnum.FurnitureTypeId);
+        const furniData = floorItems[typeId];
 
         if (!furniData || (!furniData.canStandOn && !furniData.canSitOn && !furniData.canLayOn)) return undefined;
 

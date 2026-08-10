@@ -1,22 +1,19 @@
-import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
+import { CatalogTypeEnum, ICatalogNode, IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
 
-// TODO(Catalog: CatalogSnapshot): Unknown type 'CatalogSnapshot'. Add override mapping.
+import { CatalogNodeParser } from './Data/CatalogNodeParser';
 
 export type CatalogIndexMessageType = {
-  catalog: any;
-  newAdditionsAvailable: boolean;
+    root: ICatalogNode;
+    newAdditionsAvailable: boolean;
+    catalogType: CatalogTypeEnum;
 };
 
-export class CatalogIndexMessage implements IIncomingPacket<CatalogIndexMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): CatalogIndexMessageType
-  {
-
-    const packet: CatalogIndexMessageType = {
-      catalog: undefined as any, // Unknown type 'CatalogSnapshot'. Add override mapping.
-      newAdditionsAvailable: wrapper.readBoolean(),
-    };
-
-    return packet;
-  }
+export class CatalogIndexMessage implements IIncomingPacket<CatalogIndexMessageType> {
+    public parse(wrapper: IMessageDataWrapper): CatalogIndexMessageType {
+        return {
+            root: CatalogNodeParser(wrapper),
+            newAdditionsAvailable: wrapper.readBoolean(),
+            catalogType: wrapper.readString() as CatalogTypeEnum
+        }
+    }
 }

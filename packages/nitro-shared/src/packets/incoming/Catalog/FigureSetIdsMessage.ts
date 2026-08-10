@@ -1,18 +1,12 @@
 import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
 
-export type FigureSetIdsMessageType = {
-  // no fields
+export type FigureSetIdsMessageType = object;
 
-};
+export class FigureSetIdsMessage implements IIncomingPacket<FigureSetIdsMessageType> {
+    public parse(wrapper: IMessageDataWrapper): FigureSetIdsMessageType {
+        const packet: FigureSetIdsMessageType = {
+        };
 
-export class FigureSetIdsMessage implements IIncomingPacket<FigureSetIdsMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): FigureSetIdsMessageType
-  {
-
-    const packet: FigureSetIdsMessageType = {
-    };
-
-    return packet;
-  }
+        return packet;
+    }
 }

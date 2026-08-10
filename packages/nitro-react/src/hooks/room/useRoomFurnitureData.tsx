@@ -1,12 +1,10 @@
 import { FurnitureUsagePolicyEnum, GetObjectDataForFlags, IFurnitureData, IRoomFurnitureData, RoomObjectCategoryEnum, RoomObjectVariableEnum } from "@nitrodevco/nitro-api";
 
-import { useRoomSelector, useTranslation } from "#base/context"
-import { useFurnitureDataStore } from "#base/stores";
+import { useFurnitureData, useRoomSelector, useTranslation } from "#base/context"
 
 export const useRoomFurnitureData = (objectId: number, category: RoomObjectCategoryEnum) => {
     const room = useRoomSelector();
-    const floorItems = useFurnitureDataStore(x => x.floorItems);
-    const wallItems = useFurnitureDataStore(x => x.wallItems);
+    const { floorItems, wallItems } = useFurnitureData();
     const roomObject = room?.getRoomObject(objectId, category);
     const t = useTranslation();
 
@@ -34,11 +32,11 @@ export const useRoomFurnitureData = (objectId: number, category: RoomObjectCateg
     } else {
         switch (category) {
             case RoomObjectCategoryEnum.Floor: {
-                furnitureData = floorItems.get(typeId);
+                furnitureData = floorItems[typeId];
                 break;
             }
             case RoomObjectCategoryEnum.Wall: {
-                furnitureData = wallItems.get(typeId);
+                furnitureData = wallItems[typeId];
                 break;
             }
         }
