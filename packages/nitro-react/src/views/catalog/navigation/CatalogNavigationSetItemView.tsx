@@ -19,12 +19,19 @@ export const CatalogNavigationSetItemView = (props: CatalogNavigationSetItemView
 
     return (
         <>
-            <div className={cn('flex items-center py-0.5 cursor-pointer border-b border-transparent', isActive && 'bg-[#82d1ed] border-[#B4B4AE]!')} onClick={() => activateNode(node)}>
+            <div className={cn('flex items-center py-0.5 cursor-pointer border-b border-transparent', isActive && 'bg-[#82d1ed] border-[#B4B4AE]!')} onClick={() => activateNode(node)} style={{ paddingLeft: `${(node.depth - 2) * 10}px` }}>
                 <div className={cn('flex items-center w-full px-px min-h-4 max-h-4 text-[#666666]', isActive && 'bg-[#63c5e9] text-white')}>
-                    <div className="flex items-center justify-center w-5 mr-2.5">
+                    <div className="flex items-center justify-center w-5">
                         <img src={catalogIconUrl?.replace('%name%', node.icon.toString())} />
                     </div>
-                    <span className="text-style-u-bold">{node.localization}</span>
+                    <div className="flex items-center w-full px-2.5">
+                        <span className="text-style-u-bold w-full">{node.localization}</span>
+                        {(node.children.length > 0) &&
+                            <>
+                                {node.isOpen && <div className="habbo-icon icon-tri-arrow-up" />}
+                                {!node.isOpen && <div className="habbo-icon icon-tri-arrow-down" />}
+                            </>}
+                    </div>
                 </div>
             </div>
             {node.isOpen && node.children.length > 0 &&

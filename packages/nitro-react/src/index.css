@@ -6,6 +6,7 @@
 @import './theme/fonts.css';
 @import './theme/utilities.css';
 @import './theme/icons.css';
+@import './theme/habbo-icons.css';
 
 @theme static {
     /* Typography */
