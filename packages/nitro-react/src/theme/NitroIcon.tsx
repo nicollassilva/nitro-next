@@ -11,7 +11,7 @@ export const NitroIcon = forwardRef<HTMLDivElement, NitroIconProps>(
     ({ className, icon, ...props }, ref) => (
         <div
             ref={ref}
-            className={cn('nitro-icon', icon, className)}
+            className={cn('nitro-icon inline-block outline-0 bg-transparent bg-no-repeat bg-center shrink-0', icon, className)}
             {...props}
         />
     )

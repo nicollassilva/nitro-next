@@ -1,34 +1,29 @@
 import { IPurchasableOffer } from "@nitrodevco/nitro-api";
 
-import { useCatalogNavigation, useCatalogSelectors } from "#base/context";
 import { useCatalogOfferProduct, useProductIconUrl } from "#base/hooks";
+import { Border } from "#base/theme";
 
 import { CatalogItemGridWidgetItemPriceView } from "./CatalogItemGridWidgetItemPriceView";
-import { CatalogItemGridWidgetItemSelectedView } from "./CatalogItemGridWidgetItemSelectedView";
 
 type CatalogItemGridWidgetItemViewProps = {
     offer: IPurchasableOffer;
 }
 
-export const CatalogItemGridWidgetItemView = (props: CatalogItemGridWidgetItemViewProps) => {
+export const CatalogItemGridWidgetItemSelectedView = (props: CatalogItemGridWidgetItemViewProps) => {
     const { offer } = props;
     const product = useCatalogOfferProduct(offer);
     const iconUrl = useProductIconUrl(product!);
-    const { activeOffer } = useCatalogSelectors();
-    const { selectOffer } = useCatalogNavigation();
 
     if (!offer || !product) return null;
 
-    if (activeOffer === offer) return <CatalogItemGridWidgetItemSelectedView offer={offer} />;
-
     return (
-        <div className="flex items-center justify-center size-full p-0.5 cursor-pointer">
-            <div className="size-full flex flex-col items-center justify-center" onClick={() => selectOffer(offer)} data-active={activeOffer === offer}>
+        <Border variant="3" tintColor="#63c5e9" className="flex items-center justify-center size-full p-0.5">
+            <Border variant="3" className="size-full flex flex-col items-center justify-center">
                 <div className="flex items-center justify-center w-10 h-10">
                     <img className="no-select [-webkit-user-drag:none]" src={iconUrl} />
                 </div>
                 <CatalogItemGridWidgetItemPriceView offer={offer} />
-            </div>
-        </div>
+            </Border>
+        </Border>
     );
 }

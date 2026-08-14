@@ -46,7 +46,7 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(
 
         return (
             <div ref={ref} className={cn('flex size-full min-h-0 min-w-0 gap-px', className)}>
-                <div ref={viewportRef} className={cn('min-h-0 min-w-0 flex-1 p-1 scrollbar-none [&::-webkit-scrollbar]:hidden', showVertical && 'overflow-y-auto', showHorizontal && 'overflow-x-auto', viewportClassName)}>
+                <div ref={viewportRef} className={cn('min-h-0 min-w-0 flex-1 scrollbar-none [&::-webkit-scrollbar]:hidden', showVertical && 'overflow-y-auto', showHorizontal && 'overflow-x-auto', viewportClassName)}>
                     <div ref={contentRef} className={cn(contentClassName, 'relative w-full')}>
                         {children}
                     </div>

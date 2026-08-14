@@ -1,7 +1,8 @@
 import { useCatalogNavigation, useCatalogSelectors, useTranslation } from "#base/context";
-import { Border, Frame, TabButton, TabContext } from "#base/theme";
+import { Frame, TabButton, TabContext } from "#base/theme";
 
 import { CatalogNavigationView } from "./navigation/CatalogNavigationView";
+import { CatalogSearchView } from "./navigation/CatalogSearchView";
 import { CatalogActivePage } from "./page/CatalogActivePage";
 
 export const CatalogView = () => {
@@ -22,10 +23,8 @@ export const CatalogView = () => {
             </div>
             <div className="flex h-full p-1 gap-1.5 overflow-hidden">
                 <div className="flex flex-col flex-4 w-full gap-0.5">
-                    <Border variant="105" className="flex items-center justify-center h-6">
-                        <input name="habbo_search" className="flex-1 min-w-0 px-1 text-[0.75rem] text-black" type="text" />
-                    </Border>
-                    <CatalogNavigationView node={activeNodes[0]} />
+                    <CatalogSearchView />
+                    <CatalogNavigationView node={activeNodes[0]?.children[0]} />
                 </div>
                 <div className="flex flex-col flex-8 size-full">
                     <CatalogActivePage />

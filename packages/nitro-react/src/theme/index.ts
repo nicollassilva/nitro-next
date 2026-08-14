@@ -22,6 +22,7 @@ export * from './DropmenuItem';
 export * from './Frame';
 export * from './FramePointerDown';
 export * from './Header';
+export * from './InfiniteGrid';
 export * from './NitroIcon';
 export * from './RadioButton';
 export * from './Scaler';

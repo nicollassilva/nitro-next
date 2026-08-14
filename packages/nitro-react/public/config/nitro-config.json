@@ -12,6 +12,7 @@
     "asset.urls.pet": "https://assets.nitrodev.co/bundled/pet/%libname%.nitro",
     "asset.urls.avatar": "https://assets.nitrodev.co/bundled/figures/%libname%.nitro",
     "asset.urls.effect": "https://assets.nitrodev.co/bundled/effects/%libname%.nitro",
+    "catalog.icons.url": "https://assets.nitrodev.co/images/catalog-icons/icon_%name%.png",
     "fps.limit": 60,
     "socket.url": "ws://localhost:9001",
     "motto.max.length": 38,

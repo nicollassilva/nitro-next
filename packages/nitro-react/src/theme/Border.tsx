@@ -130,16 +130,17 @@ interface BorderProps extends HTMLAttributes<HTMLDivElement>, BorderVariantProps
     className?: string;
     tintColor?: string;
     defaultVariant?: string;
+    blend?: number;
 }
 
 export const Border = forwardRef<HTMLDivElement, BorderProps>(
-    ({ className, variant, defaultVariant, tintColor, style, children, ...props }, ref) => {
+    ({ className, variant, defaultVariant, blend, tintColor, style, children, ...props }, ref) => {
         const cascadedVariant = useCascadedVariant('border');
         const resolvedVariant = (variant ?? cascadedVariant ?? defaultVariant ?? '0') as never;
         const ownCascade = VARIANT_CASCADE_CONFIG['border']?.[resolvedVariant as string];
         const resolvedTint = tintColor || borderTintColors[resolvedVariant as string];
         const overlayClassName = borderOverlayVariants({ variant: resolvedVariant });
-        const tintStyle = useTintedVars(borderTintableVars[resolvedVariant as string], resolvedTint);
+        const tintStyle = useTintedVars(borderTintableVars[resolvedVariant as string], resolvedTint, blend);
 
         return (
             <div

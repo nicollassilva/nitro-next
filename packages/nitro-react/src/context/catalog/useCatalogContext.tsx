@@ -7,7 +7,7 @@ import { CatalogContextStore } from './CatalogContextStore';
 export const useCatalogContext = <T,>(selector: (state: CatalogContextStore) => T) => {
     const store = useContext(CatalogContext);
 
-    if (!store) throw new Error('useCatalogContext must be used withinCatalogContextProvider');
+    if (!store) throw new Error('useCatalogContext must be used within CatalogContextProvider');
 
     return useStore(store, selector);
 }

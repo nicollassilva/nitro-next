@@ -1,9 +1,9 @@
 import { GetAssetManager, TextureUtils } from '@nitrodevco/nitro-renderer';
-import { Sprite } from 'pixi.js';
+import { Container, Graphics, Sprite } from 'pixi.js';
 
 const cache = new Map<string, Promise<string | undefined>>();
 
-export function tintImage(url: string, tintColor: string): Promise<string | undefined> {
+export function tintImage(url: string, tintColor: string | undefined = undefined, blend: number = 0): Promise<string | undefined> {
     const key = `${url}::${tintColor}`;
     const cached = cache.get(key);
 
@@ -20,14 +20,20 @@ export function tintImage(url: string, tintColor: string): Promise<string | unde
 
         if (!texture) return undefined;
 
+        const container = new Container();
+
         const sprite = new Sprite(texture);
 
-        sprite.tint = tintColor;
+        if (tintColor) sprite.tint = tintColor;
+
+        container.addChild(sprite);
+
+        if (blend > 0) container.addChild(new Graphics().rect(0, 0, texture.width, texture.height).fill({ color: 0xFFFFFF, alpha: blend }));
 
         try {
-            return await TextureUtils.generateImageUrl({ target: sprite, resolution: 1 });
+            return await TextureUtils.generateImageUrl({ target: container, resolution: 1 });
         } finally {
-            sprite.destroy();
+            sprite.destroy({ children: true });
         }
     })();
 

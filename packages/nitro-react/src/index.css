@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @source "**/*.{ts,tsx,css}";
+@source inline("grid-cols-{1..12}");
 
 @import './theme/theme.css';
 @import './theme/fonts.css';
