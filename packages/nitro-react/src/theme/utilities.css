@@ -53,6 +53,10 @@
     @apply font-goldfish text-[0.68rem];
 }
 
+@utility text-style-headline-big {
+    @apply font-ubuntu-bold text-[18px];
+}
+
 @utility text-style-u-regular {
     @apply font-ubuntu text-[12px];
 }

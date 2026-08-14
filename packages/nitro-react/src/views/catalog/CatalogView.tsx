@@ -1,6 +1,7 @@
 import { useCatalogNavigation, useCatalogSelectors, useTranslation } from "#base/context";
 import { Frame, TabButton, TabContext } from "#base/theme";
 
+import { CatalogHeaderView } from "./CatalogHeaderView";
 import { CatalogNavigationView } from "./navigation/CatalogNavigationView";
 import { CatalogSearchView } from "./navigation/CatalogSearchView";
 import { CatalogActivePage } from "./page/CatalogActivePage";
@@ -13,15 +14,13 @@ export const CatalogView = () => {
     if (!rootNode) return null;
 
     return (
-        <Frame id="catalog" variant="3" className="w-142.5 h-150" caption={t('catalog.title')} onClose={hideCatalog}>
-            <TabContext data-name="tabs">
+        <Frame id="catalog" variant="3" className="w-142.5 h-150" caption={t('catalog.title')} onClose={hideCatalog} contentClassName="p-0!">
+            <TabContext className="-mb-0.5" data-name="tabs">
                 {rootNode.children.map(x =>
                     x.visible ? <TabButton key={x.pageId} className="w-full" aria-selected={x.isActive} onClick={_ => activateNode(x)}>{x.localization.length ? x.localization : x.pageName}</TabButton> : null)}
             </TabContext>
-            <div className="flex w-full min-h-22.5 max-h-22.5" style={{ backgroundColor: '#376275' }}>
-
-            </div>
-            <div className="flex h-full p-1 gap-1.5 overflow-hidden">
+            <CatalogHeaderView />
+            <div className="flex h-full p-2 gap-1.5 overflow-hidden">
                 <div className="flex flex-col flex-4 w-full gap-0.5">
                     <CatalogSearchView />
                     <CatalogNavigationView node={activeNodes[0]?.children[0]} />
