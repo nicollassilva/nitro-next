@@ -3,6 +3,7 @@ export * from './useRoomCursorUpdate';
 export * from './useRoomEventDispatcher';
 export * from './useRoomEventHandler';
 export * from './useRoomFurnitureData';
+export * from './useRoomMapping';
 export * from './useRoomMouse';
 export * from './useRoomObjectDeselected';
 export * from './useRoomObjectInteraction';

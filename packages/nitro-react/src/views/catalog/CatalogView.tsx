@@ -27,7 +27,7 @@ export const CatalogView = () => {
                     <CatalogSearchView />
                     <CatalogNavigationView node={activeNodes[0]?.children[0]} />
                 </div>
-                <div className="flex flex-col flex-8 size-full">
+                <div className="flex flex-col flex-8 size-full gap-1">
                     <CatalogActivePage />
                 </div>
             </div>

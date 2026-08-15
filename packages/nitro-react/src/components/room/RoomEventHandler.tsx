@@ -5,7 +5,7 @@ import type { RoomObjectEvent, RoomSpriteMouseEvent } from "@nitrodevco/nitro-sh
 import { RoomEngineObjectEvent, RoomObjectFurnitureActionEvent, RoomObjectMouseEvent, RoomObjectMoveEvent, RoomObjectStateChangedEvent, RoomWidgetUpdateRoomObjectEvent } from "@nitrodevco/nitro-shared";
 import { useEffect } from "react";
 
-import { useOwnIsModerator, useOwnControllerLevel, useRoomIsPlayingGame, useRoomMouseActions, useRoomSelector } from "#base/context";
+import { useOwnControllerLevel, useOwnIsModerator, useRoomIsPlayingGame, useRoomMouseActions, useRoomSelector } from "#base/context";
 import { useRoomEventDispatcher, useRoomEventHandler, useRoomObjectInteraction, useRoomObjectSelect } from "#base/hooks";
 
 export const RoomEventHandler = () => {

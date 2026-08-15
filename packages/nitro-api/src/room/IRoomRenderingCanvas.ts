@@ -38,4 +38,5 @@ export interface IRoomRenderingCanvas {
     scale: number;
     width: number;
     height: number;
+    canvasElement: HTMLCanvasElement | undefined;
 }

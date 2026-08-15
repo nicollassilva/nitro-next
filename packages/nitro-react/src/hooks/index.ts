@@ -19,6 +19,7 @@ export * from './room/useRoomCursorUpdate';
 export * from './room/useRoomEventDispatcher';
 export * from './room/useRoomEventHandler';
 export * from './room/useRoomFurnitureData';
+export * from './room/useRoomMapping';
 export * from './room/useRoomMouse';
 export * from './room/useRoomObjectDeselected';
 export * from './room/useRoomObjectInteraction';

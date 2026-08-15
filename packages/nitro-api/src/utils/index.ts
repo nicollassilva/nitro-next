@@ -4,4 +4,5 @@ export * from './IBinaryWriter';
 export * from './IVector3D';
 export * from './MouseEventType';
 export * from './NitroLogger';
+export * from './RoomId';
 export * from './Vector3d';
