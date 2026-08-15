@@ -12,6 +12,7 @@ type State = {
 
 type Actions = {
     toggleWindow: (name: string) => void;
+    showWindow: (name: string) => void;
     hideWindow: (name: string) => void;
     getLocalizationValue: (key: string, defaultValue?: string, replacements?: Record<string, string>) => string;
     setLocalization: (localization: Record<string, string>) => void;
@@ -80,6 +81,14 @@ export const createSystemStore = () => createStore<SystemStore>()((set, get, sto
 
         if (index >= 0) visibleWindows.splice(index, 1);
         else visibleWindows.push(name);
+
+        return { visibleWindows };
+    }),
+    showWindow: (name: string) => set(x => {
+        const visibleWindows = [...x.visibleWindows];
+        const index = visibleWindows.indexOf(name);
+
+        if (index === -1) visibleWindows.push(name);
 
         return { visibleWindows };
     }),

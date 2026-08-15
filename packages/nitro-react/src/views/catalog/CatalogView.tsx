@@ -1,4 +1,5 @@
-import { useCatalogNavigation, useCatalogSelectors, useTranslation } from "#base/context";
+import { useCatalogSelectors, useTranslation } from "#base/context";
+import { useCatalogNavigation, useCatalogVisibility } from "#base/hooks";
 import { Frame, TabButton, TabContext } from "#base/theme";
 
 import { CatalogHeaderView } from "./CatalogHeaderView";
@@ -8,7 +9,8 @@ import { CatalogActivePage } from "./page/CatalogActivePage";
 
 export const CatalogView = () => {
     const { rootNode, activeNodes } = useCatalogSelectors();
-    const { activateNode, hideCatalog } = useCatalogNavigation();
+    const { activateNode } = useCatalogNavigation();
+    const { hideCatalog } = useCatalogVisibility();
     const t = useTranslation();
 
     if (!rootNode) return null;

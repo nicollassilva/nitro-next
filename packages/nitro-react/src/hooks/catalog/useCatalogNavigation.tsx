@@ -1,18 +1,17 @@
-import { IActivePage, ICatalogNode, ICatalogPageLocalization, IPurchasableOffer } from "@nitrodevco/nitro-api";
+import { CatalogRequestedPageUtilities, IActivePage, ICatalogNode, ICatalogPageLocalization, IPurchasableOffer } from "@nitrodevco/nitro-api";
 import { GetCatalogPageComposer } from "@nitrodevco/nitro-shared";
 
-import { useWebSocketContext } from "../communication";
-import { useSystemActions } from "../system";
-import { useCatalogActions } from "./useCatalogActions";
-import { useCatalogSelectors } from "./useCatalogSelectors"
+import { useCatalogActions, useCatalogSelectors, useWebSocketContext } from "#base/context";
+
+import { useCatalogNodeActions } from "./useCatalogNodeActions";
+import { useCatalogVisibility } from "./useCatalogVisibility";
 
 export const useCatalogNavigation = () => {
-    const { catalogType, activeNodes } = useCatalogSelectors();
-    const { setActiveNodes, setIsBusy, setActivePageId, setActivePage, setActiveOffer } = useCatalogActions();
-    const { hideWindow } = useSystemActions();
+    const { catalogType, activeNodes, rootNode } = useCatalogSelectors();
+    const { setActiveNodes, setIsBusy, setActivePageId, setActivePage, setActiveOffer, setRequestedPage } = useCatalogActions();
+    const { getNodeByPageId, getNodeByPageName, getNodesByOfferId } = useCatalogNodeActions();
+    const { isCatalogVisible, showCatalog } = useCatalogVisibility();
     const { send } = useWebSocketContext();
-
-    const isNodeActive = (node: ICatalogNode) => activeNodes.indexOf(node) >= 0;
 
     const loadCatalogPage = (pageId: number, offerId: number) => {
         if (pageId < 0) return;
@@ -103,9 +102,45 @@ export const useCatalogNavigation = () => {
         setActiveOffer(offer);
     }
 
-    const hideCatalog = () => {
-        hideWindow('catalog');
+    const openPageById = (pageId: number) => {
+        if (!isCatalogVisible) {
+            setRequestedPage(CatalogRequestedPageUtilities.getForPageId(pageId));
+
+            showCatalog();
+        } else {
+            if (!rootNode) return;
+
+            const node = getNodeByPageId(pageId, rootNode);
+
+            if (node) activateNode(node);
+        }
     }
 
-    return { isNodeActive, loadCatalogPage, showCatalogPage, activateNode, selectOffer, hideCatalog };
+    const openPageByName = (pageName: string) => {
+        if (!isCatalogVisible) {
+            setRequestedPage(CatalogRequestedPageUtilities.getForPageName(pageName));
+
+            showCatalog();
+        } else {
+            if (!rootNode) return;
+
+            const node = getNodeByPageName(pageName, rootNode);
+
+            if (node) activateNode(node);
+        }
+    }
+
+    const openPageByOfferId = (offerId: number) => {
+        if (!isCatalogVisible) {
+            setRequestedPage(CatalogRequestedPageUtilities.getForOfferId(offerId));
+
+            showCatalog();
+        } else {
+            const nodes = getNodesByOfferId(offerId)
+
+            if (nodes.length) activateNode(nodes[0], offerId);
+        }
+    }
+
+    return { loadCatalogPage, showCatalogPage, activateNode, selectOffer, openPageById, openPageByName, openPageByOfferId };
 }

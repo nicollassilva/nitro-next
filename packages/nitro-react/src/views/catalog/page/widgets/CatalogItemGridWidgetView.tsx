@@ -18,7 +18,7 @@ export const CatalogItemGridWidgetView = () => {
                 items={activePage.offers}
                 getKey={x => x.offerId}
                 itemWidth={55}
-                itemHeight={65}
+                minHeight={65}
                 itemRender={x => <CatalogItemGridWidgetItemView offer={x} />} />
         </Border>
     )

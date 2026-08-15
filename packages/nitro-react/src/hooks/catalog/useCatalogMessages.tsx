@@ -1,14 +1,15 @@
 import { FurnitureTypeEnum, ICatalogNode, IPurchasableOffer } from "@nitrodevco/nitro-api";
 import { CatalogIndexMessage, CatalogPageMessage, CatalogPublishedMessage, ProductOfferEventMessage } from "@nitrodevco/nitro-shared";
 
-import { useCatalogActions, useCatalogNavigation, useCatalogOfferActions, useCatalogSelectors } from "#base/context";
-import { useMessageListener } from "#base/hooks";
+import { useCatalogActions, useCatalogSelectors } from "#base/context";
+import { useCatalogNavigation, useCatalogOfferActions, useCatalogVisibility, useMessageListener } from "#base/hooks";
 
 export const useCatalogMessages = () => {
     const { catalogType, activePageId, activePage } = useCatalogSelectors();
-    const { showCatalogPage, hideCatalog } = useCatalogNavigation();
+    const { showCatalogPage } = useCatalogNavigation();
     const { setRootNode, setOffersToNodes, setFrontPageItems, setIsBusy, setActiveOffer, resetCatalog } = useCatalogActions();
     const { getOfferProduct, processOffer } = useCatalogOfferActions();
+    const { hideCatalog } = useCatalogVisibility();
 
     useMessageListener(CatalogPublishedMessage, data => {
         resetCatalog();

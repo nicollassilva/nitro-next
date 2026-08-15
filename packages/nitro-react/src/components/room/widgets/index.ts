@@ -1,3 +1,4 @@
+export * from './object-infostand/InfostandFurni';
 export * from './object-infostand/RoomObjectInfostandWidget';
 export * from './object-menu/RoomObjectMenuBubble';
 export * from './object-menu/RoomObjectMenuNameBubble';

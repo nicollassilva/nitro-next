@@ -2,6 +2,7 @@ import { SystemStore } from "./SystemStore";
 
 export const extractSystemActions = (store: SystemStore) => ({
     toggleWindow: store.toggleWindow,
+    showWindow: store.showWindow,
     hideWindow: store.hideWindow,
     getLocalizationValue: store.getLocalizationValue,
     setLocalization: store.setLocalization,

@@ -1,7 +1,6 @@
 import { CatalogPricingModelEnum, CatalogPricingTypeEnum, CatalogTypeEnum, FurnitureTypeEnum, ICatalogOffer, IProduct, IPurchasableOffer } from "@nitrodevco/nitro-api";
 
-import { useFurnitureDataActions } from "../system";
-import { useCatalogSelectors } from "./useCatalogSelectors";
+import { useCatalogSelectors, useFurnitureDataActions } from "#base/context";
 
 export const useCatalogOfferActions = () => {
     const { catalogType } = useCatalogSelectors();

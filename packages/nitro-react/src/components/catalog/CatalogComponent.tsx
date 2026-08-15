@@ -2,16 +2,16 @@ import { BuildersClubQueryFurniCountComposer, GetCatalogIndexComposer, GetClubGi
 import { useEffect } from "react";
 
 import { useCatalogSelectors, useIsWindowVisible, useWebSocketContext } from "#base/context";
+import { useCatalogMessages, useCatalogPageRequest } from "#base/hooks";
 import { CatalogView } from "#base/views/catalog/CatalogView";
-
-import { useCatalogMessages } from "./useCatalogMessages";
 
 export const CatalogComponent = () => {
     const isVisible = useIsWindowVisible('catalog');
-    const { catalogType, rootNode, } = useCatalogSelectors();
+    const { catalogType, rootNode } = useCatalogSelectors();
     const { send } = useWebSocketContext();
 
     useCatalogMessages();
+    useCatalogPageRequest();
 
     useEffect(() => {
         if (!isVisible || rootNode) return;

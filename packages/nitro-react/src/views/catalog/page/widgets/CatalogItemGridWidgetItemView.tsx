@@ -1,7 +1,8 @@
 import { IPurchasableOffer } from "@nitrodevco/nitro-api";
 
-import { useCatalogNavigation, useCatalogSelectors } from "#base/context";
-import { useCatalogOfferProduct, useProductIconUrl } from "#base/hooks";
+import { useCatalogSelectors } from "#base/context";
+import { useCatalogNavigation, useCatalogOfferProduct, useProductIconUrl } from "#base/hooks";
+import { Image } from "#base/theme";
 
 import { CatalogItemGridWidgetItemPriceView } from "./CatalogItemGridWidgetItemPriceView";
 import { CatalogItemGridWidgetItemSelectedView } from "./CatalogItemGridWidgetItemSelectedView";
@@ -23,10 +24,8 @@ export const CatalogItemGridWidgetItemView = (props: CatalogItemGridWidgetItemVi
 
     return (
         <div className="flex items-center justify-center size-full p-0.5 cursor-pointer">
-            <div className="size-full flex flex-col items-center justify-center" onClick={() => selectOffer(offer)} data-active={activeOffer === offer}>
-                <div className="flex items-center justify-center w-10 h-10">
-                    <img className="no-select [-webkit-user-drag:none]" src={iconUrl} />
-                </div>
+            <div className="size-full flex flex-col items-center justify-center gap-0.75 min-h-0 py-0.75 overflow-hidden" onClick={() => selectOffer(offer)} data-active={activeOffer === offer}>
+                <Image src={iconUrl} />
                 <CatalogItemGridWidgetItemPriceView offer={offer} />
             </div>
         </div>

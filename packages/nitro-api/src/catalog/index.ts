@@ -1,7 +1,9 @@
 export * from './CatalogFrontPageItemType';
+export * from './CatalogPageRequestType';
 export * from './CatalogPricingModelEnum';
 export * from './CatalogPricingTypeEnum';
 export * from './CatalogPurchaseErrorType';
+export * from './CatalogRequestedPageUtilities';
 export * from './CatalogTypeEnum';
 export * from './IActivePage';
 export * from './IBundleDiscountRuleset';
@@ -11,6 +13,7 @@ export * from './ICatalogOffer';
 export * from './ICatalogPage';
 export * from './ICatalogPageLocalization';
 export * from './ICatalogProduct';
+export * from './ICatalogRequestedPage';
 export * from './IProduct';
 export * from './IPurchasableOffer';
 export * from './IPurchaseOptions';

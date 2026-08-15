@@ -13,7 +13,6 @@ export const CatalogNavigationView = (props: CatalogNavigationViewProps) => {
 
     if (!node) return null;
 
-
     return (
         <Border variant="6" className="overflow-hidden px-1 py-1.25" blend={0.5}>
             <ScrollArea variant="3" className="flex-1 min-h-0 text-[0.68rem] gap-0!" contentClassName="flex flex-col">

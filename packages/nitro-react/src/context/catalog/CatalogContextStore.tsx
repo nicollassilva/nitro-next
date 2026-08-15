@@ -1,4 +1,4 @@
-import { CatalogTypeEnum, IActivePage, ICatalogFrontPageItem, ICatalogNode, IPurchasableOffer } from '@nitrodevco/nitro-api';
+import { CatalogRequestedPageUtilities, CatalogTypeEnum, IActivePage, ICatalogFrontPageItem, ICatalogNode, ICatalogRequestedPage, IPurchasableOffer } from '@nitrodevco/nitro-api';
 import { createStore } from 'zustand';
 
 type State = {
@@ -11,6 +11,7 @@ type State = {
     activePage: IActivePage | undefined;
     activeOffer: IPurchasableOffer | undefined;
     frontPageItems: ICatalogFrontPageItem[];
+    requestedPage: ICatalogRequestedPage;
 }
 
 type Actions = {
@@ -22,6 +23,7 @@ type Actions = {
     setActivePage: (activePage: IActivePage) => void;
     setActiveOffer: (activeOffer: IPurchasableOffer) => void;
     setFrontPageItems: (frontPageItems: ICatalogFrontPageItem[]) => void;
+    setRequestedPage: (requestedPage: ICatalogRequestedPage) => void;
     resetCatalog: () => void;
 }
 
@@ -34,7 +36,8 @@ const initialState: State = {
     activePageId: -1,
     activePage: undefined,
     activeOffer: undefined,
-    frontPageItems: []
+    frontPageItems: [],
+    requestedPage: CatalogRequestedPageUtilities.getEmpty()
 };
 
 export type CatalogContextStore = State & Actions;
@@ -50,5 +53,6 @@ export const createCatalogContextStore = (catalogType: CatalogTypeEnum) => creat
     setActivePage: (activePage: IActivePage | undefined) => set({ activePage }),
     setActiveOffer: (activeOffer: IPurchasableOffer | undefined) => set({ activeOffer }),
     setFrontPageItems: (frontPageItems: ICatalogFrontPageItem[]) => set({ frontPageItems }),
+    setRequestedPage: (requestedPage: ICatalogRequestedPage) => set({ requestedPage }),
     resetCatalog: () => set({ ...initialState, catalogType })
 }));
