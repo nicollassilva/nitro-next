@@ -18,7 +18,7 @@ type Actions = {
     processFriendRequests: (requests: IFriendRequest[]) => void;
 };
 
-export const UserMessengerSlice: State = {
+export const UserFriendsSlice: State = {
     userFriendLimit: 0,
     normalFriendLimit: 0,
     extendedFriendLimit: 0,
@@ -27,10 +27,10 @@ export const UserMessengerSlice: State = {
     requests: {}
 };
 
-export type UserMessengerSlice = State & Actions;
+export type UserFriendsSlice = State & Actions;
 
-export const createUserMessengerSlice: StateCreator<UserMessengerSlice, [], [], UserMessengerSlice> = (set, get, store) => ({
-    ...UserMessengerSlice,
+export const createUserFriendsSlice: StateCreator<UserFriendsSlice, [], [], UserFriendsSlice> = (set, get, store) => ({
+    ...UserFriendsSlice,
     setFriendLimits: (userFriendLimit: number, normalFriendLimit: number, extendedFriendLimit: number) => set({ userFriendLimit, normalFriendLimit, extendedFriendLimit }),
     setFriendCategories: (categories: IMessengerCategory[]) => set({ categories }),
     processFriends: (friends: IMessengerFriend[]) => set(x => {

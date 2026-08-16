@@ -1,7 +1,8 @@
-import { AvatarGenderType, ClubLevelEnum, IUserInfo, NoobnessLevelEnum, SecurityLevelEnum } from '@nitrodevco/nitro-api';
+import { ClubLevelEnum, NoobnessLevelEnum, SecurityLevelEnum } from '@nitrodevco/nitro-api';
 import { createStore } from 'zustand';
 
-import { createUserMessengerSlice, UserMessengerSlice } from './UserMessengerSlice';
+import { createUserFriendsSlice, UserFriendsSlice } from './UserFriendsSlice';
+import { createUserInfoSlice, UserInfoSlice } from './UserInfoSlice';
 import { createUserWalletSlice, UserWalletSlice } from './UserWalletSlice';
 
 type State = {
@@ -16,14 +17,9 @@ type State = {
     isAuthenticHabbo: boolean;
     isRoomCameraFollowDisabled: boolean;
     uiFlags: number;
-} & IUserInfo;
+};
 
 type Actions = {
-    setUserInfo: (userInfo: IUserInfo) => void;
-    setName: (name: string, nameChangeAllowed: boolean) => void;
-    setFigure: (figure: string, sex: string) => void;
-    setAccountSafetyLocked: (accountSafetyLocked: boolean) => void;
-    setEmailVerified: (directMail: boolean) => void;
     setTags: (tags: string[]) => void;
     setRights: (clubLevel: ClubLevelEnum, securityLevel: SecurityLevelEnum, isAmbassador: boolean) => void;
     setNoobnessLevel: (noobnessLevel: NoobnessLevelEnum) => void;
@@ -32,20 +28,6 @@ type Actions = {
 };
 
 const initialState: State = {
-    userId: -1,
-    name: '',
-    figure: '',
-    sex: AvatarGenderType.Male,
-    customData: '',
-    realName: '',
-    directMail: false,
-    respectTotal: 0,
-    respectLeft: 0,
-    petRespectLeft: 0,
-    streamPublishingAllowed: false,
-    lastAccessDate: '',
-    nameChangeAllowed: false,
-    accountSafetyLocked: false,
     tags: [],
     clubLevel: ClubLevelEnum.Club,
     securityLevel: 0,
@@ -59,20 +41,16 @@ const initialState: State = {
     uiFlags: 0,
 };
 
-export type UserStore = State & Actions & UserMessengerSlice & UserWalletSlice;
+export type UserStore = State & Actions & UserInfoSlice & UserFriendsSlice & UserWalletSlice;
 
 export const createUserStore = () => createStore<UserStore>()((set, get, store) => ({
     ...initialState,
-    setUserInfo: (userInfo: IUserInfo) => set({ ...userInfo }),
-    setName: (name: string, nameChangeAllowed: boolean) => set({ name, nameChangeAllowed }),
-    setFigure: (figure: string, sex: AvatarGenderType) => set({ figure, sex }),
-    setAccountSafetyLocked: (accountSafetyLocked: boolean) => set({ accountSafetyLocked }),
     setRights: (clubLevel: ClubLevelEnum, securityLevel: SecurityLevelEnum, isAmbassador: boolean) => set({ clubLevel, securityLevel, isAmbassador }),
     setNoobnessLevel: (noobnessLevel: NoobnessLevelEnum) => set({ noobnessLevel }),
     increasePetRespects: () => set(state => ({ petRespectLeft: state.petRespectLeft + 1 })),
     decreasePetRespects: () => set(state => ({ petRespectLeft: state.petRespectLeft - 1 })),
-    setEmailVerified: (directMail: boolean) => set({ directMail }),
     setTags: (tags: string[]) => set({ tags }),
-    ...createUserMessengerSlice(set, get, store),
+    ...createUserInfoSlice(set, get, store),
+    ...createUserFriendsSlice(set, get, store),
     ...createUserWalletSlice(set, get, store)
 }));
