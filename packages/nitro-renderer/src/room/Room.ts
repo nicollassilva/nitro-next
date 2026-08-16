@@ -363,6 +363,20 @@ export class Room implements IRoom {
         return rectangle;
     }
 
+    public getRoomInstanceRenderingCanvasOffset(): PointData {
+        const offset = {
+            x: 0,
+            y: 0
+        };
+
+        if (this._canvas) {
+            offset.x = this._canvas.screenOffsetX;
+            offset.y = this._canvas.screenOffsetY;
+        }
+
+        return offset;
+    }
+
     public setRoomInstanceRenderingCanvasOffset(point: PointData): boolean {
         if (!this._canvas || !point) return false;
 
@@ -1196,6 +1210,10 @@ export class Room implements IRoom {
         this.removeRoomObject(objectId, RoomObjectCategoryEnum.Wall);
 
         this.updateRoomObjectMask(objectId, false);
+    }
+
+    public removeRoomObjectUser(objectId: number): void {
+        this.removeRoomObject(objectId, RoomObjectCategoryEnum.Unit);
     }
 
     public getRoomObjectScreenLocation(objectId: number, category: RoomObjectCategoryEnum): PointData | undefined {
