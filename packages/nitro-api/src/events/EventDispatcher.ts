@@ -1,4 +1,6 @@
-import { type IEventDispatcher, type INitroEvent, NitroLogger } from '@nitrodevco/nitro-api';
+import { NitroLogger } from "../utils";
+import { IEventDispatcher } from "./IEventDispatcher";
+import { INitroEvent } from "./INitroEvent";
 
 export class EventDispatcher implements IEventDispatcher {
     private _listeners: Map<string, ((event: INitroEvent) => void)[]> = new Map();

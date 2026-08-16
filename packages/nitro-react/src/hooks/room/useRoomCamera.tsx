@@ -1,7 +1,6 @@
 import type { IVector3D } from "@nitrodevco/nitro-api";
-import { RoomGeometryScaleType, RoomObjectCategoryEnum, RoomObjectVariableEnum, Vector3d } from "@nitrodevco/nitro-api";
+import { RoomDraggedEvent, RoomGeometryScaleType, RoomObjectCategoryEnum, RoomObjectVariableEnum, Vector3d } from "@nitrodevco/nitro-api";
 import { Room } from "@nitrodevco/nitro-renderer";
-import { RoomDraggedEvent } from "@nitrodevco/nitro-shared";
 import { Matrix, Point, Rectangle } from "pixi.js";
 import { useRef } from "react";
 

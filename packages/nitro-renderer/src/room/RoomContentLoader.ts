@@ -9,13 +9,12 @@ import type {
 } from '@nitrodevco/nitro-api';
 import {
     FurnitureTypeEnum,
-    NitroLogger,
-    RoomObjectCategoryEnum,
+    GetConfigValue, NitroLogger,
+    RoomContentLoadedEvent, RoomObjectCategoryEnum,
     RoomObjectUserType,
     RoomObjectUserTypeName,
-    RoomObjectUserTypeUtils,
+    RoomObjectUserTypeUtils
 } from '@nitrodevco/nitro-api';
-import { GetConfigValue, RoomContentLoadedEvent } from '@nitrodevco/nitro-shared';
 import type { Texture } from 'pixi.js';
 
 import { GetAssetManager } from '../assets';

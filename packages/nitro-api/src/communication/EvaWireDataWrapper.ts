@@ -1,76 +1,65 @@
-import type { IBinaryReader, IMessageDataWrapper } from "@nitrodevco/nitro-api";
+import { IBinaryReader } from "../utils";
+import { IMessageDataWrapper } from "./IMessageDataWrapper";
 
-export class EvaWireDataWrapper implements IMessageDataWrapper
-{
+export class EvaWireDataWrapper implements IMessageDataWrapper {
     private _header: number;
     private _buffer: IBinaryReader | undefined;
 
-    constructor(header: number, buffer: IBinaryReader)
-    {
+    constructor(header: number, buffer: IBinaryReader) {
         this._header = header;
         this._buffer = buffer;
     }
 
-    public readBytes(length: number): IBinaryReader | undefined
-    {
+    public readBytes(length: number): IBinaryReader | undefined {
         return this._buffer?.readBytes(length);
     }
 
-    public readByte(): number
-    {
+    public readByte(): number {
         if (!this._buffer) return -1;
 
         return this._buffer.readByte();
     }
 
-    public readBoolean(): boolean
-    {
+    public readBoolean(): boolean {
         return (this.readByte() === 1);
     }
 
-    public readShort(): number
-    {
+    public readShort(): number {
         if (!this._buffer) return -1;
 
         return this._buffer.readShort();
     }
 
-    public readInt(): number
-    {
+    public readInt(): number {
         if (!this._buffer) return -1;
 
         return this._buffer.readInt();
     }
 
-    public readFloat(): number
-    {
+    public readFloat(): number {
         if (!this._buffer) return -1;
 
         return this._buffer.readFloat();
     }
 
-    public readDouble(): number
-    {
+    public readDouble(): number {
         if (!this._buffer) return -1;
 
         return this._buffer.readDouble();
     }
 
-    public readString(): string
-    {
+    public readString(): string {
         const length = this.readShort();
         const buffer = this.readBytes(length);
 
         return buffer?.toString('utf8') ?? '';
     }
 
-    public get header(): number
-    {
+    public get header(): number {
         return this._header;
     }
 
-    public get bytesAvailable(): boolean
-    {
+    public get bytesAvailable(): boolean {
         return (this._buffer && (this._buffer.remaining() > 0)) ?? false;
     }
 }

@@ -1,6 +1,5 @@
-import { RoomId } from "@nitrodevco/nitro-api";
+import { RoomEngineEvent, RoomId } from "@nitrodevco/nitro-api";
 import { GetRoomEngine } from "@nitrodevco/nitro-renderer";
-import { RoomEngineEvent } from "@nitrodevco/nitro-shared";
 import { useEffect, useRef, useState } from "react";
 
 import { useRoomActions, useRoomSelector } from "#base/context";

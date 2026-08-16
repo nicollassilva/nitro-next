@@ -1,4 +1,4 @@
-import type { INitroEvent } from '@nitrodevco/nitro-api';
+import { INitroEvent } from "./INitroEvent";
 
 export class NitroEvent implements INitroEvent {
     private _type: string;

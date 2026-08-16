@@ -87,6 +87,7 @@ import {
     FavouritesMessage,
     FigureSetIdsEventMessage,
     FigureUpdateEventMessage,
+    FindFriendsProcessResultMessage,
     FlatAccessDeniedMessage,
     FlatAccessibleMessage,
     FlatCreatedMessage,
@@ -274,6 +275,7 @@ import {
     VoucherRedeemErrorMessage,
     VoucherRedeemOkMessage,
     WardrobeMessage,
+    WhisperMessage,
     WiredFurniActionEventMessage,
     WiredFurniAddonEventMessage,
     WiredFurniConditionEventMessage,
@@ -293,9 +295,7 @@ import {
     YouAreSpectatorMessage,
     YoutubeControlVideoMessage,
     YoutubeDisplayPlaylistsMessage,
-    YoutubeDisplayVideoMessage,
-    WhisperMessage,
-    FindFriendsProcessResultMessage
+    YoutubeDisplayVideoMessage
 } from './incoming';
 import { IncomingHeader } from './IncomingHeader';
 

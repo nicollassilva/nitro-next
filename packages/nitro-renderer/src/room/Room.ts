@@ -1,6 +1,8 @@
 
 import {
+    EventDispatcher,
     FurnitureUsagePolicyEnum,
+    GetConfigValue,
     GetObjectDataForFlags,
     IEventDispatcher,
     IGraphicAssetCollection,
@@ -20,6 +22,9 @@ import {
     IRoomRenderingCanvas,
     IVector3D, LegacyDataType,
     ObjectDataFlagsEnum,
+    RoomContentLoadedEvent,
+    RoomEngineEvent,
+    RoomEngineObjectEvent,
     RoomGeometryScaleType
     ,
     RoomObjectCategoryEnum,
@@ -30,16 +35,9 @@ import {
     RoomObjectVariableEnum,
     RoomThicknessType
     ,
-    Vector3d,
+    RoomToObjectOwnAvatarMoveEvent,
+    Vector3d
 } from '@nitrodevco/nitro-api';
-import {
-    EventDispatcher,
-    GetConfigValue,
-    RoomContentLoadedEvent,
-    RoomEngineEvent,
-    RoomEngineObjectEvent,
-    RoomToObjectOwnAvatarMoveEvent
-} from '@nitrodevco/nitro-shared';
 import { ImageLike, type PointData, Rectangle, Sprite } from 'pixi.js';
 import { Container, Texture } from 'pixi.js';
 

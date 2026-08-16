@@ -1,6 +1,5 @@
-import { RoomGeometryScaleType } from '@nitrodevco/nitro-api';
+import { RoomGeometryScaleType, RoomRenderedEvent } from '@nitrodevco/nitro-api';
 import { GetRenderer, GetStage, GetTicker } from '@nitrodevco/nitro-renderer';
-import { RoomRenderedEvent } from '@nitrodevco/nitro-shared';
 import type { Ticker } from 'pixi.js';
 import { forwardRef, useEffect } from 'react';
 

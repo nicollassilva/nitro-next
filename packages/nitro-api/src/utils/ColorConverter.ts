@@ -1,5 +1,5 @@
-﻿import type { IVector3D } from '@nitrodevco/nitro-api';
-import { Vector3d } from '@nitrodevco/nitro-api';
+﻿import { IVector3D } from "./IVector3D";
+import { Vector3d } from "./Vector3d";
 
 export class ColorConverter {
     private static HEX_DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];

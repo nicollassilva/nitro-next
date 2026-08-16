@@ -1,18 +1,15 @@
-import type { IBinaryWriter } from "@nitrodevco/nitro-api";
+import { IBinaryWriter } from "./IBinaryWriter";
 
-export class BinaryWriter implements IBinaryWriter
-{
+export class BinaryWriter implements IBinaryWriter {
     private _buffer: Uint8Array;
     private _position: number;
 
-    constructor()
-    {
+    constructor() {
         this._buffer = new Uint8Array();
         this._position = 0;
     }
 
-    public writeByte(byte: number): IBinaryWriter
-    {
+    public writeByte(byte: number): IBinaryWriter {
         const array = new Uint8Array(1);
 
         array[0] = byte;
@@ -22,8 +19,7 @@ export class BinaryWriter implements IBinaryWriter
         return this;
     }
 
-    public writeBytes(bytes: ArrayBuffer | number[]): IBinaryWriter
-    {
+    public writeBytes(bytes: ArrayBuffer | number[]): IBinaryWriter {
         const array = new Uint8Array(bytes);
 
         this.appendArray(array);
@@ -31,8 +27,7 @@ export class BinaryWriter implements IBinaryWriter
         return this;
     }
 
-    public writeShort(short: number): IBinaryWriter
-    {
+    public writeShort(short: number): IBinaryWriter {
         const array = new Uint8Array(2);
 
         array[0] = short >> 8;
@@ -43,8 +38,7 @@ export class BinaryWriter implements IBinaryWriter
         return this;
     }
 
-    public writeInt(integer: number): IBinaryWriter
-    {
+    public writeInt(integer: number): IBinaryWriter {
         const array = new Uint8Array(4);
 
         array[0] = integer >> 24;
@@ -57,25 +51,21 @@ export class BinaryWriter implements IBinaryWriter
         return this;
     }
 
-    public writeString(string: string, includeLength: boolean = true): IBinaryWriter
-    {
+    public writeString(string: string, includeLength: boolean = true): IBinaryWriter {
         const array = new TextEncoder().encode(string);
 
-        if (includeLength)
-        {
+        if (includeLength) {
             this.writeShort(array.length);
             this.appendArray(array);
         }
-        else
-        {
+        else {
             this.appendArray(array);
         }
 
         return this;
     }
 
-    private appendArray(array: Uint8Array): void
-    {
+    private appendArray(array: Uint8Array): void {
         if (!array) return;
 
         const mergedArray = new Uint8Array(((this.position + array.length) > this._buffer.length) ? (this.position + array.length) : this._buffer.length);
@@ -87,23 +77,19 @@ export class BinaryWriter implements IBinaryWriter
         this.position += array.length;
     }
 
-    public getBuffer(): ArrayBuffer
-    {
+    public getBuffer(): ArrayBuffer {
         return this._buffer.buffer as ArrayBuffer;
     }
 
-    public get position(): number
-    {
+    public get position(): number {
         return this._position;
     }
 
-    public set position(pos: number)
-    {
+    public set position(pos: number) {
         this._position = pos;
     }
 
-    public toString(encoding?: string): string
-    {
+    public toString(encoding?: string): string {
         return new TextDecoder(encoding).decode(this._buffer);
     }
 }
