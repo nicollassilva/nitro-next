@@ -42,7 +42,7 @@ export const InfostandFurniView = (props: InfostandFurniViewProps) => {
                     {canSeeFurniId && <p className="text-[9px] font-goldfish-bold">ID: {furniData.id}</p>}
                 </div>
                 <div className="flex w-full gap-1">
-                    <Button>{t('infostand.button.buy')}</Button>
+                    <Button onClick={() => processAction('buy')}>{t('infostand.button.buy')}</Button>
                 </div>
             </Border>
             {hasButtons && <div className="flex justify-end gap-2">

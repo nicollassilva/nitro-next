@@ -6,6 +6,7 @@ export const useSystemActions = () => useSystemContext(useShallow(x => ({
     toggleWindow: x.toggleWindow,
     showWindow: x.showWindow,
     hideWindow: x.hideWindow,
+    updateWindowParams: x.updateWindowParams,
     getLocalizationValue: x.getLocalizationValue,
     setLocalization: x.setLocalization,
     setLocalizationForFurniture: x.setLocalizationForFurniture,

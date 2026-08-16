@@ -7,6 +7,8 @@ import { CatalogNavigationView } from "./navigation/CatalogNavigationView";
 import { CatalogSearchView } from "./navigation/CatalogSearchView";
 import { CatalogActivePage } from "./page/CatalogActivePage";
 
+export type CatalogViewWindowParams = { pageId?: number; pageName?: string; offerId?: number };
+
 export const CatalogView = () => {
     const { rootNode, activeNodes } = useCatalogSelectors();
     const { activateNode } = useCatalogNavigation();

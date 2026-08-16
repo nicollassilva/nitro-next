@@ -24,8 +24,6 @@ type TapState = {
 };
 
 const MIN_SIZE = 50;
-
-// a finger never lands perfectly still, so a few pixels of jitter must still count as a tap
 const DRAG_THRESHOLD = 4;
 const DOUBLE_TAP_DELAY = 300;
 const DOUBLE_TAP_DISTANCE = 24;
@@ -52,8 +50,6 @@ export const useFrameResize = (id: string | undefined, frameRef: RefObject<HTMLE
     }
 
     const resetSize = () => {
-        // the original size lives in the frame's own classes, so dropping the inline
-        // size is all it takes to hand the sizing back to them
         latestSizeRef.current = null;
 
         setSize(null);
@@ -64,21 +60,17 @@ export const useFrameResize = (id: string | undefined, frameRef: RefObject<HTMLE
     const handlePointerDown = (event: ReactPointerEvent<HTMLElement>) => {
         if (event.button !== 0 || direction === 'none') return;
 
-        // a second finger must not hijack a resize that is already in flight
         if (resizeStateRef.current) return;
 
         const node = frameRef.current;
 
         if (!node) return;
 
-        // touch pointers are not cancelable while touch-action is none, and cancelling
-        // them anyway only earns a console warning
         if (event.cancelable) event.preventDefault();
 
         const rect = node.getBoundingClientRect();
         const computed = window.getComputedStyle(node);
 
-        // only a real drag may persist a size — a plain tap has to leave the stored value alone
         latestSizeRef.current = null;
 
         resizeStateRef.current = {
@@ -87,8 +79,6 @@ export const useFrameResize = (id: string | undefined, frameRef: RefObject<HTMLE
             startY: event.clientY,
             startWidth: rect.width,
             startHeight: rect.height,
-            // the variant classes carry the real minimums (min-w-*/min-h-*); honouring them
-            // keeps the tracked size in sync with what the browser actually lays out
             minWidth: Math.max(parseFloat(computed.minWidth) || 0, MIN_SIZE),
             minHeight: Math.max(parseFloat(computed.minHeight) || 0, MIN_SIZE),
             maxWidth: Math.max(rect.width, window.innerWidth - rect.left),
@@ -133,14 +123,11 @@ export const useFrameResize = (id: string | undefined, frameRef: RefObject<HTMLE
         endGesture(event);
 
         if (resizeState.moved) {
-            // a resize breaks any tap sequence that was building up
             lastTapRef.current = null;
 
             return;
         }
 
-        // dblclick is not dispatched reliably for touch, so the second tap is tracked by
-        // hand — mouse, pen and touch then all reset through the same path
         const lastTap = lastTapRef.current;
 
         if (lastTap
@@ -161,7 +148,6 @@ export const useFrameResize = (id: string | undefined, frameRef: RefObject<HTMLE
 
         if (!resizeState || event.pointerId !== resizeState.pointerId) return;
 
-        // an interrupted gesture keeps whatever size is on screen, but it is never a tap
         endGesture(event);
 
         lastTapRef.current = null;

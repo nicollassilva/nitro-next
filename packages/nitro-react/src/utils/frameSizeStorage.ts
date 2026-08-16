@@ -26,7 +26,7 @@ export const setStoredFrameSize = (id: string, size: FrameSize): void => {
     try {
         window.localStorage.setItem(STORAGE_KEY_PREFIX + id, JSON.stringify(size));
     } catch {
-        // storage may be unavailable/full — resizing still works, it just won't persist
+        return;
     }
 };
 
@@ -36,6 +36,6 @@ export const clearStoredFrameSize = (id: string): void => {
     try {
         window.localStorage.removeItem(STORAGE_KEY_PREFIX + id);
     } catch {
-        // storage may be unavailable — the size still resets for this session
+        return;
     }
 };
