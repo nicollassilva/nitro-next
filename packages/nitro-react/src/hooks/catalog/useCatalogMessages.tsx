@@ -11,7 +11,7 @@ import { useCatalogVisibility } from "./useCatalogVisibility";
 export const useCatalogMessages = () => {
     const { catalogType, activePageId, activePage } = useCatalogSelectors();
     const { showCatalogPage } = useCatalogNavigation();
-    const { setRootNode, setOffersToNodes, setFrontPageItems, setIsBusy, setActiveOffer, resetCatalog } = useCatalogActions();
+    const { setRootNode, setOffersToNodes, setFrontPageItems, setIsBusy, setActiveOffer, setPurchaseOptions, resetCatalog } = useCatalogActions();
     const { getOfferProduct, processOffer } = useCatalogOfferActions();
     const { hideCatalog } = useCatalogVisibility();
 
@@ -53,9 +53,9 @@ export const useCatalogMessages = () => {
 
         const product = getOfferProduct(purchasableOffer);
 
-        if (product && product.productType === FurnitureTypeEnum.Wall) {
-            // set purchase options
-        }
+        if (product && product.productType === FurnitureTypeEnum.Wall) setPurchaseOptions({
+            extraData: product.extraParam ?? ''
+        });
     });
 
     useMessageListener(CatalogIndexMessage, data => {

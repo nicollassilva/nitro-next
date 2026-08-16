@@ -22,7 +22,7 @@ export const CatalogView = () => {
                     x.visible ? <TabButton key={x.pageId} className="w-full" aria-selected={x.isActive} onClick={_ => activateNode(x)}>{x.localization.length ? x.localization : x.pageName}</TabButton> : null)}
             </TabContext>
             <CatalogHeaderView />
-            <div className="flex h-full p-2 gap-1.5 overflow-hidden">
+            <div className="flex h-full px-2 pt-2 pb-2.5 gap-1.5 overflow-hidden">
                 <div className="flex flex-col flex-4 w-full gap-0.5">
                     <CatalogSearchView />
                     <CatalogNavigationView node={activeNodes[0]?.children[0]} />

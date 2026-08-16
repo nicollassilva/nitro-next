@@ -3,7 +3,7 @@ import { FurnitureSpecialType, FurnitureTypeEnum, RoomId, Vector3d } from "@nitr
 import { GetAvatarRenderManager, GetRoomContentLoader } from "@nitrodevco/nitro-renderer";
 import { MouseEvent, useEffect, useRef } from "react";
 
-import { useCatalogSelectors, useOwnUserLook } from "#base/context"
+import { useCatalogSelectors, useOwnUserLook, useTranslation } from "#base/context"
 import { useCatalogOfferActions, useRoomPreviewer } from "#base/hooks";
 import { cn } from "#base/theme";
 
@@ -13,6 +13,8 @@ export const CatalogProductViewWidgetView = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const { room, addFloorItemIntoRoom, addWallItemIntoRoom, addAvatarIntoRoom, changeObjectDirection, changeObjectState } = useRoomPreviewer(RoomId.TEMP_ROOM_CATALOG, canvasRef);
     const { ownFigure, ownGender } = useOwnUserLook();
+    const t = useTranslation();
+    const product = activeOffer ? getOfferProduct(activeOffer) : undefined;
 
     const onClick = (event: MouseEvent<HTMLCanvasElement>) => {
         if (!room) return;
@@ -22,11 +24,7 @@ export const CatalogProductViewWidgetView = () => {
     }
 
     useEffect(() => {
-        if (!room || !activeOffer) return;
-
-        const product = getOfferProduct(activeOffer);
-
-        if (!product) return;
+        if (!room || !activeOffer || !product) return;
 
         switch (product.productType) {
             case FurnitureTypeEnum.Floor: {
@@ -85,6 +83,11 @@ export const CatalogProductViewWidgetView = () => {
     return (
         <div className="relative flex overflow-hidden size-full">
             <canvas ref={canvasRef} className={cn(`absolute bg-black`, !activeOffer && 'hidden')} onClick={onClick} />
+            {activeOffer && product &&
+                <div className="absolute flex flex-col left-1.25 top-5.5 gap-1 max-w-43.75 text-white">
+                    <span className="text-style-u-bold">{product.productData?.name ?? t(activeOffer.localizationId)}</span>
+                    <span className="text-style-u-italic-small hidden">{product.productData?.description ?? t(activeOffer.localizationId)}</span>
+                </div>}
         </div>
     )
 }

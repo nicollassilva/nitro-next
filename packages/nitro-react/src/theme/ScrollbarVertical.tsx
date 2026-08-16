@@ -55,7 +55,7 @@ export const ScrollbarVertical = forwardRef<HTMLDivElement, ScrollbarVerticalPro
                         defaultVariant={resolvedVariant}
                         role="button"
                         aria-label="Scroll up"
-                        aria-disabled={!controller.scrollable || controller.atStart}
+                        //aria-disabled={!controller.scrollable || controller.atStart}
                         className="shrink-0 cursor-pointer touch-none select-none"
                         {...holdUp}
                     />
@@ -85,7 +85,7 @@ export const ScrollbarVertical = forwardRef<HTMLDivElement, ScrollbarVerticalPro
                         defaultVariant={resolvedVariant}
                         role="button"
                         aria-label="Scroll down"
-                        aria-disabled={!controller.scrollable || controller.atEnd}
+                        //aria-disabled={!controller.scrollable || controller.atEnd}
                         className="shrink-0 cursor-pointer touch-none select-none"
                         {...holdDown}
                     />
