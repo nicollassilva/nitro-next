@@ -5,5 +5,8 @@ export * from './IMessageDataWrapper';
 export * from './IncomingPacketConstructor';
 export * from './IOutgoingPacket';
 export * from './OutgoingPacketConstructor';
+export * from './ParseArray';
+export * from './ParseInts';
+export * from './ParseStrings';
 export * from './enums/ClientDeviceCategoryEnum';
 export * from './enums/ClientPlatformEnum';

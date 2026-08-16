@@ -1,4 +1,4 @@
-import { FriendListUpdateActionType, IFriendRequest, IMessengerCategory, IMessengerFriend, IMessengerUpdate } from "@nitrodevco/nitro-shared";
+import { FriendListUpdateActionType, IFriendRequest, IMessengerCategory, IMessengerFriend, IMessengerUpdate } from "@nitrodevco/nitro-packets";
 import type { StateCreator } from "zustand";
 
 type State = {

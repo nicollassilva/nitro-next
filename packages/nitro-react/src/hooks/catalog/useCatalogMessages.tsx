@@ -1,5 +1,5 @@
 import { FurnitureTypeEnum, ICatalogNode, IPurchasableOffer } from "@nitrodevco/nitro-api";
-import { CatalogIndexMessage, CatalogPageMessage, CatalogPublishedMessage, ProductOfferEventMessage } from "@nitrodevco/nitro-shared";
+import { CatalogIndexMessage, CatalogPageMessage, CatalogPublishedMessage, ProductOfferEventMessage } from "@nitrodevco/nitro-packets";
 
 import { useCatalogActions, useCatalogSelectors } from "#base/context";
 import { useMessageListener } from "#base/hooks";

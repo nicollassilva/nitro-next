@@ -1,4 +1,4 @@
-import { FriendListUpdateComposer, MessengerInitComposer } from "@nitrodevco/nitro-shared";
+import { FriendListUpdateComposer, MessengerInitComposer } from "@nitrodevco/nitro-packets";
 import { useEffect } from "react";
 
 import { useIsWindowVisible, useWebSocketContext } from "#base/context";

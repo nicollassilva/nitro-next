@@ -1,4 +1,4 @@
-import { IMessageDataWrapper } from "@nitrodevco/nitro-api";
+import { IMessageDataWrapper } from "./IMessageDataWrapper";
 
 export const ParseArray = <T,>(wrapper: IMessageDataWrapper, parser: (wrapper: IMessageDataWrapper) => T): T[] => {
     const results: T[] = [];

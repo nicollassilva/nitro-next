@@ -1,5 +1,5 @@
 import { ChangeUserNameResultMessageCode } from "@nitrodevco/nitro-api";
-import { ChangeUserNameResultMessage, EmailStatusResultEventMessage, FigureUpdateEventMessage, NoobnessLevelMessage, PetRespectFailedMessage, UserNameChangedMessage, UserObjectMessage, UserRightsMessage } from "@nitrodevco/nitro-shared";
+import { ChangeUserNameResultMessage, EmailStatusResultEventMessage, FigureUpdateEventMessage, NoobnessLevelMessage, PetRespectFailedMessage, UserNameChangedMessage, UserObjectMessage, UserRightsMessage } from "@nitrodevco/nitro-packets";
 
 import { useOwnUserId, useUserActions, useUserInfoActions } from "#base/context";
 import { useMessageListener } from "#base/hooks";

@@ -1,5 +1,5 @@
 import { CatalogTypeEnum } from "@nitrodevco/nitro-api";
-import { InfoRetrieveComposer } from "@nitrodevco/nitro-shared";
+import { InfoRetrieveComposer } from "@nitrodevco/nitro-packets";
 import { useEffect, useState } from "react";
 
 import { InventoryComponent, RoomWrapper, WalletComponent } from "./components";

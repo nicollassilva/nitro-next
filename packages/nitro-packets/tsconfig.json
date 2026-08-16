@@ -1,12 +1,14 @@
 {
     "extends": "../../tsconfig.base.json",
-    "references": [
-        {
-            "path": "../nitro-api"
+    "compilerOptions": {
+        "paths": {
+            "#packets/*": [
+                "./src/*"
+            ],
         }
-    ],
+    },
     "include": [
-        "src/**/*",
+        "src/**/*"
     ],
     "exclude": [
         "dist",

@@ -1,6 +1,4 @@
-import { ICatalogNode, IMessageDataWrapper } from "@nitrodevco/nitro-api";
-
-import { ParseArray, ParseInts } from "../../../Data";
+import { ICatalogNode, IMessageDataWrapper, ParseArray, ParseInts } from "@nitrodevco/nitro-api";
 
 export const CatalogNodeParser = (wrapper: IMessageDataWrapper): ICatalogNode => {
     return {

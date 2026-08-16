@@ -1,6 +1,5 @@
-import { ICatalogPage, IMessageDataWrapper } from "@nitrodevco/nitro-api";
+import { CatalogTypeEnum, ICatalogPage, IMessageDataWrapper, ParseArray } from "@nitrodevco/nitro-api";
 
-import { ParseArray } from "../../../Data";
 import { CatalogFrontPageItemParser } from "./CatalogFrontPageItemParser";
 import { CatalogOfferParser } from "./CatalogOfferParser";
 import { CatalogPageLocalizationParser } from "./CatalogPageLocalizationParser";
@@ -8,7 +7,7 @@ import { CatalogPageLocalizationParser } from "./CatalogPageLocalizationParser";
 export const CatalogPageParser = (wrapper: IMessageDataWrapper): ICatalogPage => {
     return {
         pageId: wrapper.readInt(),
-        catalogType: wrapper.readString(),
+        catalogType: wrapper.readString() as CatalogTypeEnum,
         layout: wrapper.readString(),
         localization: CatalogPageLocalizationParser(wrapper),
         offers: ParseArray(wrapper, CatalogOfferParser),

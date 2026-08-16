@@ -1,8 +1,8 @@
 
 import type { IMessageDataWrapper, IncomingPacketConstructor, IOutgoingPacket } from '@nitrodevco/nitro-api';
 import { BinaryReader, BinaryWriter, Byte, EvaWireDataWrapper, NitroLogger, Short } from '@nitrodevco/nitro-api';
+import { AuthenticationOKMessage, ClientHelloComposer, GetIncomingPackets, GetOutgoingPackets, SSOTicketComposer } from '@nitrodevco/nitro-packets';
 import { GetTickerTime } from '@nitrodevco/nitro-renderer';
-import { AuthenticationOKMessage, ClientHelloComposer, GetIncomingPackets, GetOutgoingPackets, SSOTicketComposer } from '@nitrodevco/nitro-shared';
 import type { ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
 

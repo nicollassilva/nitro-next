@@ -1,6 +1,5 @@
-import { ICatalogOffer, IMessageDataWrapper } from "@nitrodevco/nitro-api";
+import { ICatalogOffer, IMessageDataWrapper, ParseArray } from "@nitrodevco/nitro-api";
 
-import { ParseArray } from "../../../Data";
 import { CatalogProductParser } from "./CatalogProductParser";
 
 export const CatalogOfferParser = (wrapper: IMessageDataWrapper): ICatalogOffer => {

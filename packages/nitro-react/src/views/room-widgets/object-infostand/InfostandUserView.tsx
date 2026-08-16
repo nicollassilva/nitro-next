@@ -1,5 +1,5 @@
 import { ISimpleRoomObjectData } from "@nitrodevco/nitro-api";
-import { ChangeMottoComposer } from "@nitrodevco/nitro-shared";
+import { ChangeMottoComposer } from "@nitrodevco/nitro-packets";
 import { KeyboardEvent, useEffect, useState } from "react";
 
 import { AvatarImage } from "#base/components/AvatarImage";
