@@ -6,12 +6,11 @@ import { ScrollbarVertical } from './ScrollbarVertical';
 export const InfiniteGrid = <T,>(props: {
     items: T[];
     itemWidth?: number;
-    minHeight?: number;
     overrideColumnCount?: number;
     itemRender: (item: T, index?: number) => ReactElement;
     getKey: (item: T) => Key;
 }) => {
-    const { items = [], itemWidth = 45, minHeight = 45, overrideColumnCount = 0, itemRender, getKey } = props;
+    const { items = [], itemWidth = 45, overrideColumnCount = 0, itemRender, getKey } = props;
     const [columnCount, setColumnCount] = useState(0);
     const elementRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
@@ -20,7 +19,7 @@ export const InfiniteGrid = <T,>(props: {
         count: (Math.ceil((items.length / (columnCount || 1))) || 1),
         overscan: 1,
         getScrollElement: () => elementRef.current,
-        estimateSize: () => minHeight,
+        estimateSize: () => 0,
     });
 
     useEffect(() => {
@@ -86,7 +85,6 @@ export const InfiniteGrid = <T,>(props: {
                             ref={virtualizer.measureElement}
                             className={`grid grid-cols-${columnCount} gap-1 absolute top-0 left-0 w-full`}
                             style={{
-                                minHeight: `${minHeight}px`,
                                 transform: `translateY(${virtualRow.start}px)`
                             }}>
                             {Array.from(Array(columnCount)).map((e, i) => {

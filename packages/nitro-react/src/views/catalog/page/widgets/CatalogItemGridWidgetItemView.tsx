@@ -23,9 +23,9 @@ export const CatalogItemGridWidgetItemView = (props: CatalogItemGridWidgetItemVi
     if (activeOffer === offer) return <CatalogItemGridWidgetItemSelectedView offer={offer} />;
 
     return (
-        <div className="flex items-center justify-center size-full p-0.5 cursor-pointer">
-            <div className="size-full flex flex-col items-center justify-center gap-0.75 min-h-0 py-0.75 overflow-hidden" onClick={() => selectOffer(offer)} data-active={activeOffer === offer}>
-                <Image src={iconUrl} />
+        <div className="flex items-center justify-center size-full p-0.5 cursor-pointer min-h-16.25">
+            <div className="size-full flex flex-col items-center gap-0.75 py-0.75 overflow-hidden" onClick={() => selectOffer(offer)} data-active={activeOffer === offer}>
+                <Image wrapperClassName="min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]" src={iconUrl} />
                 <CatalogItemGridWidgetItemPriceView offer={offer} />
             </div>
         </div>

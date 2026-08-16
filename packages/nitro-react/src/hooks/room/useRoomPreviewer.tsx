@@ -1,7 +1,8 @@
-import { FurnitureUsagePolicyEnum, IObjectData, IRoom, IRoomObjectController, IVector3D, LegacyDataType, RoomEngineObjectEvent, RoomGeometryScaleType, RoomId, RoomObjectCategoryEnum, RoomObjectUserTypeName, RoomObjectVariableEnum, Vector3d } from "@nitrodevco/nitro-api";
+
+import { FurnitureUsagePolicyEnum, IObjectData, IRoom, IRoomObjectController, IVector3D, LegacyDataType, RoomEngineObjectEvent, RoomGeometryScaleType, RoomId, RoomObjectCategoryEnum, RoomObjectUserType, RoomObjectUserTypeName, RoomObjectVariableEnum, Vector3d } from "@nitrodevco/nitro-api";
 import { GetRenderer, GetRoomEngine, GetTicker, GetTickerTime } from "@nitrodevco/nitro-renderer";
 import { PointData, Rectangle, Ticker } from "pixi.js";
-import { MouseEvent, RefObject, useEffect, useEffectEvent, useRef, useState } from "react";
+import { RefObject, useEffect, useEffectEvent, useRef, useState } from "react";
 
 import { useRoomMapping } from "./useRoomMapping";
 
@@ -69,14 +70,19 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
                 return;
             }
         }
+
+        updateRoomPreview();
     }
 
-    const onClick = useEffectEvent((event: MouseEvent<HTMLDivElement>) => {
+    const changeObjectState = () => {
         if (!room) return;
 
-        if (event.shiftKey) changeObjectDirection();
-        else return;
-    });
+        autoStateChange.current = false;
+
+        if (currentObjectCategory.current !== RoomObjectCategoryEnum.Unit) room.updateRoomObjectState(PREVIEW_OBJECT_ID, currentObjectCategory.current);
+
+        updateRoomPreview();
+    }
 
     const onObjectEvent = useEffectEvent((event: RoomEngineObjectEvent) => {
         if (!room || !event) return;
@@ -256,8 +262,8 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
         currentObjectCategory.current = RoomObjectCategoryEnum.Minimum;
     }
 
-    const addFurnitureIntoRoom = (classId: number, direction: IVector3D, objectData?: IObjectData, extra: number = NaN) => {
-        if (!room) return;
+    const addFloorItemIntoRoom = (classId: number, direction: IVector3D, objectData?: IObjectData, extra: number = NaN) => {
+        if (!room) return -1;
 
         if (!objectData) objectData = new LegacyDataType();
 
@@ -281,6 +287,52 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
         }
 
         return -1;
+    }
+
+    const addWallItemIntoRoom = (classId: number, direction: IVector3D, objectData: string) => {
+        if (!room) return -1;
+
+        if (currentObjectCategory.current === RoomObjectCategoryEnum.Floor && currentObjectType.current === classId && currentObjectData.current === objectData) return PREVIEW_OBJECT_ID;
+
+        resetRoomPreview(false);
+
+        currentObjectType.current = classId;
+        currentObjectCategory.current = RoomObjectCategoryEnum.Wall;
+        currentObjectData.current = objectData;
+
+        if (room.addFurnitureWallByTypeId(PREVIEW_OBJECT_ID, classId, new Vector3d(0.5, 2.3, 1.8), direction, 0, objectData, -1, FurnitureUsagePolicyEnum.Nobody, -1, '', false)) {
+            prevAutoStateChangeTime.current = GetTickerTime();
+            autoStateChange.current = true;
+
+            updateRoomPreview();
+
+            return PREVIEW_OBJECT_ID;
+        }
+
+        return -1;
+    }
+
+    const addAvatarIntoRoom = (figure: string, effect: number) => {
+        if (!room) return -1;
+
+        resetRoomPreview(false);
+
+        currentObjectType.current = 1;
+        currentObjectCategory.current = RoomObjectCategoryEnum.Unit;
+        currentObjectData.current = figure;
+
+        if (room.addRoomObjectUser(PREVIEW_OBJECT_ID, new Vector3d(PREVIEW_OBJECT_LOCATION_X, PREVIEW_OBJECT_LOCATION_Y), new Vector3d(90), 135, RoomObjectUserType.User, figure)) {
+            prevAutoStateChangeTime.current = GetTickerTime();
+            autoStateChange.current = true;
+
+            room.updateRoomObjectUserGesture(PREVIEW_OBJECT_ID, 1);
+            room.updateRoomObjectUserEffect(PREVIEW_OBJECT_ID, effect);
+            room.updateRoomObjectUserPosture(PREVIEW_OBJECT_ID, 'std');
+        }
+
+        updateRoomPreview();
+
+        return PREVIEW_OBJECT_ID;
     }
 
     useEffect(() => {
@@ -358,5 +410,5 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
         }
     }, [roomId]);
 
-    return { room, addFurnitureIntoRoom };
+    return { room, addFloorItemIntoRoom, addWallItemIntoRoom, addAvatarIntoRoom, changeObjectDirection, changeObjectState };
 }
