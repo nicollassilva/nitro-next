@@ -4,15 +4,14 @@ import { RoomRenderedEvent } from '@nitrodevco/nitro-shared';
 import { type Ticker } from 'pixi.js';
 import { forwardRef, useEffect, useRef } from 'react';
 
-import { useRoomSelector } from '#base/context';
+import { useConfigValue, useRoomSelector } from '#base/context';
 import { useRoomCamera, useRoomMouse } from '#base/hooks';
-import { useConfigurationStore } from '#base/stores';
 import { GetPixelRatio } from '#base/utils';
 
 export const RoomPreviewerCanvas = forwardRef<HTMLDivElement>((props, ref) => {
     const room = useRoomSelector();
     const { mouseDataRef } = useRoomMouse();
-    const maxFPS = useConfigurationStore<number>(state => state.config['fps.limit'] as number) ?? 60;
+    const maxFPS = useConfigValue<number>('fps.limit') ?? 60;
     const { updateRoomCamera } = useRoomCamera();
     const canvasRef = useRef<HTMLCanvasElement>(null);
 

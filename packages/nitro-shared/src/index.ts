@@ -1110,7 +1110,6 @@ export * from './packets/outgoing/Vault/IncomeRewardClaimComposer';
 export * from './packets/outgoing/Vault/IncomeRewardStatusComposer';
 export * from './packets/outgoing/Vault/WithdrawCreditVaultComposer';
 export * from './packets/OutgoingHeader';
-export * from './stores/ConfigurationStore';
 export * from './utils/AdvancedMap';
 export * from './utils/ArrayBufferToBase64';
 export * from './utils/BinaryReader';

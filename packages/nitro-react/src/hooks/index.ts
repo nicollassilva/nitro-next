@@ -37,4 +37,3 @@ export * from './ui/useFrameDrag';
 export * from './ui/useHoldToRepeat';
 export * from './ui/useOutsideClick';
 export * from './ui/useScrollbarController';
-export * from './useConfigValue';

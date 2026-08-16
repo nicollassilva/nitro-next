@@ -1,5 +1,4 @@
 import type { FurnitureTypeEnum } from './enum';
-import { IRoomObjectData } from './IRoomObjectData';
 
 export interface IFurnitureData {
     readonly type: FurnitureTypeEnum;

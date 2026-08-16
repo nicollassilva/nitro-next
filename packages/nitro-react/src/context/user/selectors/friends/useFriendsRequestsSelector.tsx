@@ -1,5 +1,3 @@
+import { useUserContext } from "../../useUserContext";
 
-import { useUserContext } from "#base/context";
-import { selectRequests } from "#base/stores/user";
-
-export const useFriendsRequestsSelector = () => useUserContext(selectRequests);
+export const useFriendsRequestsSelector = () => useUserContext(x => x.requests);

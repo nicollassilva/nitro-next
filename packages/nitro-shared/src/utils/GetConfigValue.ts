@@ -1,5 +1,10 @@
-import { ConfigurationStore } from '../stores';
+declare global {
+    interface Window {
+        NitroConfig: {
+            "nitro.config.url": string;
+        };
+        NitroParsedConfig: Record<string, unknown>;
+    }
+}
 
-export const GetConfigValue = <T>(key: string, defaultValue: T) => {
-    return ConfigurationStore.getState().config[key] as T ?? defaultValue;
-};
+export const GetConfigValue = <T,>(key: string) => window.NitroParsedConfig[key] as T | undefined;

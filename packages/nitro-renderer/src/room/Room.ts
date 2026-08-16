@@ -306,7 +306,7 @@ export class Room implements IRoom {
             RoomObjectCategoryEnum.Cursor,
         );
 
-        if (GetConfigValue('renderer.avatarArrowEnabled', false)) this.createRoomObjectAndInitalize(
+        if (GetConfigValue<boolean>('renderer.avatarArrowEnabled') ?? false) this.createRoomObjectAndInitalize(
             Room.ARROW_OBJECT_ID,
             Room.ARROW_OBJECT_TYPE,
             RoomObjectCategoryEnum.Cursor,

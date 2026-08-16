@@ -7,8 +7,8 @@ import type { ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 import { useCommunicationIncoming, useCommunicationOutgoing } from '#base/hooks/communication';
-import { useConfigurationStore } from '#base/stores';
 
+import { useConfigValue } from '../system';
 import { WebSocketContext } from './WebSocketContext';
 
 type ProviderProps = {
@@ -22,8 +22,8 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
     const [renderedPhase, setRenderedPhase] = useState<ConnectionPhase>('idle');
     const { incomingByHeader, incomingCtors, incomingHeaderByCtor, registerManyIncoming } = useCommunicationIncoming();
     const { outgoingHeaderByComposerName, registerManyOutgoing } = useCommunicationOutgoing();
-    //const socketUrl = useConfigurationStore(x => x.config['socket.url'] as string) ?? undefined;
-    const production = useConfigurationStore(x => x.config['production.version'] as string) ?? undefined;
+    const socketUrl = useConfigValue<string>('socketUrl') ?? '';
+    const production = useConfigValue<string>('production.version') ?? '';
     const ws = useRef<WebSocket | undefined>(undefined);
     const wsBuffer = useRef<ArrayBuffer>(new ArrayBuffer(0));
     const listeners = useRef<Map<IncomingPacketConstructor<object>, Array<(data: object) => void>>>(new Map());
@@ -33,11 +33,7 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
 
     const connect = () => {
         try {
-            const params = new URLSearchParams(window.location.search);
-            const socketUrl = params.get('socketUrl') ?? '';
-
-            if (!socketUrl || !socketUrl.length || ws.current) return;
-            if (hasConnected.current) return;
+            if (!socketUrl || !socketUrl.length || ws.current || hasConnected.current) return;
 
             hasConnected.current = true;
 
@@ -178,7 +174,7 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
                     ws.current?.close();
                     break;
                 }
-                
+
                 if (length > reader.remaining()) break;
 
                 const extracted = reader.readBytes(length);
