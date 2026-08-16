@@ -1,6 +1,6 @@
 import { CatalogPricingTypeEnum, IPurchasableOffer } from "@nitrodevco/nitro-api"
 
-import { NitroIcon } from "#base/theme";
+import { NitroCurrencyIcon } from "#base/theme";
 
 type CatalogItemGridWidgetItemPriceViewProps = {
     offer: IPurchasableOffer;
@@ -16,14 +16,14 @@ export const CatalogItemGridWidgetItemPriceView = (props: CatalogItemGridWidgetI
             {(offer.pricingType === CatalogPricingTypeEnum.Credits || offer.pricingType === CatalogPricingTypeEnum.CreditsActivityPoints) &&
                 <div className="flex items-center justify-end gap-0.5">
                     <span>{offer.priceInCredits}</span>
-                    <NitroIcon icon="catalog-small-coin" />
+                    <NitroCurrencyIcon type="-1" mini />
                 </div>}
             {offer.pricingType === CatalogPricingTypeEnum.CreditsActivityPoints &&
                 <div className="flex items-center justify-end gap-0.5">
                     <span>+</span>
                     <div className="flex items-center gap-0.5">
                         <span>{offer.priceInActivityPoints}</span>
-                        <NitroIcon icon="catalog-small-diamond" />
+                        <NitroCurrencyIcon type={offer.activityPointType.toString()} mini />
                     </div>
                 </div>}
         </div>

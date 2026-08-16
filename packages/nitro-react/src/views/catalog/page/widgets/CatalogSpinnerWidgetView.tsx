@@ -32,7 +32,7 @@ export const CatalogSpinnerWidgetView = () => {
     if (!activeOffer || !activeOffer.bundlePurchaseAllowed) return null;
 
     return (
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 w-full">
             <span className="text-style-u-regular text-[#666666]">{t('catalog.bundlewidget.quantity')}</span>
             <Border variant="0" className="flex items-center justify-center min-h-6.25 max-h-6.25 min-w-7.5 max-w-7.5 px-1.5">
                 <input type="text" className="flex-1 min-w-0 text-style-u-small" inputMode="numeric" value={quantityValue} onChange={event => updateQuantity(event.target.value)} />

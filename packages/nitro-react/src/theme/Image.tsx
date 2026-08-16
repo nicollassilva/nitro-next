@@ -9,6 +9,7 @@ interface ImageProps extends HTMLAttributes<HTMLImageElement> {
     wrapperClassName?: string;
     placeholderClassName?: string;
     src?: string;
+    showLoading?: boolean;
 }
 
 export const Image = forwardRef<HTMLImageElement, ImageProps>(
@@ -43,7 +44,7 @@ export const Image = forwardRef<HTMLImageElement, ImageProps>(
                         setStatus('error');
                         onError?.(e);
                     }}
-                    className={cn('absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 no-select [-webkit-user-drag:none]', className)}
+                    className={cn('block no-select [-webkit-user-drag:none]', className)}
                     {...props}
                 />}
             </div>
