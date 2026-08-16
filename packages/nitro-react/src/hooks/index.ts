@@ -34,6 +34,7 @@ export * from './room/useRoomObjectSelected';
 export * from './room/useRoomObjectValidation';
 export * from './room/useRoomUserData';
 export * from './ui/useFrameDrag';
+export * from './ui/useFrameResize';
 export * from './ui/useHoldToRepeat';
 export * from './ui/useOutsideClick';
 export * from './ui/useScrollbarController';

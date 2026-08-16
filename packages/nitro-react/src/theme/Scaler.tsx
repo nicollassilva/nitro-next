@@ -1,5 +1,7 @@
 import { forwardRef, type HTMLAttributes } from 'react';
 
+import { type FrameResizeDirection } from '#base/hooks';
+
 import { cn, cva, useCascadedVariant, useTintedVars, VariantCascadeProvider, type VariantProps } from './utils';
 import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 
@@ -68,16 +70,25 @@ const scalerVariants = cva('', { variants: scalerVariantsConfig, defaultVariants
 const scalerOverlayVariants = cva('', { variants: scalerOverlayVariantsConfig, defaultVariants: { variant: '0' } });
 const scalerOffsetVariants = cva('absolute', { variants: scalerOffsetVariantsConfig, defaultVariants: { variant: '0' } });
 
+type ScaleDirection = FrameResizeDirection;
 type ScalerVariantProps = VariantProps<typeof scalerVariantsConfig>;
+
+const scaleCursors: Record<ScaleDirection, string> = {
+    x: 'cursor-ew-resize',
+    y: 'cursor-ns-resize',
+    all: 'cursor-nwse-resize',
+    none: '',
+};
 
 interface ScalerProps extends HTMLAttributes<HTMLDivElement>, ScalerVariantProps {
     className?: string;
     tintColor?: string;
     defaultVariant?: string;
+    direction?: ScaleDirection;
 }
 
 export const Scaler = forwardRef<HTMLDivElement, ScalerProps>(
-    ({ className, variant, defaultVariant, tintColor, style, children, ...props }, ref) => {
+    ({ className, variant, defaultVariant, tintColor, style, children, direction, ...props }, ref) => {
         const cascadedVariant = useCascadedVariant('scaler');
         const resolvedVariant = (variant ?? cascadedVariant ?? defaultVariant ?? '0') as never;
         const ownCascade = VARIANT_CASCADE_CONFIG['scaler']?.[resolvedVariant as string];
@@ -85,13 +96,19 @@ export const Scaler = forwardRef<HTMLDivElement, ScalerProps>(
         const overlayClassName = scalerOverlayVariants({ variant: resolvedVariant });
         const offsetClassName = scalerOffsetVariants({ variant: resolvedVariant });
         const tintStyle = useTintedVars(scalerTintableVars[resolvedVariant as string], resolvedTint);
+        const resolvedDirection = (direction ?? 'all');
 
         return (
             <div
                 className={offsetClassName}>
                 <div
                     ref={ref}
-                    className={cn(scalerVariants({ variant: resolvedVariant }), overlayClassName && 'relative', className)}
+                    className={cn(
+                        scalerVariants({ variant: resolvedVariant }),
+                        overlayClassName && 'relative',
+                        resolvedDirection !== 'none' && cn('touch-none select-none', scaleCursors[resolvedDirection]),
+                        className
+                    )}
                     style={{ ...style, ...tintStyle }}
                     {...props}
                 >
