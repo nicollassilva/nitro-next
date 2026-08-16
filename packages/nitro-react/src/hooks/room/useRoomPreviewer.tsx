@@ -1,9 +1,7 @@
-import { FurnitureUsagePolicyEnum, IObjectData, IRoom, IRoomObjectController, IVector3D, LegacyDataType, RoomGeometryScaleType, RoomId, RoomObjectCategoryEnum, RoomObjectUserTypeName, RoomObjectVariableEnum, Vector3d } from "@nitrodevco/nitro-api";
-import { GetRenderer, GetRoomEngine, GetStage, GetTicker, GetTickerTime } from "@nitrodevco/nitro-renderer";
+import { FurnitureUsagePolicyEnum, IObjectData, IRoom, IRoomObjectController, IVector3D, LegacyDataType, RoomEngineObjectEvent, RoomGeometryScaleType, RoomId, RoomObjectCategoryEnum, RoomObjectUserTypeName, RoomObjectVariableEnum, Vector3d } from "@nitrodevco/nitro-api";
+import { GetRenderer, GetRoomEngine, GetTicker, GetTickerTime } from "@nitrodevco/nitro-renderer";
 import { PointData, Rectangle, Ticker } from "pixi.js";
 import { MouseEvent, RefObject, useEffect, useEffectEvent, useRef, useState } from "react";
-
-import { GetPixelRatio } from "#base/utils";
 
 import { useRoomMapping } from "./useRoomMapping";
 
@@ -11,12 +9,12 @@ const PREVIEW_OBJECT_ID: number = 1;
 const PREVIEW_OBJECT_LOCATION_X: number = 2;
 const PREVIEW_OBJECT_LOCATION_Y: number = 2;
 const ALLOWED_IMAGE_CUT: number = 0.5;
+const AUTOMATIC_STATE_CHANGE_INTERVAL: number = 2500;
 
 export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvasElement | null>) => {
     const [room, setRoom] = useState<IRoom | undefined>(undefined);
-    const [isReady, setIsReady] = useState<boolean>(false);
-    const [autoStateChange, setAutoStateChange] = useState<boolean>(false);
     const { createMapForSize } = useRoomMapping();
+    const autoStateChange = useRef<boolean>(false);
     const prevAutoStateChangeTime = useRef<number>(-1);
     const currentObjectType = useRef<number>(0);
     const currentObjectCategory = useRef<RoomObjectCategoryEnum>(RoomObjectCategoryEnum.Minimum);
@@ -79,6 +77,38 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
         if (event.shiftKey) changeObjectDirection();
         else return;
     });
+
+    const onObjectEvent = useEffectEvent((event: RoomEngineObjectEvent) => {
+        if (!room || !event) return;
+
+        switch (event.type) {
+            case RoomEngineObjectEvent.ADDED: {
+                currentPreviewRectangle.current = null;
+                needsZoomOut.current = false;
+
+                const roomObject = room.getRoomObject(event.objectId, event.category);
+
+                if (roomObject && event.category === RoomObjectCategoryEnum.Wall) {
+                    const sizeZ = roomObject.model.getValue<number>(RoomObjectVariableEnum.FurnitureSizeZ);
+                    const centerZ = roomObject.model.getValue<number>(RoomObjectVariableEnum.FurnitureCenterZ);
+
+                    room.updateRoomObjectWallLocation(event.objectId, new Vector3d(0.5, 2.3, (((3.6 - sizeZ) / 2) + centerZ)));
+                }
+            }
+        }
+    });
+
+    const checkAutomaticObjectStateChange = () => {
+        if (!room || !autoStateChange.current) return;
+
+        const time = GetTickerTime();
+
+        if (time > (prevAutoStateChangeTime.current + AUTOMATIC_STATE_CHANGE_INTERVAL)) {
+            prevAutoStateChangeTime.current = time;
+
+            room.updateRoomObjectState(PREVIEW_OBJECT_ID, currentObjectCategory.current);
+        }
+    }
 
     const getCanvasOffset = (point: PointData) => {
         if (!currentPreviewRectangle.current || currentPreviewRectangle.current.width < 1 || currentPreviewRectangle.current.height < 1) return point;
@@ -173,8 +203,29 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
         }
     }
 
+    const resizeRoomPreview = (width: number, height: number) => {
+        if (!room) return;
+
+        const canvas = room.canvas;
+
+        currentPreviewWidth.current = width;
+        currentPreviewHeight.current = height;
+
+        if (!canvas) room.getRoomCanvas(width, height, RoomGeometryScaleType.ZoomedIn);
+        else canvas.initialize(width, height);
+
+        if (canvasRef.current) {
+            canvasRef.current.width = width;
+            canvasRef.current.height = height;
+            canvasRef.current.style.width = `${width}px`;
+            canvasRef.current.style.height = `${height}px`;
+        }
+    }
+
     const updateRoomPreview = () => {
         if (!room) return;
+
+        checkAutomaticObjectStateChange();
 
         let offset = room.getRoomInstanceRenderingCanvasOffset();
 
@@ -218,7 +269,7 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
 
         if (room.addFurnitureFloorByTypeId(PREVIEW_OBJECT_ID, classId, new Vector3d(PREVIEW_OBJECT_LOCATION_X, PREVIEW_OBJECT_LOCATION_Y), direction, 0, objectData, NaN, -1, FurnitureUsagePolicyEnum.Nobody, -1, '', false, -1)) {
             prevAutoStateChangeTime.current = GetTickerTime();
-            setAutoStateChange(true);
+            autoStateChange.current = true;
 
             const roomObject = room.getRoomObject(PREVIEW_OBJECT_ID, currentObjectCategory.current);
 
@@ -233,101 +284,77 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
     }
 
     useEffect(() => {
-        if (!room || !isReady) return;
+        if (!room) return;
 
         const renderer = GetRenderer();
-        const stage = GetStage();
         const ticker = GetTicker();
-
-        const handleSize = (width: number, height: number, resolution: number) => {
-            const canvas = room.canvas;
-
-            if (!canvas) room.getRoomCanvas(width, height, RoomGeometryScaleType.ZoomedIn);
-            else canvas.initialize(width, height);
-
-            //updateRoomCamera(-1);
-
-            if (canvasRef.current) {
-                canvasRef.current.width = width;
-                canvasRef.current.height = height;
-                canvasRef.current.style.width = `${width}px`;
-                canvasRef.current.style.height = `${height}px`;
-            }
-        }
-
-        let timer: ReturnType<typeof setTimeout>;
-
-        const observer = new ResizeObserver(x => {
-            const width = ~~x[0]?.contentRect.width;
-            const height = ~~x[0]?.contentRect.height;
-            const resolution = GetPixelRatio();
-
-            clearTimeout(timer);
-
-            timer = setTimeout(() => handleSize(width, height, resolution), 5);
-        });
-
-        if (canvasRef && ('current' in canvasRef) && canvasRef.current) {
-            const rect = canvasRef.current.parentElement?.getBoundingClientRect();
-
-            if (rect) handleSize(~~rect.width, ~~rect.height, GetPixelRatio());
-
-            observer.observe(canvasRef.current.parentElement as HTMLElement);
-        }
 
         const tick = (ticker: Ticker) => {
             if (!room || !room.canvas?.master || !canvasRef.current) return;
 
-            const time = ticker.lastTime;
-            const update = false;
-
-            room.update(time, update);
+            room.update(ticker.lastTime, false);
 
             updateRoomPreview();
 
             const extracted = renderer.extract.canvas({ target: room.canvas.master });
             const ctx = canvasRef.current.getContext('2d');
 
-            if (ctx) {
-                ctx.clearRect(0, 0, room.canvas.master.width, room.canvas.master.height);
-                ctx.drawImage(extracted as unknown as CanvasImageSource, 0, 0, room.canvas.master.width, room.canvas.master.height);
-            }
+            if (!ctx) return;
+
+            ctx.clearRect(0, 0, room.canvas.master.width, room.canvas.master.height);
+            ctx.drawImage(extracted as unknown as CanvasImageSource, 0, 0, room.canvas.master.width, room.canvas.master.height);
         }
 
         ticker.add(tick);
+
+        let timer: ReturnType<typeof setTimeout>;
+
+        const observer = new ResizeObserver(x => {
+            const width = x[0]?.contentRect.width;
+            const height = x[0]?.contentRect.height;
+
+            clearTimeout(timer);
+
+            timer = setTimeout(() => resizeRoomPreview(Math.floor(width), Math.floor(height)), 5);
+        });
+
+        if (canvasRef && ('current' in canvasRef) && canvasRef.current) {
+            const rect = canvasRef.current.parentElement?.getBoundingClientRect();
+
+            if (rect) resizeRoomPreview(Math.floor(rect.width), Math.floor(rect.height));
+
+            observer.observe(canvasRef.current.parentElement as HTMLElement);
+        }
 
         return () => {
             if (observer) observer.disconnect();
             if (timer) clearTimeout(timer);
             if (ticker) ticker.remove(tick);
         }
-    }, [room, isReady]);
-
-    useEffect(() => {
-        if (!room) return;
-
-        const map = createMapForSize(7);
-
-        if (map.wallGeometry) room.setLegacyGeometry(map.wallGeometry);
-
-        if (map.mapData) room.applyRoomMap(map.mapData);
-
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setIsReady(true);
-
-        return () => {
-            setIsReady(false);
-        }
     }, [room]);
 
     useEffect(() => {
         const inst = GetRoomEngine().createRoom(RoomId.makeRoomPreviewerId(roomId));
 
+        if (!inst.isInitialized) {
+            const map = createMapForSize(7);
+
+            if (map.wallGeometry) inst.setLegacyGeometry(map.wallGeometry);
+
+            if (map.mapData) inst.applyRoomMap(map.mapData);
+
+            inst.updateRoomPlaneType("110", "99999", undefined);
+        }
+
+        const listeners = [
+            inst.eventDispatcher.addEventListener(RoomEngineObjectEvent.ADDED, onObjectEvent)
+        ];
+
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setRoom(inst);
 
         return () => {
-            inst.dispose();
+            listeners.map(x => x?.());
         }
     }, [roomId]);
 
