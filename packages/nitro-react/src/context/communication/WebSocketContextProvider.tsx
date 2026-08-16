@@ -314,6 +314,8 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
         sendRaw(...pendingClient);
     }
 
+    const state = { isAuthenticated: (renderedPhase === 'awaitingHandlers' || renderedPhase === 'ready'), isDisconnected: (renderedPhase === 'closed'), connect, send, subscribe, setReady };
+
     useEffect(() => {
         registerManyIncoming(GetIncomingPackets());
         registerManyOutgoing(GetOutgoingPackets());
@@ -329,11 +331,8 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
         socket?.close(1000, 'Client shutting down');
     }, []);
 
-    const isAuthenticated = renderedPhase === 'awaitingHandlers' || renderedPhase === 'ready';
-    const isDisconnected = renderedPhase === 'closed';
-
     return (
-        <WebSocketContext.Provider value={{ isAuthenticated, isDisconnected, connect, send, subscribe, setReady }}>
+        <WebSocketContext.Provider value={state}>
             {children}
         </WebSocketContext.Provider>
     );
