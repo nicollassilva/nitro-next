@@ -1,5 +1,5 @@
 import { useTranslation, useWallet } from "#base/context";
-import { Border, Button, NitroIcon } from "#base/theme";
+import { Border, Button, NitroCurrencyIcon, NitroIcon } from "#base/theme";
 
 export const PurseView = () => {
     const currency = useWallet();
@@ -7,18 +7,21 @@ export const PurseView = () => {
 
     const kinds = [
         {
+            type: "5",
             amount: currency.activityPoints[5] ?? 0,
             color: '#38caeb',
             name: 'Diamonds',
             icon: 'diamonds'
         },
         {
+            type: "-1",
             amount: currency.credits ?? 0,
             color: '#d5af22',
             name: 'Credits',
             icon: 'credits'
         },
         {
+            type: "0",
             amount: currency.activityPoints[0] ?? 0,
             color: '#d787d7',
             name: 'Duckets',
@@ -29,10 +32,10 @@ export const PurseView = () => {
     return (
         <Border variant="9" className="flex w-57.5 h-19.25 p-1.5 pointer-events-auto gap-1.5">
             <div className="flex flex-col justify-center w-13">
-                {kinds.map(({ amount, color, name, icon }) =>
+                {kinds.map(({ type, amount, color, name, icon }) =>
                     <div key={name} className="h-4.75 flex justify-end items-center gap-0.5 hover:cursor-pointer [&:hover>*]:brightness-[1.6]">
                         <span className="text-[12px] text-ellipsis text-nowrap font-ubuntu-bold" style={{ color }}>{amount}</span>
-                        <NitroIcon icon={`icon-currency ${icon}`} />
+                        <NitroCurrencyIcon type={type} small />
                     </div>)
                 }
             </div>

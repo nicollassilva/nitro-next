@@ -32,6 +32,7 @@ export * from './room/useRoomObjectRollOver';
 export * from './room/useRoomObjectSelect';
 export * from './room/useRoomObjectSelected';
 export * from './room/useRoomObjectValidation';
+export * from './room/useRoomPreviewer';
 export * from './room/useRoomUserData';
 export * from './ui/useFrameDrag';
 export * from './ui/useFrameResize';

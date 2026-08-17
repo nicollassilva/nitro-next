@@ -26,6 +26,7 @@ export interface IRoom {
     applyRoomMap(roomMap: IRoomMapData): void;
     update(time: number, update?: boolean): void;
     getRoomObjectBoundingRectangle(objectId: number, category: RoomObjectCategoryEnum): Rectangle | undefined;
+    getRoomInstanceRenderingCanvasOffset(): PointData;
     setRoomInstanceRenderingCanvasOffset(point: PointData): boolean;
     getRoomObjectManager(category: number): IRoomObjectManager | undefined;
     getTotalObjectsForManager(category: RoomObjectCategoryEnum): number;
@@ -114,7 +115,11 @@ export interface IRoom {
         direction: IVector3D | undefined,
         state: number,
         data: string
-    ): boolean
+    ): boolean;
+    updateRoomObjectWallLocation(
+        objectId: number,
+        location: IVector3D | undefined
+    ): boolean;
     updateRoomObjectWallState(
         objectId: number,
         state: number,
@@ -126,6 +131,7 @@ export interface IRoom {
     ): boolean;
     updateRoomObjectFloorHeight(objectId: number, height: number): boolean;
     updateRoomObjectMask(objectId: number, add?: boolean): boolean;
+    updateRoomObjectState(objectId: number, category: RoomObjectCategoryEnum): boolean;
     updateRoomPlaneType(floorType: string | undefined, wallType: string | undefined, landscapeType: string | undefined): boolean;
     updateRoomPlaneVisibilities(wallVisible: boolean, floorVisible?: boolean): boolean;
     updateRoomPlaneThickness(wallThickness: RoomThicknessType, floorThickness: RoomThicknessType): boolean;
@@ -143,6 +149,7 @@ export interface IRoom {
     updateRoomObjectUserPosture(objectId: number, type: string, parameter?: string): boolean;
     removeRoomObjectFloor(objectId: number, isOwner?: boolean): void;
     removeRoomObjectWall(objectId: number, isOwner?: boolean): void;
+    removeRoomObjectUser(objectId: number): void;
     getRoomObjectScreenLocation(objectId: number, category: RoomObjectCategoryEnum): PointData | undefined;
     getRoomObjectImage(objectId: number, category: RoomObjectCategoryEnum, direction: IVector3D, scale: RoomGeometryScaleType): Promise<ImageLike | undefined>;
     getRoomObjectPetImage(typeId: number, paletteId: number, color: number, direction: IVector3D, scale: RoomGeometryScaleType, headOnly?: boolean, customParts?: IPetCustomPart[], posture?: string): Promise<ImageLike | undefined>;
@@ -170,4 +177,5 @@ export interface IRoom {
     readonly areaSelection: IRoomAreaSelectionManager;
     readonly isAreaSelectionMode: boolean;
     readonly legacyGeometry: ILegacyWallGeometry | undefined;
+    readonly isInitialized: boolean;
 }

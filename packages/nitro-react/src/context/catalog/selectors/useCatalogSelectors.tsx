@@ -12,5 +12,7 @@ export const useCatalogSelectors = () => useCatalogContext(useShallow(x => ({
     activePage: x.activePage,
     activeOffer: x.activeOffer,
     requestedPage: x.requestedPage,
+    purchaseOptions: x.purchaseOptions,
+    searchResult: x.searchResult,
     frontPageItems: x.frontPageItems
 })));

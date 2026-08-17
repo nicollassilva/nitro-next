@@ -14,6 +14,7 @@ export * from './ICatalogPage';
 export * from './ICatalogPageLocalization';
 export * from './ICatalogProduct';
 export * from './ICatalogRequestedPage';
+export * from './ICatalogSearchResult';
 export * from './IProduct';
 export * from './IPurchasableOffer';
 export * from './IPurchaseOptions';

@@ -6,14 +6,14 @@ import { VARIANT_CASCADE_CONFIG } from './VariantConfig';
 const contentAreaVariantsConfig = {
     variant: {
         // default
-        '0': 'flex flex-col w-full pb-0.75',
+        '0': 'pb-0.75',
         // default
-        '3': 'relative flex flex-col w-full',
+        '3': 'relative',
     },
 } as const;
 
 const contentArea = cva(
-    'flex size-full overflow-hidden z-20',
+    'flex flex-col size-full overflow-hidden z-20',
     {
         variants: contentAreaVariantsConfig,
         defaultVariants: {

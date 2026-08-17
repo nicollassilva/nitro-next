@@ -36,7 +36,7 @@ export const ScrollbarVertical = forwardRef<HTMLDivElement, ScrollbarVerticalPro
         const holdUp = useHoldToRepeat(controller.stepBackward);
         const holdDown = useHoldToRepeat(controller.stepForward);
 
-        function onThumbKeyDown(event: ReactKeyboardEvent<HTMLDivElement>) {
+        const onThumbKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
             if (event.key === 'ArrowUp') {
                 event.preventDefault();
                 controller.stepBackward();
@@ -46,16 +46,14 @@ export const ScrollbarVertical = forwardRef<HTMLDivElement, ScrollbarVerticalPro
             }
         }
 
-        //if (!controller.scrollable) return null;
-
         return (
-            <div ref={ref} className={cn('flex w-fit flex-col items-stretch', className)} {...props}>
+            <div ref={ref} className={cn('flex w-fit flex-col items-stretch', !controller.scrollable && 'invisible w-0! pointer-events-none', className)} {...props}>
                 <VariantCascadeProvider map={ownCascade}>
                     <ScrollbarSliderButtonUp
                         defaultVariant={resolvedVariant}
                         role="button"
                         aria-label="Scroll up"
-                        aria-disabled={!controller.scrollable || controller.atStart}
+                        //aria-disabled={!controller.scrollable || controller.atStart}
                         className="shrink-0 cursor-pointer touch-none select-none"
                         {...holdUp}
                     />
@@ -85,7 +83,7 @@ export const ScrollbarVertical = forwardRef<HTMLDivElement, ScrollbarVerticalPro
                         defaultVariant={resolvedVariant}
                         role="button"
                         aria-label="Scroll down"
-                        aria-disabled={!controller.scrollable || controller.atEnd}
+                        //aria-disabled={!controller.scrollable || controller.atEnd}
                         className="shrink-0 cursor-pointer touch-none select-none"
                         {...holdDown}
                     />

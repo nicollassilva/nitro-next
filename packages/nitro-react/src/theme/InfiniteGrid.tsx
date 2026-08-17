@@ -6,12 +6,11 @@ import { ScrollbarVertical } from './ScrollbarVertical';
 export const InfiniteGrid = <T,>(props: {
     items: T[];
     itemWidth?: number;
-    minHeight?: number;
     overrideColumnCount?: number;
     itemRender: (item: T, index?: number) => ReactElement;
     getKey: (item: T) => Key;
 }) => {
-    const { items = [], itemWidth = 45, minHeight = 45, overrideColumnCount = 0, itemRender, getKey } = props;
+    const { items = [], itemWidth = 45, overrideColumnCount = 0, itemRender, getKey } = props;
     const [columnCount, setColumnCount] = useState(0);
     const elementRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
@@ -20,7 +19,7 @@ export const InfiniteGrid = <T,>(props: {
         count: (Math.ceil((items.length / (columnCount || 1))) || 1),
         overscan: 1,
         getScrollElement: () => elementRef.current,
-        estimateSize: () => minHeight,
+        estimateSize: () => 0,
     });
 
     useEffect(() => {
@@ -72,7 +71,7 @@ export const InfiniteGrid = <T,>(props: {
         <div className="flex size-full min-h-0 min-w-0 gap-0.5 p-1 overflow-hidden">
             <div
                 ref={elementRef}
-                className="min-h-0 min-w-0 flex-1 overflow-y-auto pr-1.5 py-0.5 scrollbar-none [&::-webkit-scrollbar]:hidden">
+                className="min-h-0 min-w-0 flex-1 overflow-y-auto p-0.5 scrollbar-none [&::-webkit-scrollbar]:hidden">
                 <div
                     ref={contentRef}
                     className="flex flex-col w-full *:pb-1 *:last:pb-0 relative"
@@ -86,7 +85,6 @@ export const InfiniteGrid = <T,>(props: {
                             ref={virtualizer.measureElement}
                             className={`grid grid-cols-${columnCount} gap-1 absolute top-0 left-0 w-full`}
                             style={{
-                                minHeight: `${minHeight}px`,
                                 transform: `translateY(${virtualRow.start}px)`
                             }}>
                             {Array.from(Array(columnCount)).map((e, i) => {

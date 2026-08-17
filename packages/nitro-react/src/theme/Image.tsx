@@ -6,12 +6,14 @@ import { cn } from "./utils";
 
 interface ImageProps extends HTMLAttributes<HTMLImageElement> {
     className?: string;
+    wrapperClassName?: string;
     placeholderClassName?: string;
     src?: string;
+    showLoading?: boolean;
 }
 
 export const Image = forwardRef<HTMLImageElement, ImageProps>(
-    ({ className, placeholderClassName, src, onLoad, onError, ...props }, ref) => {
+    ({ className, wrapperClassName, placeholderClassName, src, onLoad, onError, ...props }, ref) => {
         const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>('loading');
         const loadingIconUrl = useConfigValue<string>('loading.icon.url') ?? '';
 
@@ -20,20 +22,21 @@ export const Image = forwardRef<HTMLImageElement, ImageProps>(
         }, [src]);
 
         return (
-            <div className="relative flex items-center justify-center size-full">
-                {status !== 'loaded' && (
-                    <img
-                        src={loadingIconUrl}
-                        className={cn(
-                            'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 no-select [-webkit-user-drag:none]',
-                            placeholderClassName
-                        )}
-                    />
-                )}
+            <div className={cn(`relative flex items-center justify-center`, wrapperClassName)}>
+                <img
+                    id="img-load"
+                    src={loadingIconUrl}
+                    className={cn(
+                        'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 no-select [-webkit-user-drag:none] img-load',
+                        placeholderClassName
+                    )}
+                />
                 {status !== 'error' && <img
                     ref={ref}
                     src={src}
                     onLoad={e => {
+                        e.currentTarget.parentElement?.querySelector('#img-load')?.remove();
+
                         setStatus('loaded');
                         onLoad?.(e);
                     }}
@@ -41,7 +44,7 @@ export const Image = forwardRef<HTMLImageElement, ImageProps>(
                         setStatus('error');
                         onError?.(e);
                     }}
-                    className={cn('no-select [-webkit-user-drag:none] transition-opacity duration-100', status === 'loaded' ? 'opacity-100' : 'opacity-0 absolute inset-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2', className)}
+                    className={cn('block no-select [-webkit-user-drag:none]', className)}
                     {...props}
                 />}
             </div>

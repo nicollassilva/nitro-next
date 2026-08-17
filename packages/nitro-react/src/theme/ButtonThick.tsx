@@ -55,7 +55,7 @@ const buttonThickTintableVars: Partial<Record<string, string[]>> = {
     '6': ['buttonthick-3-default-src', 'buttonthick-3-hovering-src', 'buttonthick-3-pressed-src', 'buttonthick-3-disabled-src'],
 };
 
-const buttonThickVariants = cva('', { variants: buttonThickVariantsConfig, defaultVariants: { variant: '0' } });
+const buttonThickVariants = cva('flex items-center justify-center pointer-events-auto leading-0 not-aria-disabled:cursor-pointer', { variants: buttonThickVariantsConfig, defaultVariants: { variant: '0' } });
 const buttonThickOverlayVariants = cva('', { variants: buttonThickOverlayVariantsConfig, defaultVariants: { variant: '0' } });
 
 type ButtonThickVariantProps = VariantProps<typeof buttonThickVariantsConfig>;

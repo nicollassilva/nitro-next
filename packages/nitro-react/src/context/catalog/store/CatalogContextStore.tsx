@@ -1,4 +1,4 @@
-import { CatalogRequestedPageUtilities, CatalogTypeEnum, IActivePage, ICatalogFrontPageItem, ICatalogNode, ICatalogRequestedPage, IPurchasableOffer } from '@nitrodevco/nitro-api';
+import { CatalogRequestedPageUtilities, CatalogTypeEnum, IActivePage, ICatalogFrontPageItem, ICatalogNode, ICatalogRequestedPage, ICatalogSearchResult, IPurchasableOffer, IPurchaseOptions } from '@nitrodevco/nitro-api';
 import { createStore } from 'zustand';
 
 type State = {
@@ -12,6 +12,8 @@ type State = {
     activeOffer: IPurchasableOffer | undefined;
     frontPageItems: ICatalogFrontPageItem[];
     requestedPage: ICatalogRequestedPage;
+    purchaseOptions: IPurchaseOptions;
+    searchResult: ICatalogSearchResult | undefined;
 }
 
 type Actions = {
@@ -21,9 +23,11 @@ type Actions = {
     setIsBusy: (isBusy: boolean) => void;
     setActivePageId: (activePageId: number) => void;
     setActivePage: (activePage: IActivePage) => void;
-    setActiveOffer: (activeOffer: IPurchasableOffer) => void;
+    setActiveOffer: (activeOffer: IPurchasableOffer | undefined) => void;
     setFrontPageItems: (frontPageItems: ICatalogFrontPageItem[]) => void;
     setRequestedPage: (requestedPage: ICatalogRequestedPage) => void;
+    setPurchaseOptions: (purchaseOptions: Partial<IPurchaseOptions>) => void;
+    setSearchResult: (searchResult: ICatalogSearchResult | undefined) => void;
     resetCatalog: () => void;
 }
 
@@ -37,7 +41,9 @@ const initialState: State = {
     activePage: undefined,
     activeOffer: undefined,
     frontPageItems: [],
-    requestedPage: CatalogRequestedPageUtilities.getEmpty()
+    requestedPage: CatalogRequestedPageUtilities.getEmpty(),
+    purchaseOptions: { quantity: 1, extraData: '', extraParamRequired: false, objectData: undefined },
+    searchResult: undefined
 };
 
 export type CatalogContextStore = State & Actions;
@@ -51,8 +57,10 @@ export const createCatalogContextStore = (catalogType: CatalogTypeEnum) => creat
     setIsBusy: (isBusy: boolean) => set({ isBusy }),
     setActivePageId: (activePageId: number) => set({ activePageId }),
     setActivePage: (activePage: IActivePage | undefined) => set({ activePage }),
-    setActiveOffer: (activeOffer: IPurchasableOffer | undefined) => set({ activeOffer }),
+    setActiveOffer: (activeOffer: IPurchasableOffer | undefined) => set({ activeOffer, purchaseOptions: { quantity: 1, extraData: '', extraParamRequired: false, objectData: undefined } }),
     setFrontPageItems: (frontPageItems: ICatalogFrontPageItem[]) => set({ frontPageItems }),
     setRequestedPage: (requestedPage: ICatalogRequestedPage) => set({ requestedPage }),
+    setPurchaseOptions: (purchaseOptions: Partial<IPurchaseOptions>) => set(x => ({ purchaseOptions: { ...x.purchaseOptions, ...purchaseOptions } })),
+    setSearchResult: (searchResult: ICatalogSearchResult | undefined) => set({ searchResult }),
     resetCatalog: () => set({ ...initialState, catalogType })
 }));

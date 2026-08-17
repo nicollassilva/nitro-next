@@ -4,7 +4,7 @@ import { Container, Graphics, Sprite } from 'pixi.js';
 const cache = new Map<string, Promise<string | undefined>>();
 
 export function tintImage(url: string, tintColor: string | undefined = undefined, blend: number = 0): Promise<string | undefined> {
-    const key = `${url}::${tintColor}`;
+    const key = `${url}::${tintColor}::${blend}`;
     const cached = cache.get(key);
 
     if (cached) return cached;
@@ -21,19 +21,31 @@ export function tintImage(url: string, tintColor: string | undefined = undefined
         if (!texture) return undefined;
 
         const container = new Container();
-
         const sprite = new Sprite(texture);
 
         if (tintColor) sprite.tint = tintColor;
 
         container.addChild(sprite);
 
-        if (blend > 0) container.addChild(new Graphics().rect(0, 0, texture.width, texture.height).fill({ color: 0xFFFFFF, alpha: blend }));
+        if (blend > 0) {
+            const overlay = new Graphics()
+                .rect(0, 0, texture.width, texture.height)
+                .fill({ color: 0xFFFFFF, alpha: blend });
+
+            const maskSprite = new Sprite(texture);
+
+            maskSprite.renderable = false;
+
+            overlay.mask = maskSprite;
+
+            container.addChild(maskSprite);
+            container.addChild(overlay);
+        }
 
         try {
             return await TextureUtils.generateImageUrl({ target: container, resolution: 1 });
         } finally {
-            sprite.destroy({ children: true });
+            container.destroy({ children: true });
         }
     })();
 

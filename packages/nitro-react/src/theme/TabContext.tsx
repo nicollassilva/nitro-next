@@ -8,12 +8,12 @@ const tabContextVariantsConfig = {
         // default
         '0': 'min-h-5.5 max-h-5.5 text-[#000000]',
         // default
-        '3': 'min-h-8.5 max-h-8.5 text-[#000000]',
+        '3': ' text-[#000000]',
     },
 } as const;
 
 const tabContextVariants = cva(
-    'w-full flex gap-0 px-2 pt-px z-20',
+    'w-full flex gap-0 px-1.25 pt-1 z-20',
     {
         variants: tabContextVariantsConfig,
         defaultVariants: {
