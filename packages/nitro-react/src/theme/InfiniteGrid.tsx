@@ -71,7 +71,7 @@ export const InfiniteGrid = <T,>(props: {
         <div className="flex size-full min-h-0 min-w-0 gap-0.5 p-1 overflow-hidden">
             <div
                 ref={elementRef}
-                className="min-h-0 min-w-0 flex-1 overflow-y-auto pr-1.5 py-0.5 scrollbar-none [&::-webkit-scrollbar]:hidden">
+                className="min-h-0 min-w-0 flex-1 overflow-y-auto p-0.5 scrollbar-none [&::-webkit-scrollbar]:hidden">
                 <div
                     ref={contentRef}
                     className="flex flex-col w-full *:pb-1 *:last:pb-0 relative"

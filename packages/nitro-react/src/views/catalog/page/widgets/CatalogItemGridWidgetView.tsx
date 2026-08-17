@@ -12,7 +12,7 @@ export const CatalogItemGridWidgetView = () => {
     if (!activePage) return null;
 
     return (
-        <Border variant="6" className="size-full">
+        <Border variant="6" className="size-full" blend={0.5}>
             <InfiniteGrid<IPurchasableOffer>
                 key="catalog-grid"
                 items={activePage.offers}

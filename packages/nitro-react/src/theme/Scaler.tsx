@@ -46,7 +46,7 @@ const scalerOffsetVariantsConfig = {
         // white
         '2': '',
         // default
-        '3': 'flex bottom-0.75 right-0.75 z-20',
+        '3': 'flex bottom-0 right-0 z-20',
         // light
         '4': '',
         // default

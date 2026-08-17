@@ -36,7 +36,7 @@ export const ScrollbarVertical = forwardRef<HTMLDivElement, ScrollbarVerticalPro
         const holdUp = useHoldToRepeat(controller.stepBackward);
         const holdDown = useHoldToRepeat(controller.stepForward);
 
-        function onThumbKeyDown(event: ReactKeyboardEvent<HTMLDivElement>) {
+        const onThumbKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
             if (event.key === 'ArrowUp') {
                 event.preventDefault();
                 controller.stepBackward();
@@ -46,10 +46,8 @@ export const ScrollbarVertical = forwardRef<HTMLDivElement, ScrollbarVerticalPro
             }
         }
 
-        //if (!controller.scrollable) return null;
-
         return (
-            <div ref={ref} className={cn('flex w-fit flex-col items-stretch', className)} {...props}>
+            <div ref={ref} className={cn('flex w-fit flex-col items-stretch', !controller.scrollable && 'invisible pointer-events-none', className)} {...props}>
                 <VariantCascadeProvider map={ownCascade}>
                     <ScrollbarSliderButtonUp
                         defaultVariant={resolvedVariant}
