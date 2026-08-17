@@ -1,4 +1,4 @@
-import { CatalogPricingModelEnum, CatalogPricingTypeEnum, CatalogTypeEnum, FurnitureTypeEnum, ICatalogOffer, IProduct, IPurchasableOffer } from "@nitrodevco/nitro-api";
+import { CatalogPricingModelEnum, CatalogPricingTypeEnum, CatalogTypeEnum, FurnitureTypeEnum, ICatalogOffer, IFurnitureData, IProduct, IPurchasableOffer } from "@nitrodevco/nitro-api";
 
 import { useCatalogSelectors, useFurnitureDataSelector } from "#base/context";
 
@@ -102,5 +102,39 @@ export const useCatalogOfferActions = () => {
         return purchasableOffer;
     }
 
-    return { getOfferProduct, processOffer };
+    const processAsOffer = (furnitureData: IFurnitureData) => {
+        if (!furnitureData) return undefined;
+
+        return {
+            pricingModel: CatalogPricingModelEnum.Furniture,
+            pricingType: CatalogPricingTypeEnum.None,
+            offerId: furnitureData.rentOfferId > -1 ? furnitureData.rentOfferId : furnitureData.purchaseOfferId,
+            localizationId: `roomItem.name.${furnitureData.id}`,
+            priceInCredits: 0,
+            priceInActivityPoints: 0,
+            activityPointType: 0,
+            giftable: false,
+            isRentOffer: furnitureData.rentOfferId > -1,
+            clubLevel: 0,
+            products: [
+                {
+                    productType: furnitureData.type,
+                    classId: furnitureData.id,
+                    extraParam: furnitureData.customParams,
+                    productCount: 1,
+                    productData: productData[furnitureData.className],
+                    furnitureData,
+                    isUnique: false,
+                    uniqueSize: 0,
+                    uniqueLeft: 0
+                }
+            ],
+            bundlePurchaseAllowed: false,
+            isLazy: true,
+            page: undefined,
+            badgeCode: ''
+        } as IPurchasableOffer;
+    }
+
+    return { getOfferProduct, processOffer, processAsOffer };
 }

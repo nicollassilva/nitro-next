@@ -47,7 +47,7 @@ export const ScrollbarVertical = forwardRef<HTMLDivElement, ScrollbarVerticalPro
         }
 
         return (
-            <div ref={ref} className={cn('flex w-fit flex-col items-stretch', !controller.scrollable && 'invisible pointer-events-none', className)} {...props}>
+            <div ref={ref} className={cn('flex w-fit flex-col items-stretch', !controller.scrollable && 'invisible w-0! pointer-events-none', className)} {...props}>
                 <VariantCascadeProvider map={ownCascade}>
                     <ScrollbarSliderButtonUp
                         defaultVariant={resolvedVariant}

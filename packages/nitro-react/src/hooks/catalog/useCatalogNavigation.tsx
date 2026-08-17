@@ -1,15 +1,17 @@
-import { CatalogRequestedPageUtilities, IActivePage, ICatalogNode, ICatalogPageLocalization, IPurchasableOffer } from "@nitrodevco/nitro-api";
-import { GetCatalogPageComposer } from "@nitrodevco/nitro-packets";
+import { CatalogRequestedPageUtilities, FurnitureTypeEnum, IActivePage, ICatalogNode, ICatalogPageLocalization, IPurchasableOffer } from "@nitrodevco/nitro-api";
+import { GetCatalogPageComposer, GetProductOfferComposer } from "@nitrodevco/nitro-packets";
 
 import { useCatalogActions, useCatalogSelectors, useWebSocketContext } from "#base/context";
 
 import { useCatalogNodeActions } from "./useCatalogNodeActions";
+import { useCatalogOfferActions } from "./useCatalogOfferActions";
 import { useCatalogVisibility } from "./useCatalogVisibility";
 
 export const useCatalogNavigation = () => {
     const { catalogType, activeNodes, rootNode } = useCatalogSelectors();
-    const { setActiveNodes, setIsBusy, setActivePageId, setActivePage, setActiveOffer, setRequestedPage } = useCatalogActions();
+    const { setActiveNodes, setIsBusy, setActivePageId, setActivePage, setActiveOffer, setRequestedPage, setPurchaseOptions } = useCatalogActions();
     const { getNodeByPageId, getNodeByPageName, getNodesByOfferId } = useCatalogNodeActions();
+    const { getOfferProduct } = useCatalogOfferActions();
     const { isCatalogVisible, showCatalog } = useCatalogVisibility();
     const { send } = useWebSocketContext();
 
@@ -99,9 +101,17 @@ export const useCatalogNavigation = () => {
     }
 
     const selectOffer = (offer: IPurchasableOffer) => {
-        if (offer.isLazy) return;
+        const product = getOfferProduct(offer);
 
-        setActiveOffer(offer);
+        if (!product) return;
+
+        if (offer.isLazy) {
+            send(new GetProductOfferComposer({ offerId: product.furnitureData.rentOfferId > -1 ? product.furnitureData.rentOfferId : product.furnitureData.purchaseOfferId }));
+        } else {
+            setActiveOffer(offer);
+
+            if (product.productType === FurnitureTypeEnum.Wall) setPurchaseOptions({ extraData: product.extraParam });
+        }
     }
 
     const openPageById = (pageId: number) => {

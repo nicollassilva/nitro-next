@@ -23,7 +23,7 @@ export const CatalogView = () => {
             </TabContext>
             <CatalogHeaderView />
             <div className="flex h-full p-2 gap-2 overflow-hidden">
-                <div className="flex flex-col flex-4 w-full gap-0.5">
+                <div className="flex flex-col flex-4 size-full gap-0.5">
                     <CatalogSearchView />
                     <CatalogNavigationView node={activeNodes[0]?.children[0]} />
                 </div>

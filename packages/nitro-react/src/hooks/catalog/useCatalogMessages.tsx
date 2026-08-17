@@ -1,4 +1,4 @@
-import { FurnitureTypeEnum, ICatalogNode, IPurchasableOffer } from "@nitrodevco/nitro-api";
+import { ICatalogNode, IPurchasableOffer } from "@nitrodevco/nitro-api";
 import { CatalogIndexMessage, CatalogPageMessage, CatalogPublishedMessage, ProductOfferEventMessage } from "@nitrodevco/nitro-packets";
 
 import { useCatalogActions, useCatalogSelectors } from "#base/context";
@@ -10,9 +10,9 @@ import { useCatalogVisibility } from "./useCatalogVisibility";
 
 export const useCatalogMessages = () => {
     const { catalogType, activePageId, activePage } = useCatalogSelectors();
-    const { showCatalogPage } = useCatalogNavigation();
-    const { setRootNode, setOffersToNodes, setFrontPageItems, setIsBusy, setActiveOffer, setPurchaseOptions, resetCatalog } = useCatalogActions();
-    const { getOfferProduct, processOffer } = useCatalogOfferActions();
+    const { showCatalogPage, selectOffer } = useCatalogNavigation();
+    const { setRootNode, setOffersToNodes, setFrontPageItems, setIsBusy, resetCatalog } = useCatalogActions();
+    const { processOffer } = useCatalogOfferActions();
     const { hideCatalog } = useCatalogVisibility();
 
     useMessageListener(CatalogPublishedMessage, data => {
@@ -47,15 +47,7 @@ export const useCatalogMessages = () => {
 
         if (!purchasableOffer) return;
 
-        purchasableOffer.page = activePage;
-
-        setActiveOffer(purchasableOffer);
-
-        const product = getOfferProduct(purchasableOffer);
-
-        if (product && product.productType === FurnitureTypeEnum.Wall) setPurchaseOptions({
-            extraData: product.extraParam ?? ''
-        });
+        selectOffer(purchasableOffer);
     });
 
     useMessageListener(CatalogIndexMessage, data => {
