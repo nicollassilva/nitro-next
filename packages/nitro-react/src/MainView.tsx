@@ -3,6 +3,7 @@ import { InfoRetrieveComposer } from "@nitrodevco/nitro-packets";
 import { useEffect, useState } from "react";
 
 import { InventoryComponent, RoomWrapper, WalletComponent } from "./components";
+import { AchievementsWrapper } from "./components/achievements/AchievementsWrapper";
 import { CatalogWrapper } from "./components/catalog/CatalogWrapper";
 import { FriendListWrapper } from "./components/messenger";
 import { useWebSocketContext } from "./context";
@@ -57,6 +58,7 @@ export const MainView = () => {
                 <ToolbarView />
                 <CatalogWrapper catalogType={CatalogTypeEnum.Normal} />
                 <InventoryComponent />
+                <AchievementsWrapper />
                 <WalletComponent />
             </div>
         </>

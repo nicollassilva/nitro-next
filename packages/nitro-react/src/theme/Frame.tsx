@@ -85,10 +85,11 @@ interface FrameProps extends HTMLAttributes<HTMLDivElement>, FrameVariantProps {
     contentClassName?: string;
     tintColor?: string;
     defaultVariant?: string;
+    resizable?: boolean;
 }
 
 export const Frame = forwardRef<HTMLDivElement, FrameProps>(
-    ({ id, caption, onClose, className, contentClassName, variant, defaultVariant, tintColor, style, children, ...props }, ref) => {
+    ({ id, caption, onClose, className, contentClassName, variant, defaultVariant, tintColor, style, children, resizable = true, ...props }, ref) => {
         const cascadedVariant = useCascadedVariant('frame');
         const resolvedVariant = (variant ?? cascadedVariant ?? defaultVariant ?? '0') as never;
         const ownCascade = VARIANT_CASCADE_CONFIG['frame']?.[resolvedVariant as string];
@@ -119,9 +120,9 @@ export const Frame = forwardRef<HTMLDivElement, FrameProps>(
                     <div className={cn('flex px-0.75 pt-px pb-1 size-full overflow-hidden', contentClassName)}>
                         <ContentArea>
                             {children}
-                            <Scaler tintColor={resolvedTint} />
                         </ContentArea>
                     </div>
+                    { resizable && <Scaler tintColor={resolvedTint} /> }
                 </VariantCascadeProvider>
             </div>
         );
