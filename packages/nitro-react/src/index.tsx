@@ -4,7 +4,9 @@ import.meta.glob('./views/**/*.css', { eager: true });
 
 import { createRoot } from 'react-dom/client';
 
+import { DialogComponent } from './components';
 import { SystemContextProvider, UserContextProvider, WebSocketContextProvider } from './context';
+import { DialogContextProvider } from './context/dialog';
 import { Nitro } from './Nitro';
 
 declare global {
@@ -23,10 +25,13 @@ const element = document.getElementById('root');
 if (element)
     createRoot(element).render(
         <SystemContextProvider>
-            <WebSocketContextProvider>
-                <UserContextProvider>
-                    <Nitro />
-                </UserContextProvider>
-            </WebSocketContextProvider>
+            <DialogContextProvider>
+                <WebSocketContextProvider>
+                    <UserContextProvider>
+                        <Nitro />
+                    </UserContextProvider>
+                </WebSocketContextProvider>
+                <DialogComponent />
+            </DialogContextProvider>
         </SystemContextProvider>,
     );

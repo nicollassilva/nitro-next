@@ -2,6 +2,7 @@ export * from './achievements/AchievementComponent';
 export * from './AvatarImage';
 export * from './catalog/CatalogComponent';
 export * from './catalog/CatalogWrapper';
+export * from './dialogs/DialogComponent';
 export * from './FurnitureImage';
 export * from './inventory/InventoryComponent';
 export * from './messenger/FriendListComponent';

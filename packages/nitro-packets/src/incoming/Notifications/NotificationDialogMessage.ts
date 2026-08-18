@@ -1,18 +1,30 @@
 import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
 
 export type NotificationDialogMessageType = {
-  // no fields
-
+    type: string;
+    parameters: Record<string, string>;
 };
 
-export class NotificationDialogMessage implements IIncomingPacket<NotificationDialogMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): NotificationDialogMessageType
-  {
+export class NotificationDialogMessage implements IIncomingPacket<NotificationDialogMessageType> {
+    public parse(wrapper: IMessageDataWrapper): NotificationDialogMessageType {
+        const type = wrapper.readString();
+        const parameters: Record<string, string> = {};
 
-    const packet: NotificationDialogMessageType = {
-    };
+        let totalParameters = wrapper.readInt();
 
-    return packet;
-  }
+        while (totalParameters > 0) {
+            const key = wrapper.readString();
+
+            parameters[key] = wrapper.readString();
+
+            totalParameters--;
+        }
+
+        const packet: NotificationDialogMessageType = {
+            type,
+            parameters
+        };
+
+        return packet;
+    }
 }
