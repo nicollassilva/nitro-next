@@ -57,6 +57,7 @@ export * from './dialog/DialogUtilities';
 export * from './dialog/IDialogCaption';
 export * from './dialog/IDialogData';
 export * from './dialog/IDialogHandle';
+export * from './dialog/IDialogSimpleOptions';
 export * from './events/EventDispatcher';
 export * from './events/IEventDispatcher';
 export * from './events/INitroEvent';

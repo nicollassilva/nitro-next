@@ -1,4 +1,4 @@
-import { DialogButtonEnum, DialogCallback, DialogEventTypeEnum, DialogKindEnum, DialogTypeEnum, DialogUtilities, IAlertDialogHandle, IAlertLinkDialogHandle, IDialogData } from '@nitrodevco/nitro-api';
+import { DialogButtonEnum, DialogCallback, DialogEventTypeEnum, DialogFlagEnum, DialogKindEnum, DialogTypeEnum, DialogUtilities, IAlertDialogHandle, IAlertLinkDialogHandle, IDialogData, IDialogHandle, IDialogSimpleCallbacks, IDialogSimpleOptions } from '@nitrodevco/nitro-api';
 import { createStore } from 'zustand';
 
 type State = {
@@ -12,13 +12,16 @@ type Actions = {
     alertWithLink: (title: string, summary: string, linkTitle: string, linkUrl: string, flags: number, callback: DialogCallback | null) => IAlertLinkDialogHandle;
     confirm: (title: string, summary: string, flags: number, callback: DialogCallback | null) => IAlertDialogHandle;
     confirmWithModal: (title: string, summary: string, flags: number, callback: DialogCallback | null) => IAlertDialogHandle;
+    simpleAlert: (title: string, subtitle: string, message: string, options?: IDialogSimpleOptions) => IDialogHandle;
     closeDialog: (id: number) => void;
     dispatchDialogEvent: (id: number, button: DialogButtonEnum) => void;
 }
 
-type DialogLink = {
-    linkTitle: string;
-    linkUrl: string;
+type DialogParts = {
+    subtitle?: string;
+    linkTitle?: string;
+    linkUrl?: string;
+    imageUrl?: string;
 }
 
 const initialState: State = {
@@ -29,6 +32,7 @@ export type DialogContextStore = State & Actions;
 
 export const createDialogContextStore = () => {
     const callbacks = new Map<number, DialogCallback | null>();
+    const simpleCallbacks = new Map<number, IDialogSimpleCallbacks>();
 
     let nextId = 1;
 
@@ -53,7 +57,7 @@ export const createDialogContextStore = () => {
             dispose: () => get().closeDialog(id)
         });
 
-        const openDialog = (kind: DialogKindEnum, modal: boolean, title: string, summary: string, flags: number, callback: DialogCallback | null, link?: DialogLink) => {
+        const openDialog = (kind: DialogKindEnum, modal: boolean, title: string, summary: string, flags: number, callback: DialogCallback | null, parts?: DialogParts) => {
             const id = nextId++;
 
             const dialog: IDialogData = {
@@ -61,13 +65,15 @@ export const createDialogContextStore = () => {
                 kind,
                 type: modal ? DialogTypeEnum.Modal : DialogTypeEnum.Default,
                 modal,
-                flags: DialogUtilities.resolveFlags(flags),
+                flags: kind === DialogKindEnum.SimpleAlert ? flags : DialogUtilities.resolveFlags(flags),
                 title,
+                subtitle: parts?.subtitle ?? '',
                 summary,
                 titleBarColor: null,
                 captions: {},
-                linkTitle: link?.linkTitle ?? '',
-                linkUrl: link?.linkUrl ?? ''
+                linkTitle: parts?.linkTitle ?? '',
+                linkUrl: parts?.linkUrl ?? '',
+                imageUrl: parts?.imageUrl ?? ''
             };
 
             callbacks.set(id, callback);
@@ -75,6 +81,29 @@ export const createDialogContextStore = () => {
             set(x => ({ dialogs: [...x.dialogs, dialog] }));
 
             return createHandle(dialog);
+        };
+
+        const dispatchSimpleAlertEvent = (dialog: IDialogData, button: DialogButtonEnum) => {
+            if (button !== DialogButtonEnum.Link) {
+                get().closeDialog(dialog.id);
+
+                return;
+            }
+
+            if (dialog.linkUrl.length) {
+                if (DialogUtilities.isLinkEvent(dialog.linkUrl)) get().closeDialog(dialog.id);
+                else window.open(dialog.linkUrl, 'habboMain');
+
+                return;
+            }
+
+            const onLink = simpleCallbacks.get(dialog.id)?.onLink;
+
+            if (!onLink) return;
+
+            onLink();
+
+            get().closeDialog(dialog.id);
         };
 
         return {
@@ -85,20 +114,46 @@ export const createDialogContextStore = () => {
             alertWithLink: (title: string, summary: string, linkTitle: string, linkUrl: string, flags: number, callback: DialogCallback | null) => openDialog(DialogKindEnum.AlertLink, false, title, summary, flags, callback, { linkTitle, linkUrl }),
             confirm: (title: string, summary: string, flags: number, callback: DialogCallback | null) => openDialog(DialogKindEnum.Confirm, false, title, summary, flags, callback),
             confirmWithModal: (title: string, summary: string, flags: number, callback: DialogCallback | null) => openDialog(DialogKindEnum.Confirm, true, title, summary, flags, callback),
+            simpleAlert: (title: string, subtitle: string, message: string, options: IDialogSimpleOptions = {}) => {
+                const hasLink = !!options.linkTitle?.length && (!!options.linkUrl?.length || !!options.onLink);
+
+                const handle = openDialog(DialogKindEnum.SimpleAlert, true, title, message, DialogFlagEnum.Null, null, {
+                    subtitle,
+                    linkTitle: hasLink ? options.linkTitle : '',
+                    linkUrl: hasLink ? options.linkUrl : '',
+                    imageUrl: options.imageUrl
+                });
+
+                if (options.onLink || options.onClose) simpleCallbacks.set(handle.id, { onLink: options.onLink, onClose: options.onClose });
+
+                return handle;
+            },
             closeDialog: (id: number) => {
                 if (!read(id)) return;
 
+                const onClose = simpleCallbacks.get(id)?.onClose;
+
                 callbacks.delete(id);
+                simpleCallbacks.delete(id);
 
                 set(x => ({ dialogs: x.dialogs.filter(dialog => dialog.id !== id) }));
+
+                if (onClose) onClose();
             },
             dispatchDialogEvent: (id: number, button: DialogButtonEnum) => {
                 const dialog = read(id);
 
                 if (!dialog) return;
 
+                if (dialog.kind === DialogKindEnum.SimpleAlert) {
+                    dispatchSimpleAlertEvent(dialog, button);
+
+                    return;
+                }
+
                 if (dialog.kind === DialogKindEnum.AlertLink && button === DialogButtonEnum.Link) {
                     window.open(dialog.linkUrl, '_empty');
+
                     return;
                 }
 
@@ -109,6 +164,7 @@ export const createDialogContextStore = () => {
 
                 if (callback) {
                     callback(createHandle(dialog), { type });
+
                     return;
                 }
 

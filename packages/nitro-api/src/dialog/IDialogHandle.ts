@@ -4,13 +4,16 @@ export interface IDialogEvent {
     readonly type: DialogEventTypeEnum;
 }
 
-export interface IAlertDialogHandle {
+export interface IDialogHandle {
     readonly id: number;
     readonly disposed: boolean;
+    dispose(): void;
+}
+
+export interface IAlertDialogHandle extends IDialogHandle {
     readonly title: string;
     readonly summary: string;
     callback: DialogCallback | null;
-    dispose(): void;
 }
 
 export interface IAlertLinkDialogHandle extends IAlertDialogHandle {

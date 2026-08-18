@@ -65,13 +65,14 @@ type HeaderVariantProps = VariantProps<typeof headerVariantsConfig>;
 interface HeaderProps extends HTMLAttributes<HTMLDivElement>, HeaderVariantProps {
     caption?: string;
     onClose?: () => void;
+    closable?: boolean;
     className?: string;
     tintColor?: string;
     defaultVariant?: string;
 }
 
 export const Header = forwardRef<HTMLDivElement, HeaderProps>(
-    ({ caption, onClose, className, variant, defaultVariant, tintColor, style, children, ...props }, ref) => {
+    ({ caption, onClose, closable = true, className, variant, defaultVariant, tintColor, style, children, ...props }, ref) => {
         const cascadedVariant = useCascadedVariant('header');
         const resolvedVariant = (variant ?? cascadedVariant ?? defaultVariant ?? '0') as never;
         const ownCascade = VARIANT_CASCADE_CONFIG['header']?.[resolvedVariant as string];
@@ -90,11 +91,13 @@ export const Header = forwardRef<HTMLDivElement, HeaderProps>(
                 <VariantCascadeProvider map={ownCascade}>
                     <div className="relative flex items-center justify-center flex-1">
                         <div className="flex flex-1 items-center justify-center z-20 w-full">
-                            <span className="text-center leading-3.75 px-2" style={{ backgroundColor: resolvedTint }}>{caption}</span>
+                            {!!caption?.length && <span className="text-center leading-3.75 px-2" style={{ backgroundColor: resolvedTint }}>{caption}</span>}
                         </div>
-                        <div className="flex shrink-0 items-center justify-center z-20 absolute right-0" style={{ backgroundColor: resolvedTint }}>
-                            <CloseButton className="" onClick={onClose} data-no-drag />
-                        </div>
+                        {closable && (
+                            <div className="flex shrink-0 items-center justify-center z-20 absolute right-0" style={{ backgroundColor: resolvedTint }}>
+                                <CloseButton className="" onClick={onClose} data-no-drag />
+                            </div>
+                        )}
                     </div>
                     {children}
                 </VariantCascadeProvider>

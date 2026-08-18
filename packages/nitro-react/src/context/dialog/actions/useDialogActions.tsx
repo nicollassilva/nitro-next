@@ -9,4 +9,5 @@ export const useDialogActions = () => useDialogContext(useShallow(x => ({
     alertWithLink: x.alertWithLink,
     confirm: x.confirm,
     confirmWithModal: x.confirmWithModal,
+    simpleAlert: x.simpleAlert,
 })));

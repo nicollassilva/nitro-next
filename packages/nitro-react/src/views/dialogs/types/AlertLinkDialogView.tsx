@@ -2,7 +2,7 @@ import { DialogButtonEnum, DialogUtilities, IDialogData } from "@nitrodevco/nitr
 
 import { useTranslation } from "#base/context";
 import { useDialogEventDispatch } from "#base/context/dialog";
-import { Button } from "#base/theme";
+import { ButtonThick } from "#base/theme";
 
 import { AlertDialogView } from "./AlertDialogView";
 
@@ -19,9 +19,9 @@ export const AlertLinkDialogView = ({ dialog }: AlertLinkDialogViewProps) => {
 
     return (
         <AlertDialogView dialog={ dialog }>
-            <Button className="h-5.5" onClick={ () => dispatchDialogEvent(dialog.id, DialogButtonEnum.Link) }>
+            <ButtonThick variant="3" className="h-6 min-w-12.5 px-3" onClick={ () => dispatchDialogEvent(dialog.id, DialogButtonEnum.Link) }>
                 { t(linkKey, linkKey) }
-            </Button>
+            </ButtonThick>
         </AlertDialogView>
     );
 }

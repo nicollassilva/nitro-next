@@ -7,3 +7,4 @@ export * from './DialogUtilities';
 export * from './IDialogCaption';
 export * from './IDialogData';
 export * from './IDialogHandle';
+export * from './IDialogSimpleOptions';

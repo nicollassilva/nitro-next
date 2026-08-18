@@ -12,9 +12,11 @@ export interface IDialogData {
     readonly modal: boolean;
     readonly flags: number;
     readonly title: string;
+    readonly subtitle: string;
     readonly summary: string;
     readonly titleBarColor: string | null;
     readonly captions: Partial<Record<DialogCaptionFlag, IDialogCaption>>;
     readonly linkTitle: string;
     readonly linkUrl: string;
+    readonly imageUrl: string;
 }
