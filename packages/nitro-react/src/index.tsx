@@ -7,6 +7,7 @@ import { createRoot } from 'react-dom/client';
 import { DialogComponent } from './components';
 import { SystemContextProvider, UserContextProvider, WebSocketContextProvider } from './context';
 import { DialogContextProvider } from './context/dialog';
+import { NotificationContextProvider } from './context/notification';
 import { Nitro } from './Nitro';
 
 declare global {
@@ -26,12 +27,14 @@ if (element)
     createRoot(element).render(
         <SystemContextProvider>
             <DialogContextProvider>
-                <WebSocketContextProvider>
-                    <UserContextProvider>
-                        <Nitro />
-                    </UserContextProvider>
-                </WebSocketContextProvider>
-                <DialogComponent />
+                <NotificationContextProvider>
+                    <WebSocketContextProvider>
+                        <UserContextProvider>
+                            <Nitro />
+                        </UserContextProvider>
+                    </WebSocketContextProvider>
+                    <DialogComponent />
+                </NotificationContextProvider>
             </DialogContextProvider>
         </SystemContextProvider>,
     );

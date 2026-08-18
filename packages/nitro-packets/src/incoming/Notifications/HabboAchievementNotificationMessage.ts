@@ -1,18 +1,17 @@
-import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
+import { IAchievementData, IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
+
+import { AchievementDataParser } from '../Inventory/Achievements/Data/AchievementDataParser';
 
 export type HabboAchievementNotificationMessageType = {
-  // no fields
-
+    data: IAchievementData;
 };
 
-export class HabboAchievementNotificationMessage implements IIncomingPacket<HabboAchievementNotificationMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): HabboAchievementNotificationMessageType
-  {
+export class HabboAchievementNotificationMessage implements IIncomingPacket<HabboAchievementNotificationMessageType> {
+    public parse(wrapper: IMessageDataWrapper): HabboAchievementNotificationMessageType {
+        const packet: HabboAchievementNotificationMessageType = {
+            data: AchievementDataParser(wrapper)
+        };
 
-    const packet: HabboAchievementNotificationMessageType = {
-    };
-
-    return packet;
-  }
+        return packet;
+    }
 }

@@ -7,7 +7,8 @@ import { AchievementsWrapper } from "./components/achievements/AchievementsWrapp
 import { CatalogWrapper } from "./components/catalog/CatalogWrapper";
 import { FriendListWrapper } from "./components/messenger";
 import { useWebSocketContext } from "./context";
-import { useDialogsHandler, useMessengerHandler, useNavigatorHandler, useUserInfoHandler, useWalletHandler } from "./handlers";
+import { useDialogsHandler, useMessengerHandler, useNavigatorHandler, useNewFeatureHandler, useNotificationsHandler, useUserInfoHandler, useWalletHandler } from "./handlers";
+import { NotificationExtensionsView } from "./views/notification-center/extensions/NotificationExtensionsView";
 import { NotificationCenterView } from "./views/notification-center/NotificationCenterView";
 import { ActivityPointsView } from "./views/purse/ActivityPointsView";
 import { PurseView } from "./views/purse/PurseView";
@@ -22,6 +23,8 @@ export const MainView = () => {
     useMessengerHandler();
     useWalletHandler();
     useDialogsHandler();
+    useNotificationsHandler();
+    useNewFeatureHandler();
 
     useEffect(() => {
         if (!isReady) return;
@@ -52,6 +55,7 @@ export const MainView = () => {
                     <PurseView />
                     <div className="flex flex-col items-end w-48">
                         <ActivityPointsView />
+                        <NotificationExtensionsView />
                         <NotificationCenterView />
                     </div>
                 </div>

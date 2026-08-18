@@ -1,18 +1,17 @@
 import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
 
 export type RespectNotificationMessageType = {
-  // no fields
-
+    userId: number;
+    respectsReceived: number;
 };
 
-export class RespectNotificationMessage implements IIncomingPacket<RespectNotificationMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): RespectNotificationMessageType
-  {
+export class RespectNotificationMessage implements IIncomingPacket<RespectNotificationMessageType> {
+    public parse(wrapper: IMessageDataWrapper): RespectNotificationMessageType {
+        const packet: RespectNotificationMessageType = {
+            userId: wrapper.readInt(),
+            respectsReceived: wrapper.readInt()
+        };
 
-    const packet: RespectNotificationMessageType = {
-    };
-
-    return packet;
-  }
+        return packet;
+    }
 }

@@ -1,18 +1,15 @@
 import { IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
 
 export type ClubGiftNotificationEventMessageType = {
-  // no fields
-
+    numGifts: number;
 };
 
-export class ClubGiftNotificationEventMessage implements IIncomingPacket<ClubGiftNotificationEventMessageType>
-{
-  public parse(wrapper: IMessageDataWrapper): ClubGiftNotificationEventMessageType
-  {
+export class ClubGiftNotificationEventMessage implements IIncomingPacket<ClubGiftNotificationEventMessageType> {
+    public parse(wrapper: IMessageDataWrapper): ClubGiftNotificationEventMessageType {
+        const packet: ClubGiftNotificationEventMessageType = {
+            numGifts: wrapper.readInt()
+        };
 
-    const packet: ClubGiftNotificationEventMessageType = {
-    };
-
-    return packet;
-  }
+        return packet;
+    }
 }
