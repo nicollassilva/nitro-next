@@ -1,18 +1,18 @@
 import { NotificationExtensionEnum } from "@nitrodevco/nitro-api";
 
-import { useExtensions } from "#base/context/notification";
+import { useNotificationExtensions } from "#base/context/notification";
 
 import { ClubGiftExtensionView } from "./ClubGiftExtensionView";
 import { NewFeatureExtensionView } from "./NewFeatureExtensionView";
 import { SafetyLockedExtensionView } from "./SafetyLockedExtensionView";
 
 export const NotificationExtensionsView = () => {
-    const extensions = useExtensions();
+    const extensions = useNotificationExtensions();
 
     if (!extensions.length) return null;
 
     return (
-        <div className="flex flex-col items-end gap-1 w-full pointer-events-none">
+        <div className="flex flex-col items-end gap-0.5 w-full pointer-events-none mt-0.5">
             { extensions.map(extension => {
                 switch (extension.kind) {
                     case NotificationExtensionEnum.ClubGift:

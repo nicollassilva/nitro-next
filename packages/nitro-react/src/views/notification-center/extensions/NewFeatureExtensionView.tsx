@@ -1,7 +1,7 @@
 import { INewFeatureExtension, NewFeatureTypeEnum, NotificationUtilities } from "@nitrodevco/nitro-api";
 
 import { useConfigValue, useTranslation } from "#base/context";
-import { useExtensionActions } from "#base/context/notification";
+import { useNotificationExtensionActions } from "#base/context/notification";
 import { Button, cn, NitroIcon } from "#base/theme";
 import { DialogLinkButtonView } from "#base/views/dialogs/DialogLinkButtonView";
 
@@ -15,7 +15,7 @@ type NewFeatureExtensionViewProps = {
 export const NewFeatureExtensionView = ({ extension }: NewFeatureExtensionViewProps) => {
     const { config, countdownSeconds, linkRevealed } = extension;
 
-    const { detachExtension, revealExtensionLink } = useExtensionActions();
+    const { detachExtension, revealExtensionLink } = useNotificationExtensionActions();
     const imageTemplate = useConfigValue<string>('notification.image.url') ?? '';
 
     const t = useTranslation();

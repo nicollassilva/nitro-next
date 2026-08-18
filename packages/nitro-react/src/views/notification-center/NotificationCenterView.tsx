@@ -33,7 +33,7 @@ export const NotificationCenterView = () => {
     }, [setNotificationContainerHeight]);
 
     return (
-        <div ref={ containerRef } className="flex flex-col items-end gap-1 w-full pointer-events-none">
+        <div ref={ containerRef } className="flex flex-col items-end gap-1 w-full pointer-events-none mt-0.5">
             { notificationIds.map(id => <NotificationItemView key={ id } id={ id } />) }
         </div>
     );

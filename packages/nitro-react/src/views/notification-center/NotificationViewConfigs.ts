@@ -9,7 +9,8 @@ export type NotificationTimings = {
 export const NOTIFICATION_VIEW_HEIGHTS: Partial<Record<NotificationStyleEnum, number>> = {
     [NotificationStyleEnum.FriendOnline]: 60,
     [NotificationStyleEnum.NftOpening]: 110,
-    [NotificationStyleEnum.TreasureHunt]: 90
+    [NotificationStyleEnum.TreasureHunt]: 90,
+    [NotificationStyleEnum.Wired]: 60
 };
 
 export const NOTIFICATION_TIMINGS: Partial<Record<NotificationStyleEnum, NotificationTimings>> = {

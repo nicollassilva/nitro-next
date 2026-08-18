@@ -3,7 +3,7 @@ import { AccountSafetyLockStatusChangeMessage, ClubGiftNotificationEventMessage,
 
 import { useConfigValue, useTranslation } from "#base/context";
 import { useDialogActions } from "#base/context/dialog";
-import { useExtensionActions, useNotificationActions, useShowNotification } from "#base/context/notification";
+import { useNotificationActions, useNotificationExtensionActions, useShowNotification } from "#base/context/notification";
 import { useOwnUserId } from "#base/context/user";
 import { useMessageListener } from "#base/hooks";
 
@@ -13,7 +13,7 @@ export const useNotificationsHandler = () => {
     const userId = useOwnUserId();
 
     const { addNotification, setNotificationsDisabled } = useNotificationActions();
-    const { attachExtension, detachExtension } = useExtensionActions();
+    const { attachExtension, detachExtension } = useNotificationExtensionActions();
     const { alert } = useDialogActions();
 
     const showNotification = useShowNotification();

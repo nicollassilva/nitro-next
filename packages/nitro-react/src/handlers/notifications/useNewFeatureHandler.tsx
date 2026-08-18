@@ -3,7 +3,7 @@ import { GetSecondsUntilComposer, SecondsUntilMessage } from "@nitrodevco/nitro-
 import { useEffect, useRef } from "react";
 
 import { useConfigValue, useWebSocketContext } from "#base/context";
-import { useExtensionActions } from "#base/context/notification";
+import { useNotificationExtensionActions } from "#base/context/notification";
 import { useMessageListener } from "#base/hooks";
 
 type PendingNewFeature = {
@@ -15,7 +15,7 @@ type PendingNewFeature = {
 
 export const useNewFeatureHandler = () => {
     const rawFeatures = useConfigValue<Record<string, unknown>[]>('notification.new_feature');
-    const { attachExtension } = useExtensionActions();
+    const { attachExtension } = useNotificationExtensionActions();
     const { send } = useWebSocketContext();
 
     const pendingRef = useRef<PendingNewFeature[]>([]);

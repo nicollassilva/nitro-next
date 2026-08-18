@@ -10,6 +10,12 @@ import { getNotificationHeight } from "./NotificationViewConfigs";
 export type NotificationBaseViewProps = {
     notification: INotificationItem;
     icon?: string | null;
+    iconFallback?: ReactNode;
+    header?: ReactNode;
+    variant?: string;
+    tintColor?: string;
+    textClassName?: string;
+    contentClassName?: string;
     children?: ReactNode;
     className?: string;
     timeFadeIn?: number;
@@ -22,6 +28,12 @@ export type NotificationBaseViewProps = {
 export const NotificationBaseView = ({
     notification,
     icon = null,
+    iconFallback = null,
+    header = null,
+    variant = '1',
+    tintColor,
+    textClassName = 'font-goldfish-bold text-[0.56rem] leading-3',
+    contentClassName,
     children,
     className,
     timeFadeIn = 1000,
@@ -75,8 +87,9 @@ export const NotificationBaseView = ({
 
     return (
         <Border
-            variant="1"
-            className={ cn('pointer-events-auto cursor-pointer w-47.5 overflow-hidden flex gap-2 p-2 transition-all ease-linear', className) }
+            variant={ variant as never }
+            tintColor={ tintColor }
+            className={ cn('pointer-events-auto cursor-pointer w-47.5 overflow-hidden flex flex-col transition-all ease-linear', className) }
             style={ {
                 minHeight: getNotificationHeight(notification.styleName),
                 opacity: (isVisible && !isFadingOut) ? 1 : 0,
@@ -86,13 +99,18 @@ export const NotificationBaseView = ({
             onClick={ onClick }
             onMouseEnter={ () => setNotificationHovering(id, true) }
             onMouseLeave={ () => setNotificationHovering(id, false) }>
-            { !!resolvedIcon?.length && (
-                <div className="shrink-0 self-start size-12.5 flex items-center justify-center">
-                    <img src={ resolvedIcon } alt="" className="max-w-full max-h-full pixel-art" />
-                </div>
-            ) }
-            <div className="font-goldfish-bold text-[0.56rem] text-white leading-3 flex-1 min-w-0 wrap-break-word whitespace-pre-wrap min-h-5.5">{ content }</div>
-            { children }
+            { header }
+            <div className={ cn('flex flex-1 gap-2 p-2', contentClassName) }>
+                { resolvedIcon?.length
+                    ? (
+                        <div className="shrink-0 self-start size-12.5 flex items-center justify-center">
+                            <img src={ resolvedIcon } alt="" className="max-w-full max-h-full pixel-art" />
+                        </div>
+                    )
+                    : iconFallback }
+                <div className={ cn('text-white flex-1 min-w-0 wrap-break-word whitespace-pre-wrap min-h-5.5', textClassName) }>{ content }</div>
+                { children }
+            </div>
         </Border>
     );
 }

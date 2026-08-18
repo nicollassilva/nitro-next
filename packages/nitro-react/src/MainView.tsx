@@ -6,6 +6,7 @@ import { InventoryComponent, RoomWrapper, WalletComponent } from "./components";
 import { AchievementsWrapper } from "./components/achievements/AchievementsWrapper";
 import { CatalogWrapper } from "./components/catalog/CatalogWrapper";
 import { FriendListWrapper } from "./components/messenger";
+import { NotificationDebugComponent } from "./components/notifications/NotificationDebugComponent";
 import { useWebSocketContext } from "./context";
 import { useDialogsHandler, useMessengerHandler, useNavigatorHandler, useNewFeatureHandler, useNotificationsHandler, useUserInfoHandler, useWalletHandler } from "./handlers";
 import { NotificationExtensionsView } from "./views/notification-center/extensions/NotificationExtensionsView";
@@ -66,6 +67,7 @@ export const MainView = () => {
                 <AchievementsWrapper />
                 <WalletComponent />
             </div>
+            <NotificationDebugComponent />
         </>
     );
 }

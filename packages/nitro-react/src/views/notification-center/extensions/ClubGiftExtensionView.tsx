@@ -1,7 +1,7 @@
 import { IClubGiftExtension } from "@nitrodevco/nitro-api";
 
 import { useTranslation, useWindowActions } from "#base/context";
-import { useExtensionActions } from "#base/context/notification";
+import { useNotificationExtensionActions } from "#base/context/notification";
 import { ButtonThick, NitroIcon } from "#base/theme";
 import { DialogLinkButtonView } from "#base/views/dialogs/DialogLinkButtonView";
 
@@ -12,7 +12,7 @@ type ClubGiftExtensionViewProps = {
 }
 
 export const ClubGiftExtensionView = ({ extension }: ClubGiftExtensionViewProps) => {
-    const { detachExtension } = useExtensionActions();
+    const { detachExtension } = useNotificationExtensionActions();
     const { showWindow } = useWindowActions();
 
     const t = useTranslation();
