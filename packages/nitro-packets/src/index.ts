@@ -668,6 +668,7 @@ export * from './incoming/Catalog/Data/CatalogPageLocalizationParser';
 export * from './incoming/Catalog/Data/CatalogPageParser';
 export * from './incoming/Catalog/Data/CatalogProductParser';
 export * from './incoming/FriendList/Data/FollowFriendErrorCodeType';
+export * from './incoming/FriendList/Data/FriendRequestStateType';
 export * from './incoming/FriendList/Data/FriendListErrorCodeType';
 export * from './incoming/FriendList/Data/FriendListUpdateActionType';
 export * from './incoming/FriendList/Data/FriendNotificationCodeType';

@@ -1,6 +1,8 @@
 import { FurnitureTypeEnum, IFurnitureData, IFurnitureType, IProductData } from '@nitrodevco/nitro-api';
 import { createStore } from 'zustand';
 
+import { VisibleWindows, WindowName, WindowRegistry } from './WindowRegistry';
+
 type State = {
     config: Record<string, unknown>;
     localizations: Record<string, string>;
@@ -8,7 +10,7 @@ type State = {
     floorItems: Record<number, IFurnitureData>;
     wallItems: Record<number, IFurnitureData>;
     productData: Record<string, IProductData>;
-    visibleWindows: string[];
+    visibleWindows: VisibleWindows;
     topZIndex: number;
     topId: string | undefined;
     zIndexById: Record<string, number>;
@@ -23,13 +25,22 @@ type Actions = {
     parseFloorItems: (data: IFurnitureType[]) => void;
     parseWallItems: (data: IFurnitureType[]) => void;
     parseProductData: (data: IProductData[]) => void;
-    toggleWindow: (name: string) => void;
-    showWindow: (name: string) => void;
-    hideWindow: (name: string) => void;
+    toggleWindow: <T extends WindowName>(name: T, params?: WindowRegistry[T]) => void;
+    showWindow: <T extends WindowName>(name: T, params?: WindowRegistry[T]) => void;
+    hideWindow: (name: WindowName) => void;
+    updateWindowParams: <T extends WindowName>(name: T, params: Partial<WindowRegistry[T]>) => void;
     bringWindowToFront: (id: string) => void;
 };
 
 const BASE_FRAME_Z_INDEX = 100;
+
+const areWindowParamsEqual = (current: object, params: object) => {
+    const entries = Object.entries(current);
+
+    if (entries.length !== Object.keys(params).length) return false;
+
+    return entries.every(([key, value]) => value === (params as Record<string, unknown>)[key]);
+}
 
 const initialState: State = {
     config: {},
@@ -38,7 +49,7 @@ const initialState: State = {
     floorItems: {},
     wallItems: {},
     productData: {},
-    visibleWindows: [],
+    visibleWindows: {},
     topZIndex: BASE_FRAME_Z_INDEX,
     topId: undefined,
     zIndexById: {},
@@ -205,28 +216,41 @@ export const createSystemStore = () => createStore<SystemStore>()((set, get, sto
         return { wallItems };
     }),
     parseProductData: (data: IProductData[]) => set({ productData: Object.fromEntries(data.map(x => [x.code, x])) }),
-    toggleWindow: (name: string) => set(x => {
-        const visibleWindows = [...x.visibleWindows];
-        const index = visibleWindows.indexOf(name);
+    toggleWindow: <T extends WindowName>(name: T, params?: WindowRegistry[T]) => set(x => {
+        const current = x.visibleWindows[name];
+        const visibleWindows = { ...x.visibleWindows };
 
-        if (index >= 0) visibleWindows.splice(index, 1);
-        else visibleWindows.push(name);
-
-        return { visibleWindows };
-    }),
-    showWindow: (name: string) => set(x => {
-        const visibleWindows = [...x.visibleWindows];
-        const index = visibleWindows.indexOf(name);
-
-        if (index === -1) visibleWindows.push(name);
+        if (current && (!params || areWindowParamsEqual(current, params))) delete visibleWindows[name];
+        else visibleWindows[name] = { ...params };
 
         return { visibleWindows };
     }),
-    hideWindow: (name: string) => set(x => {
-        const visibleWindows = [...x.visibleWindows];
-        const index = visibleWindows.indexOf(name);
+    showWindow: <T extends WindowName>(name: T, params?: WindowRegistry[T]) => set(x => {
+        if (!params && x.visibleWindows[name]) return x;
 
-        if (index >= 0) visibleWindows.splice(index, 1);
+        const visibleWindows = { ...x.visibleWindows };
+
+        visibleWindows[name] = { ...params };
+
+        return { visibleWindows };
+    }),
+    hideWindow: (name: WindowName) => set(x => {
+        if (!x.visibleWindows[name]) return x;
+
+        const visibleWindows = { ...x.visibleWindows };
+
+        delete visibleWindows[name];
+
+        return { visibleWindows };
+    }),
+    updateWindowParams: <T extends WindowName>(name: T, params: Partial<WindowRegistry[T]>) => set(x => {
+        const current = x.visibleWindows[name];
+
+        if (!current) return x;
+
+        const visibleWindows = { ...x.visibleWindows };
+
+        visibleWindows[name] = { ...current, ...params };
 
         return { visibleWindows };
     }),

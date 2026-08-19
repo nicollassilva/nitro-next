@@ -1,7 +1,7 @@
-import { CatalogPageRequestType, CatalogRequestedPageUtilities } from "@nitrodevco/nitro-api";
+import { CatalogPageRequestType, CatalogRequestedPageUtilities, ICatalogRequestedPage } from "@nitrodevco/nitro-api";
 import { useEffect } from "react";
 
-import { useCatalogActions, useCatalogSelectors } from "#base/context";
+import { useCatalogActions, useCatalogSelectors, useWindowParams } from "#base/context";
 
 import { useCatalogNavigation } from "./useCatalogNavigation";
 import { useCatalogVisibility } from "./useCatalogVisibility";
@@ -11,6 +11,28 @@ export const useCatalogPageRequest = () => {
     const { rootNode, activePage, requestedPage } = useCatalogSelectors();
     const { activateNode, openPageById, openPageByName, openPageByOfferId } = useCatalogNavigation();
     const { setRequestedPage } = useCatalogActions();
+    
+    const params = useWindowParams('catalog');
+
+    useEffect(() => {
+        let requestedPage: ICatalogRequestedPage | undefined;
+
+        if (params.pageId !== undefined) {
+            requestedPage = CatalogRequestedPageUtilities.getForPageId(params.pageId);
+        }
+        
+        if (params.pageName !== undefined) {
+            requestedPage = CatalogRequestedPageUtilities.getForPageName(params.pageName);
+        }
+
+        if (params.offerId !== undefined) {
+            requestedPage = CatalogRequestedPageUtilities.getForOfferId(params.offerId);
+        }
+
+        if(!requestedPage) return;
+
+        setRequestedPage(requestedPage);
+    }, [params]);
 
     useEffect(() => {
         if (!isCatalogVisible || !rootNode || !requestedPage) return;

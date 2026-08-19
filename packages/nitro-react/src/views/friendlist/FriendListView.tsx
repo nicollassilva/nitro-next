@@ -1,18 +1,25 @@
 
-import { useFriendsActions, useFriendsSelectors, useTranslation } from "#base/context";
-import { useSystemActions } from "#base/context/system";
+import { useFriendsSelectors, useTranslation } from "#base/context";
+import { useSystemActions, useWindowParams } from "#base/context/system";
 import { Accordion, cn, Frame } from "#base/theme";
 
 import { FriendListFriends } from "./FriendListFriends";
 import { FriendListRequests } from "./FriendListRequests";
 import { FriendListSearch } from "./FriendListSearch";
 
+export type FriendListViewWindowParams = { tab?: '' | 'friends' | 'requests' | 'search' };
 
 export const FriendListView = () => {
-    const { toggleWindow } = useSystemActions();
-    const { activeTab, tooltip } = useFriendsSelectors();
-    const { setActiveTab } = useFriendsActions();
+    const { tab: activeTab = 'friends' } = useWindowParams('friendlist');
+
+    const { toggleWindow, updateWindowParams } = useSystemActions();
+    const { tooltip } = useFriendsSelectors();
+
     const t = useTranslation();
+
+    const setActiveTab = (tab: string) => {
+        updateWindowParams('friendlist', { tab: tab as FriendListViewWindowParams['tab'] });
+    }
 
     return (
         <Frame variant="0" id="friendlist" className={cn('w-57.5 min-h-26.75 leading-none', activeTab ? 'h-87.5' : 'h-fit')} contentClassName="px-0! pt-0! -mt-px" caption={t('friendlist.friends')} onClose={() => toggleWindow('friendlist')}>

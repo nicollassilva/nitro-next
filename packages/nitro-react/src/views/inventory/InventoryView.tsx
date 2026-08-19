@@ -1,6 +1,4 @@
-import { useState } from "react";
-
-import { useSystemActions, useTranslation } from "#base/context";
+import { useSystemActions, useTranslation, useWindowParams, WindowParams } from "#base/context";
 import { Frame, TabButton, TabContent, TabContext } from "#base/theme";
 
 import { InventoryBadgesView } from "./InventoryBadgesView";
@@ -8,13 +6,19 @@ import { InventoryBotsView } from "./InventoryBotsView";
 import { InventoryFurniView } from "./InventoryFurniView";
 import { InventoryPetsView } from "./InventoryPetsView";
 
+export type InventoryViewWindowParams = { tab?: 'furni' | 'pets' | 'bots' | 'badges' };
+
 export const InventoryView = () => {
-    const [activeTab, setActiveTab] = useState<string>('furni');
+    const { tab: activeTab = 'furni' } = useWindowParams('inventory');
     const t = useTranslation();
-    const { toggleWindow } = useSystemActions();
+    const { toggleWindow, updateWindowParams } = useSystemActions();
+
+    const setActiveTab = (tab: WindowParams<'inventory'>['tab']) => {
+        updateWindowParams('inventory', { tab });
+    }
 
     return (
-        <Frame id="inventory" variant="3" className="left-5 w-122.5 h-85.5" caption={t('inventory.title')} onClose={() => toggleWindow('inventory')}>
+        <Frame id="inventory" variant="3" resizeDirection="y" className="left-5 w-122.5 h-85.5" caption={t('inventory.title')} onClose={() => toggleWindow('inventory')}>
             <TabContext data-name="tabs">
                 <TabButton onClick={() => setActiveTab('furni')} aria-selected={activeTab === 'furni'}>
                     {t('inventory.furni')}

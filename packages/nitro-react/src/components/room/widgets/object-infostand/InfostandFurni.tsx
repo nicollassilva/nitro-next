@@ -1,6 +1,6 @@
 import { FurniturePickupMode, FurnitureUsagePolicyEnum, ISimpleRoomObjectData, RoomControllerLevelEnum, RoomObjectOperationType, RoomWidgetEnumItemExtradataParameter } from "@nitrodevco/nitro-api";
 
-import { useOwnIsModerator, useOwnUserId, useRoomPermissionsSelector } from "#base/context";
+import { useOwnIsModerator, useOwnUserId, useRoomPermissionsSelector, useSystemActions } from "#base/context";
 import { useRoomFurnitureData, useRoomObjectInteraction, useRoomObjectModify } from "#base/hooks";
 import { InfostandFurniView } from "#base/views/room-widgets/object-infostand/InfostandFurniView";
 
@@ -18,6 +18,7 @@ export const InfostandFurni = (props: InfostandFurniViewProps) => {
     const { controllerLevel, isRoomOwner } = useRoomPermissionsSelector();
     const { modifyRoomObject } = useRoomObjectModify();
     const { changeItemState } = useRoomObjectInteraction();
+    const { toggleWindow } = useSystemActions();
 
     if (!furniData?.furnitureData) return null;
 
@@ -64,6 +65,9 @@ export const InfostandFurni = (props: InfostandFurniViewProps) => {
                 break;
             case 'use':
                 changeItemState(objectId, category, 0, false);
+                break;
+            case 'buy':
+                toggleWindow('catalog', { offerId: furniData.furnitureData?.purchaseOfferId })
                 break;
             default:
                 break;

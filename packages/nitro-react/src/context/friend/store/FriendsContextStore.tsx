@@ -1,7 +1,6 @@
 import { createStore } from 'zustand';
 
 type State = {
-    activeTab: string;
     tooltip: string;
     showListSearchInput: boolean;
     listSearchValue: string;
@@ -11,7 +10,6 @@ type State = {
 }
 
 type Actions = {
-    setActiveTab: (activeTab: string) => void;
     setTooltip: (tooltip: string) => void;
     setListSearchValue: (listSearchValue: string) => void;
     setFilterValue: (filterValue: string) => void;
@@ -23,7 +21,6 @@ type Actions = {
 }
 
 const initialState: State = {
-    activeTab: 'friends',
     tooltip: '',
     showListSearchInput: false,
     listSearchValue: '',
@@ -36,7 +33,6 @@ export type FriendsContextStore = State & Actions;
 
 export const createFriendsContextStore = () => createStore<FriendsContextStore>()((set, get, store) => ({
     ...initialState,
-    setActiveTab: (activeTab: string) => set({ activeTab }),
     setTooltip: (tooltip: string) => set({ tooltip }),
     setListSearchValue: (listSearchValue: string) => set({ listSearchValue }),
     setFilterValue: (filterValue: string) => set({ filterValue }),
