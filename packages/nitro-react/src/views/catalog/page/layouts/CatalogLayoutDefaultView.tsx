@@ -11,8 +11,10 @@ export const CatalogLayoutDefaultView = () => {
 
     return (
         <>
-            <CatalogProductViewWidgetView />
-            <div className="min-h-47.5 max-h-47.5">
+            <div className="min-h-60 max-h-60">
+                <CatalogProductViewWidgetView />
+            </div>
+            <div className="min-h-0 h-full">
                 <CatalogItemGridWidgetView />
             </div>
             <div className="flex flex-col items-end min-h-13.75 max-h-13.75 size-full gap-1 px-1.5">

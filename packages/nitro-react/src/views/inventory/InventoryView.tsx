@@ -18,7 +18,7 @@ export const InventoryView = () => {
     }
 
     return (
-        <Frame id="inventory" variant="3" resizeDirection="y" className="left-5 w-122.5 h-85.5" caption={t('inventory.title')} onClose={() => toggleWindow('inventory')}>
+        <Frame id="inventory" variant="3" resizeDirection="y" className="w-122.5 h-85.5" caption={t('inventory.title')} onClose={() => toggleWindow('inventory')}>
             <TabContext data-name="tabs">
                 <TabButton onClick={() => setActiveTab('furni')} aria-selected={activeTab === 'furni'}>
                     {t('inventory.furni')}

@@ -90,7 +90,6 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
         switch (event.type) {
             case RoomEngineObjectEvent.ADDED: {
                 currentPreviewRectangle.current = null;
-                needsZoomOut.current = false;
 
                 const roomObject = room.getRoomObject(event.objectId, event.category);
 
@@ -162,18 +161,17 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
                 room.canvas.setScale(0.5);
 
                 currentPreviewScale.current = 0.5;
-                needsZoomOut.current = true;
 
                 point.x = (point.x >> 1);
                 point.y = (point.y >> 1);
 
-                currentPreviewRectangle.current.x = currentPreviewRectangle.current.x >> 2;
-                currentPreviewRectangle.current.y = currentPreviewRectangle.current.y >> 2;
-                currentPreviewRectangle.current.width = currentPreviewRectangle.current.width >> 2;
-                currentPreviewRectangle.current.height = currentPreviewRectangle.current.height >> 2;
+                currentPreviewRectangle.current.x = currentPreviewRectangle.current.x >> 1;
+                currentPreviewRectangle.current.y = currentPreviewRectangle.current.y >> 1;
+                currentPreviewRectangle.current.width = currentPreviewRectangle.current.width >> 1;
+                currentPreviewRectangle.current.height = currentPreviewRectangle.current.height >> 1;
             }
         } else if ((((currentPreviewRectangle.current.width << 1) < ((currentPreviewWidth.current * (1 + ALLOWED_IMAGE_CUT)) - 5)) && ((currentPreviewRectangle.current.height << 1) < ((currentPreviewHeight.current * (1 + ALLOWED_IMAGE_CUT)) - 5)))) {
-            if (room.canvas.scale !== 1 && !needsZoomOut.current) {
+            if (room.canvas.scale !== 1) {
                 room.canvas.setScale(1);
 
                 currentPreviewScale.current = 1;
@@ -226,6 +224,8 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
             canvasRef.current.style.width = `${width}px`;
             canvasRef.current.style.height = `${height}px`;
         }
+
+        render();
     }
 
     const updateRoomPreview = () => {
@@ -335,26 +335,28 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
         return PREVIEW_OBJECT_ID;
     }
 
+    const render = (time: number = -1) => {
+        if (!room || !room.canvas?.master || !canvasRef.current) return;
+
+        room.update(time);
+
+        updateRoomPreview();
+
+        const extracted = GetRenderer().extract.canvas({ target: room.canvas.master });
+        const ctx = canvasRef.current.getContext('2d');
+
+        if (!ctx) return;
+
+        ctx.clearRect(0, 0, room.canvas.master.width, room.canvas.master.height);
+        ctx.drawImage(extracted as unknown as CanvasImageSource, 0, 0, room.canvas.master.width, room.canvas.master.height);
+    }
+
     useEffect(() => {
         if (!room) return;
-
-        const renderer = GetRenderer();
         const ticker = GetTicker();
 
         const tick = (ticker: Ticker) => {
-            if (!room || !room.canvas?.master || !canvasRef.current) return;
-
-            room.update(ticker.lastTime, false);
-
-            updateRoomPreview();
-
-            const extracted = renderer.extract.canvas({ target: room.canvas.master });
-            const ctx = canvasRef.current.getContext('2d');
-
-            if (!ctx) return;
-
-            ctx.clearRect(0, 0, room.canvas.master.width, room.canvas.master.height);
-            ctx.drawImage(extracted as unknown as CanvasImageSource, 0, 0, room.canvas.master.width, room.canvas.master.height);
+            render(ticker.lastTime);
         }
 
         ticker.add(tick);
