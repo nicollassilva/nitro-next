@@ -1,6 +1,6 @@
 import { forwardRef, type HTMLAttributes } from 'react';
 
-import { useFrameDrag } from '#base/hooks';
+import { type FrameResizeDirection, useFrameDrag, useFrameResize } from '#base/hooks';
 
 import { ContentArea } from './ContentArea';
 import { Header } from './Header';
@@ -85,10 +85,11 @@ interface FrameProps extends HTMLAttributes<HTMLDivElement>, FrameVariantProps {
     contentClassName?: string;
     tintColor?: string;
     defaultVariant?: string;
+    resizeDirection?: FrameResizeDirection;
 }
 
 export const Frame = forwardRef<HTMLDivElement, FrameProps>(
-    ({ id, caption, onClose, className, contentClassName, variant, defaultVariant, tintColor, style, children, ...props }, ref) => {
+    ({ id, caption, onClose, className, contentClassName, variant, defaultVariant, tintColor, resizeDirection = 'all', style, children, ...props }, ref) => {
         const cascadedVariant = useCascadedVariant('frame');
         const resolvedVariant = (variant ?? cascadedVariant ?? defaultVariant ?? '0') as never;
         const ownCascade = VARIANT_CASCADE_CONFIG['frame']?.[resolvedVariant as string];
@@ -96,6 +97,7 @@ export const Frame = forwardRef<HTMLDivElement, FrameProps>(
         const overlayClassName = frameOverlayVariants({ variant: resolvedVariant });
         const tintStyle = useTintedVars(frameTintableVars[resolvedVariant as string], resolvedTint);
         const { frameRef, style: dragStyle, onPointerDown, onHeaderPointerDown } = useFrameDrag(id);
+        const { style: resizeStyle, onScalerPointerDown, onScalerPointerMove, onScalerPointerUp, onScalerPointerCancel } = useFrameResize(id, frameRef, resizeDirection);
 
         const setRefs = (node: HTMLDivElement | null) => {
             frameRef.current = node;
@@ -109,7 +111,7 @@ export const Frame = forwardRef<HTMLDivElement, FrameProps>(
                 id={id}
                 ref={setRefs}
                 className={cn(frameVariants({ variant: resolvedVariant }), className)}
-                style={{ ...style, ...tintStyle, ...dragStyle }}
+                style={{ ...style, ...tintStyle, ...dragStyle, ...resizeStyle }}
                 onPointerDown={onPointerDown}
                 {...props}
             >
@@ -119,7 +121,14 @@ export const Frame = forwardRef<HTMLDivElement, FrameProps>(
                     <div className={cn('flex px-0.75 pt-px pb-1 size-full overflow-hidden', contentClassName)}>
                         <ContentArea>
                             {children}
-                            <Scaler tintColor={resolvedTint} />
+                            <Scaler
+                                tintColor={resolvedTint}
+                                direction={resizeDirection}
+                                onPointerDown={onScalerPointerDown}
+                                onPointerMove={onScalerPointerMove}
+                                onPointerUp={onScalerPointerUp}
+                                onPointerCancel={onScalerPointerCancel}
+                            />
                         </ContentArea>
                     </div>
                 </VariantCascadeProvider>

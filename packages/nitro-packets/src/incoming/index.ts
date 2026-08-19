@@ -320,6 +320,7 @@ export * from './Vault/CreditVaultStatusMessage';
 export * from './Vault/IncomeRewardClaimResponseMessage';
 export * from './Vault/IncomeRewardStatusMessage';
 export * from './FriendList/Data/FollowFriendErrorCodeType';
+export * from './FriendList/Data/FriendRequestStateType';
 export * from './FriendList/Data/FriendListErrorCodeType';
 export * from './FriendList/Data/FriendListUpdateActionType';
 export * from './FriendList/Data/FriendNotificationCodeType';
