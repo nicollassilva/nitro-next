@@ -1,42 +1,14 @@
 import { INewFeatureConfig, NotificationExtensionEnum, NotificationStyleEnum, NotificationUtilities } from "@nitrodevco/nitro-api";
-import type { ReactNode } from "react";
-import { useState } from "react";
 
 import { useConfigValue } from "#base/context";
 import { useNotificationActions, useNotificationContext, useNotificationExtensionActions, useNotificationExtensions, useShowNotification } from "#base/context/notification";
 
+import { DebugButton, DebugPanel, DebugSection } from "./DebugPanel";
+
 const DEBUG_IMAGE_URL = '/assets/flash/notifications/frank.gif';
 const DEBUG_TYPE = 'debug.sample';
 
-type DebugButtonProps = {
-    onClick: () => void;
-    children: ReactNode;
-}
-
-const DebugButton = ({ onClick, children }: DebugButtonProps) => (
-    <button
-        type="button"
-        className="cursor-pointer rounded-xs border border-white/25 bg-white/10 px-1.5 py-0.5 text-left font-ubuntu text-[10px] leading-4 text-white hover:bg-white/20"
-        onClick={ onClick }>
-        { children }
-    </button>
-);
-
-type DebugSectionProps = {
-    title: string;
-    children: ReactNode;
-}
-
-const DebugSection = ({ title, children }: DebugSectionProps) => (
-    <div className="flex flex-col gap-1">
-        <div className="font-ubuntu-bold text-[10px] uppercase tracking-wide text-white/50">{ title }</div>
-        <div className="flex flex-wrap gap-1">{ children }</div>
-    </div>
-);
-
 export const NotificationDebugComponent = () => {
-    const [collapsed, setCollapsed] = useState(false);
-
     const { addNotification, setNotificationsDisabled } = useNotificationActions();
     const { attachExtension, detachExtension } = useNotificationExtensionActions();
     const extensions = useNotificationExtensions();
@@ -58,23 +30,12 @@ export const NotificationDebugComponent = () => {
 
     const detachAll = () => extensions.forEach(extension => detachExtension(extension.id));
 
-    if (collapsed) {
-        return (
-            <div className="fixed bottom-2 left-2 z-[5000] pointer-events-auto">
-                <DebugButton onClick={ () => setCollapsed(false) }>notifications debug</DebugButton>
-            </div>
-        );
-    }
-
     return (
-        <div className="fixed bottom-2 left-2 z-[5000] flex w-72 flex-col gap-2 rounded-sm border border-white/20 bg-black/85 p-2 pointer-events-auto">
-            <div className="flex items-center justify-between">
-                <div className="font-ubuntu-bold text-[11px] text-white">Notifications debug</div>
-                <DebugButton onClick={ () => setCollapsed(true) }>hide</DebugButton>
-            </div>
-            <div className="font-ubuntu text-[10px] leading-4 text-white/60">
-                visible { visibleCount } · queue { queueLength } · space { containerHeight }px · { disabled ? 'DISABLED' : 'enabled' }
-            </div>
+        <DebugPanel
+            title="Notifications debug"
+            label="Debug Notifications"
+            className="left-2"
+            status={ `visible ${ visibleCount } · queue ${ queueLength } · space ${ containerHeight }px · ${ disabled ? 'DISABLED' : 'enabled' }` }>
             <DebugSection title="Channel A - toasts">
                 <DebugButton onClick={ () => toast(NotificationStyleEnum.Info, 'Plain info toast without an icon.', false) }>info</DebugButton>
                 <DebugButton onClick={ () => toast(NotificationStyleEnum.Info, 'Info toast with an icon.') }>info + icon</DebugButton>
@@ -110,6 +71,6 @@ export const NotificationDebugComponent = () => {
                 )) }
                 <DebugButton onClick={ detachAll }>detach all</DebugButton>
             </DebugSection>
-        </div>
+        </DebugPanel>
     );
 }
