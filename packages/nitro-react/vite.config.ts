@@ -43,6 +43,10 @@ export default defineConfig({
                         return 'nitro-renderer';
                     }
                     if (id.includes('node_modules')) {
+                        if (/node_modules\/(react|react-dom|scheduler)\//.test(id)) {
+                            return 'react-vendor';
+                        }
+
                         return 'vendor';
                     }
                 },

@@ -18,6 +18,7 @@ import {
 import type { Texture } from 'pixi.js';
 
 import { GetAssetManager } from '../assets';
+import { GetRoomEngine } from './GetRoomEngine';
 import { PetColorResult } from './PetColorResult';
 
 export class RoomContentLoader implements IRoomContentLoader {
@@ -329,6 +330,8 @@ export class RoomContentLoader implements IRoomContentLoader {
                 }
 
                 this._events.get(type)?.dispatchEvent(new RoomContentLoadedEvent(RoomContentLoadedEvent.RCLE_SUCCESS, type));
+
+                GetRoomEngine().initalizeTemporaryObjectsByType(type);
             })
             .catch(_err => {
                 this._events.get(type)?.dispatchEvent(new RoomContentLoadedEvent(RoomContentLoadedEvent.RCLE_FAILURE, type));

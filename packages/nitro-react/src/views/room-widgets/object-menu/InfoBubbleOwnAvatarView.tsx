@@ -265,7 +265,7 @@ export const InfoBubbleOwnAvatarView = (props: InfoBubbleOwnAvatarViewProps) => 
                 </div>
             </div>}
             <div className="flex items-center justify-center min-h-4.5 max-h-4.5 p-2 w-full" onClick={() => setCollapsed(!collapsed)}>
-                <NitroIcon className="cursor-pointer" icon={!collapsed ? 'icon-context-menu-arrow-down' : 'icon-context-menu-arrow-up'} />
+                <div className={`cursor-pointer habbo-icon icon-tri-arrow-${!collapsed ? 'down' : 'up'}`} />
             </div>
         </Bubble>
     );

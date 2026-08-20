@@ -9,7 +9,7 @@ import { useCatalogOfferActions } from "./useCatalogOfferActions";
 import { useCatalogVisibility } from "./useCatalogVisibility";
 
 export const useCatalogMessages = () => {
-    const { catalogType, activePageId, activePage } = useCatalogSelectors();
+    const { catalogType, activePageId } = useCatalogSelectors();
     const { showCatalogPage, selectOffer } = useCatalogNavigation();
     const { setRootNode, setOffersToNodes, setFrontPageItems, setIsBusy, resetCatalog } = useCatalogActions();
     const { processOffer } = useCatalogOfferActions();

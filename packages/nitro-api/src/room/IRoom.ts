@@ -27,8 +27,9 @@ export interface IRoom {
     update(time: number, update?: boolean): void;
     getRoomObjectBoundingRectangle(objectId: number, category: RoomObjectCategoryEnum): Rectangle | undefined;
     getRoomInstanceRenderingCanvasOffset(): PointData;
+    getTileHeight(x: number, y: number): number;
     setRoomInstanceRenderingCanvasOffset(point: PointData): boolean;
-    getRoomObjectManager(category: number): IRoomObjectManager | undefined;
+    getRoomObjectManager(category: RoomObjectCategoryEnum): IRoomObjectManager | undefined;
     getTotalObjectsForManager(category: RoomObjectCategoryEnum): number;
     getObjectInstanceId(object: IRoomObject): number;
     getRoomObject(objectId: number, category: RoomObjectCategoryEnum): IRoomObjectController | undefined;

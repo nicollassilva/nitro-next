@@ -13,6 +13,7 @@ type State = {
     frontPageItems: ICatalogFrontPageItem[];
     requestedPage: ICatalogRequestedPage;
     purchaseOptions: IPurchaseOptions;
+    activePurchase: IPurchaseOptions | undefined;
     searchResult: ICatalogSearchResult | undefined;
 }
 
@@ -27,6 +28,7 @@ type Actions = {
     setFrontPageItems: (frontPageItems: ICatalogFrontPageItem[]) => void;
     setRequestedPage: (requestedPage: ICatalogRequestedPage) => void;
     setPurchaseOptions: (purchaseOptions: Partial<IPurchaseOptions>) => void;
+    setActivePurchase: (activePurchase: IPurchaseOptions | undefined) => void;
     setSearchResult: (searchResult: ICatalogSearchResult | undefined) => void;
     resetCatalog: () => void;
 }
@@ -42,7 +44,8 @@ const initialState: State = {
     activeOffer: undefined,
     frontPageItems: [],
     requestedPage: CatalogRequestedPageUtilities.getEmpty(),
-    purchaseOptions: { quantity: 1, extraData: '', extraParamRequired: false, objectData: undefined },
+    purchaseOptions: { offer: undefined, quantity: 1, extraData: '', extraParamRequired: false, objectData: undefined },
+    activePurchase: undefined,
     searchResult: undefined
 };
 
@@ -57,10 +60,11 @@ export const createCatalogContextStore = (catalogType: CatalogTypeEnum) => creat
     setIsBusy: (isBusy: boolean) => set({ isBusy }),
     setActivePageId: (activePageId: number) => set({ activePageId }),
     setActivePage: (activePage: IActivePage | undefined) => set({ activePage }),
-    setActiveOffer: (activeOffer: IPurchasableOffer | undefined) => set({ activeOffer, purchaseOptions: { quantity: 1, extraData: '', extraParamRequired: false, objectData: undefined } }),
+    setActiveOffer: (activeOffer: IPurchasableOffer | undefined) => set({ activeOffer, purchaseOptions: { offer: activeOffer, quantity: 1, extraData: '', extraParamRequired: false, objectData: undefined } }),
     setFrontPageItems: (frontPageItems: ICatalogFrontPageItem[]) => set({ frontPageItems }),
     setRequestedPage: (requestedPage: ICatalogRequestedPage) => set({ requestedPage }),
     setPurchaseOptions: (purchaseOptions: Partial<IPurchaseOptions>) => set(x => ({ purchaseOptions: { ...x.purchaseOptions, ...purchaseOptions } })),
+    setActivePurchase: (activePurchase: IPurchaseOptions) => set({ activePurchase }),
     setSearchResult: (searchResult: ICatalogSearchResult | undefined) => set({ searchResult }),
     resetCatalog: () => set({ ...initialState, catalogType })
 }));

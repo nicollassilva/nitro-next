@@ -3,8 +3,15 @@ import { Border, Button, ButtonThick } from "#base/theme";
 
 export const CatalogPurchaseWidgetView = () => {
     const { activeOffer, purchaseOptions } = useCatalogSelectors();
-    const { setPurchaseOptions } = useCatalogActions();
+    const { setActivePurchase } = useCatalogActions();
     const t = useTranslation();
+
+    const purchase = () => {
+        setActivePurchase({
+            ...purchaseOptions,
+            offer: activeOffer
+        });
+    }
 
     return (
         <div className="flex items-center justify-center w-full gap-2">
@@ -15,7 +22,7 @@ export const CatalogPurchaseWidgetView = () => {
             {activeOffer &&
                 <>
                     <Button variant="3" className="w-full" disabled={purchaseOptions.quantity > 1 || !activeOffer.giftable}>{t('catalog.purchase_confirmation.gift')}</Button>
-                    <ButtonThick variant="3" tintColor="#00aa00" className="w-full text-white">{t('catalog.purchase_confirmation.buy')}</ButtonThick>
+                    <ButtonThick variant="3" tintColor="#00aa00" className="w-full text-white" onClick={purchase}>{t('catalog.purchase_confirmation.buy')}</ButtonThick>
                 </>}
         </div>
     )

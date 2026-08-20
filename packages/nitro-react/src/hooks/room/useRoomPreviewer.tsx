@@ -1,7 +1,7 @@
 
-import { FurnitureUsagePolicyEnum, IObjectData, IRoom, IRoomObjectController, IVector3D, LegacyDataType, RoomEngineObjectEvent, RoomGeometryScaleType, RoomId, RoomObjectCategoryEnum, RoomObjectUserType, RoomObjectUserTypeName, RoomObjectVariableEnum, Vector3d } from "@nitrodevco/nitro-api";
+import { FurnitureUsagePolicyEnum, IObjectData, IRoom, IRoomObjectController, IRoomPreviewerData, IVector3D, LegacyDataType, RoomEngineObjectEvent, RoomGeometryScaleType, RoomId, RoomObjectCategoryEnum, RoomObjectUserType, RoomObjectUserTypeName, RoomObjectVariableEnum, Vector3d } from "@nitrodevco/nitro-api";
 import { GetRenderer, GetRoomEngine, GetTicker, GetTickerTime } from "@nitrodevco/nitro-renderer";
-import { PointData, Rectangle, Ticker } from "pixi.js";
+import { PointData, Ticker } from "pixi.js";
 import { RefObject, useEffect, useEffectEvent, useRef, useState } from "react";
 
 import { useRoomMapping } from "./useRoomMapping";
@@ -15,17 +15,18 @@ const AUTOMATIC_STATE_CHANGE_INTERVAL: number = 2500;
 export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvasElement | null>) => {
     const [room, setRoom] = useState<IRoom | undefined>(undefined);
     const { createMapForSize } = useRoomMapping();
-    const autoStateChange = useRef<boolean>(false);
-    const prevAutoStateChangeTime = useRef<number>(-1);
-    const currentObjectType = useRef<number>(0);
-    const currentObjectCategory = useRef<RoomObjectCategoryEnum>(RoomObjectCategoryEnum.Minimum);
-    const currentObjectData = useRef<string>('');
-    const currentPreviewRectangle = useRef<Rectangle>(null);
-    const currentPreviewWidth = useRef<number>(0);
-    const currentPreviewHeight = useRef<number>(0);
-    const currentPreviewScale = useRef<number>(1);
-    const addViewOffset = useRef<PointData>({ x: 0, y: 0 });
-    const needsZoomOut = useRef<boolean>(false);
+    const previewData = useRef<IRoomPreviewerData>({
+        objectType: 0,
+        objectCategory: RoomObjectCategoryEnum.Minimum,
+        objectData: '',
+        previewRectangle: undefined,
+        previewWidth: 0,
+        previewHeight: 0,
+        previewScale: 1,
+        previewOffset: { x: 0, y: 0 },
+        autoStateChange: false,
+        autoStateChangeTime: -1
+    });
 
     const getValidRoomObjectDirection = (roomObject: IRoomObjectController, forward: boolean) => {
         if (!roomObject?.model) return 0;
@@ -55,13 +56,15 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
     const changeObjectDirection = () => {
         if (!room) return;
 
-        const roomObject = room.getRoomObject(PREVIEW_OBJECT_ID, currentObjectCategory.current);
+        const { objectCategory } = previewData.current;
+
+        const roomObject = room.getRoomObject(PREVIEW_OBJECT_ID, objectCategory);
 
         if (!roomObject) return;
 
         const direction = getValidRoomObjectDirection(roomObject, true);
 
-        switch (currentObjectCategory.current) {
+        switch (objectCategory) {
             case RoomObjectCategoryEnum.Floor: {
                 const loc = new Vector3d(PREVIEW_OBJECT_LOCATION_X, PREVIEW_OBJECT_LOCATION_Y);
                 const dir = new Vector3d(direction, direction, direction);
@@ -77,9 +80,11 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
     const changeObjectState = () => {
         if (!room) return;
 
-        autoStateChange.current = false;
+        const { objectCategory } = previewData.current;
 
-        if (currentObjectCategory.current !== RoomObjectCategoryEnum.Unit) room.updateRoomObjectState(PREVIEW_OBJECT_ID, currentObjectCategory.current);
+        previewData.current.autoStateChange = false;
+
+        if (objectCategory !== RoomObjectCategoryEnum.Unit) room.updateRoomObjectState(PREVIEW_OBJECT_ID, objectCategory);
 
         updateRoomPreview();
     }
@@ -89,7 +94,7 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
 
         switch (event.type) {
             case RoomEngineObjectEvent.ADDED: {
-                currentPreviewRectangle.current = null;
+                previewData.current.previewRectangle = undefined;
 
                 const roomObject = room.getRoomObject(event.objectId, event.category);
 
@@ -104,47 +109,53 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
     });
 
     const checkAutomaticObjectStateChange = () => {
-        if (!room || !autoStateChange.current) return;
+        const { autoStateChange, autoStateChangeTime, objectCategory } = previewData.current;
+
+        if (!room || !autoStateChange) return;
 
         const time = GetTickerTime();
 
-        if (time > (prevAutoStateChangeTime.current + AUTOMATIC_STATE_CHANGE_INTERVAL)) {
-            prevAutoStateChangeTime.current = time;
+        if (time > (autoStateChangeTime + AUTOMATIC_STATE_CHANGE_INTERVAL)) {
+            previewData.current.autoStateChangeTime = time;
 
-            room.updateRoomObjectState(PREVIEW_OBJECT_ID, currentObjectCategory.current);
+            room.updateRoomObjectState(PREVIEW_OBJECT_ID, objectCategory);
         }
     }
 
     const getCanvasOffset = (point: PointData) => {
-        if (!currentPreviewRectangle.current || currentPreviewRectangle.current.width < 1 || currentPreviewRectangle.current.height < 1) return point;
+        const { previewRectangle, previewHeight, previewScale, objectCategory, previewOffset } = previewData.current;
 
-        let x = (-(currentPreviewRectangle.current.left + currentPreviewRectangle.current.right) >> 1);
-        let y = (-(currentPreviewRectangle.current.top + currentPreviewRectangle.current.bottom) >> 1);
-        const height = ((currentPreviewHeight.current - currentPreviewRectangle.current.height) >> 1);
+        if (!previewRectangle || previewRectangle.width < 1 || previewRectangle.height < 1) return point;
 
-        if (height > 10) {
-            y = (y + Math.min(15, (height - 10)));
+        let x = (-(previewRectangle.left + previewRectangle.right) >> 1);
+        let y = (-(previewRectangle.top + previewRectangle.bottom) >> 1);
+        const height = ((previewHeight - previewRectangle.height) >> 1);
+
+        const scaledThreshold = 10 * previewScale;
+        const scaledMaxAdjust = 15 * previewScale;
+        const scaledBaseOffset = 5 * previewScale;
+
+        if (height > scaledThreshold) {
+            y = (y + Math.min(scaledMaxAdjust, (height - scaledThreshold)));
+        } else if (objectCategory !== RoomObjectCategoryEnum.Unit) {
+            y = (y + (scaledBaseOffset - Math.max(0, (height / 2))));
+        } else {
+            y = (y - (scaledBaseOffset - Math.min(0, (height / 2))));
         }
-        else
-            if (currentObjectCategory.current !== RoomObjectCategoryEnum.Unit) {
-                y = (y + (5 - Math.max(0, (height / 2))));
-            }
-            else {
-                y = (y - (5 - Math.min(0, (height / 2))));
-            }
 
-        y = (y + addViewOffset.current.y);
-        x = (x + addViewOffset.current.x);
+        y = (y + previewOffset.y);
+        x = (x + previewOffset.x);
 
         const offsetX = (x - point.x);
         const offsetY = (y - point.y);
 
         if (offsetX !== 0 || offsetY !== 0) {
             const sqrt = Math.sqrt(((offsetX * offsetX) + (offsetY * offsetY)));
+            const maxDrag = 10 * previewScale;
 
-            if (sqrt > 10) {
-                x = (point.x + ((offsetX * 10) / sqrt));
-                y = (point.y + ((offsetY * 10) / sqrt));
+            if (sqrt > maxDrag) {
+                x = (point.x + ((offsetX * maxDrag) / sqrt));
+                y = (point.y + ((offsetY * maxDrag) / sqrt));
             }
 
             return { x, y };
@@ -154,27 +165,29 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
     }
 
     const validatePreviewSize = (point: PointData) => {
-        if (!room || !room.canvas || !currentPreviewRectangle.current || (currentPreviewRectangle.current.width < 1) || (currentPreviewRectangle.current.height < 1)) return point;
+        const { previewRectangle, previewWidth, previewHeight } = previewData.current;
 
-        if ((currentPreviewRectangle.current.width > (currentPreviewWidth.current * (1 + ALLOWED_IMAGE_CUT))) || (currentPreviewRectangle.current.height > (currentPreviewHeight.current * (1 + ALLOWED_IMAGE_CUT)))) {
+        if (!room || !room.canvas || !previewRectangle || (previewRectangle.width < 1) || (previewRectangle.height < 1)) return point;
+
+        if ((previewRectangle.width > (previewWidth * (1 + ALLOWED_IMAGE_CUT))) || (previewRectangle.height > (previewHeight * (1 + ALLOWED_IMAGE_CUT)))) {
             if (room.canvas.scale !== 0.5) {
                 room.canvas.setScale(0.5);
 
-                currentPreviewScale.current = 0.5;
+                previewData.current.previewScale = 0.5;
 
                 point.x = (point.x >> 1);
                 point.y = (point.y >> 1);
 
-                currentPreviewRectangle.current.x = currentPreviewRectangle.current.x >> 1;
-                currentPreviewRectangle.current.y = currentPreviewRectangle.current.y >> 1;
-                currentPreviewRectangle.current.width = currentPreviewRectangle.current.width >> 1;
-                currentPreviewRectangle.current.height = currentPreviewRectangle.current.height >> 1;
+                previewRectangle.x = previewRectangle.x >> 1;
+                previewRectangle.y = previewRectangle.y >> 1;
+                previewRectangle.width = previewRectangle.width >> 1;
+                previewRectangle.height = previewRectangle.height >> 1;
             }
-        } else if ((((currentPreviewRectangle.current.width << 1) < ((currentPreviewWidth.current * (1 + ALLOWED_IMAGE_CUT)) - 5)) && ((currentPreviewRectangle.current.height << 1) < ((currentPreviewHeight.current * (1 + ALLOWED_IMAGE_CUT)) - 5)))) {
+        } else if ((((previewRectangle.width << 1) < ((previewWidth * (1 + ALLOWED_IMAGE_CUT)) - 5)) && ((previewRectangle.height << 1) < ((previewHeight * (1 + ALLOWED_IMAGE_CUT)) - 5)))) {
             if (room.canvas.scale !== 1) {
                 room.canvas.setScale(1);
 
-                currentPreviewScale.current = 1;
+                previewData.current.previewScale = 1;
 
                 point.x = (point.x << 1);
                 point.y = (point.y << 1);
@@ -187,23 +200,24 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
     const updatePreviewObjectBoundingRectangle = (point: PointData) => {
         if (!room) return;
 
-        const bounds = room.getRoomObjectBoundingRectangle(PREVIEW_OBJECT_ID, currentObjectCategory.current);
+        const { objectCategory, previewWidth, previewHeight, previewRectangle } = previewData.current;
+
+        const bounds = room.getRoomObjectBoundingRectangle(PREVIEW_OBJECT_ID, objectCategory);
 
         if (!bounds) return;
 
-        bounds.x += -(currentPreviewWidth.current >> 1);
-        bounds.y += -(currentPreviewHeight.current >> 1);
+        bounds.x += -(previewWidth >> 1);
+        bounds.y += -(previewHeight >> 1);
 
         bounds.x += -(point.x);
         bounds.y += -(point.y);
 
-        if (!currentPreviewRectangle.current) {
-            currentPreviewRectangle.current = bounds;
-        }
-        else {
-            const expandedBounds = currentPreviewRectangle.current.clone().enlarge(bounds);
+        if (!previewRectangle) {
+            previewData.current.previewRectangle = bounds;
+        } else {
+            const expandedBounds = previewRectangle.clone().enlarge(bounds);
 
-            if (((((expandedBounds.width - currentPreviewRectangle.current.width) > ((currentPreviewWidth.current - currentPreviewRectangle.current.width) >> 1)) || ((expandedBounds.height - currentPreviewRectangle.current.height) > ((currentPreviewHeight.current - currentPreviewRectangle.current.height) >> 1))) || (currentPreviewRectangle.current.width < 1)) || (currentPreviewRectangle.current.height < 1)) currentPreviewRectangle.current = expandedBounds;
+            if (((((expandedBounds.width - previewRectangle.width) > ((previewWidth - previewRectangle.width) >> 1)) || ((expandedBounds.height - previewRectangle.height) > ((previewHeight - previewRectangle.height) >> 1))) || (previewRectangle.width < 1)) || (previewRectangle.height < 1)) previewData.current.previewRectangle = expandedBounds;
         }
     }
 
@@ -212,8 +226,8 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
 
         const canvas = room.canvas;
 
-        currentPreviewWidth.current = width;
-        currentPreviewHeight.current = height;
+        previewData.current.previewWidth = width;
+        previewData.current.previewHeight = height;
 
         if (!canvas) room.getRoomCanvas(width, height, RoomGeometryScaleType.ZoomedIn);
         else canvas.initialize(width, height);
@@ -237,9 +251,11 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
 
         updatePreviewObjectBoundingRectangle(offset);
 
-        if (!currentPreviewRectangle.current) return;
+        const { previewRectangle, previewScale } = previewData.current;
 
-        const scale = currentPreviewScale.current;
+        if (!previewRectangle) return;
+
+        const scale = previewScale;
 
         offset = validatePreviewSize(offset);
 
@@ -247,7 +263,7 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
 
         if (canvasOffset) room.setRoomInstanceRenderingCanvasOffset(canvasOffset);
 
-        if (currentPreviewScale.current !== scale) currentPreviewRectangle.current = null;
+        if (previewData.current.previewScale !== scale) previewData.current.previewRectangle = undefined;
     }
 
     const resetRoomPreview = (flag: boolean) => {
@@ -259,7 +275,7 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
 
         if (!flag) updateRoomPreview();
 
-        currentObjectCategory.current = RoomObjectCategoryEnum.Minimum;
+        previewData.current.objectCategory = RoomObjectCategoryEnum.Minimum;
     }
 
     const addFloorItemIntoRoom = (classId: number, direction: IVector3D, objectData?: IObjectData, extra: number = NaN) => {
@@ -269,47 +285,43 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
 
         resetRoomPreview(false);
 
-        currentObjectType.current = classId;
-        currentObjectCategory.current = RoomObjectCategoryEnum.Floor;
-        currentObjectData.current = '';
+        previewData.current.objectType = classId;
+        previewData.current.objectCategory = RoomObjectCategoryEnum.Floor;
+        previewData.current.objectData = '';
 
-        if (room.addFurnitureFloorByTypeId(PREVIEW_OBJECT_ID, classId, new Vector3d(PREVIEW_OBJECT_LOCATION_X, PREVIEW_OBJECT_LOCATION_Y), direction, 0, objectData, NaN, -1, FurnitureUsagePolicyEnum.Nobody, -1, '', false, -1)) {
-            prevAutoStateChangeTime.current = GetTickerTime();
-            autoStateChange.current = true;
+        if (!room.addFurnitureFloorByTypeId(PREVIEW_OBJECT_ID, classId, new Vector3d(PREVIEW_OBJECT_LOCATION_X, PREVIEW_OBJECT_LOCATION_Y), direction, 0, objectData, NaN, -1, FurnitureUsagePolicyEnum.Nobody, -1, '', false, -1)) return -1;
 
-            const roomObject = room.getRoomObject(PREVIEW_OBJECT_ID, currentObjectCategory.current);
+        previewData.current.autoStateChangeTime = GetTickerTime();
+        previewData.current.autoStateChange = true;
 
-            if (roomObject && extra) roomObject.model.setValue(RoomObjectVariableEnum.FurnitureExtras, extra);
+        const roomObject = room.getRoomObject(PREVIEW_OBJECT_ID, previewData.current.objectCategory);
 
-            updateRoomPreview();
+        if (roomObject && extra) roomObject.model.setValue(RoomObjectVariableEnum.FurnitureExtras, extra);
 
-            return PREVIEW_OBJECT_ID;
-        }
+        updateRoomPreview();
 
-        return -1;
+        return PREVIEW_OBJECT_ID;
     }
 
     const addWallItemIntoRoom = (classId: number, direction: IVector3D, objectData: string) => {
         if (!room) return -1;
 
-        if (currentObjectCategory.current === RoomObjectCategoryEnum.Floor && currentObjectType.current === classId && currentObjectData.current === objectData) return PREVIEW_OBJECT_ID;
+        if (previewData.current.objectCategory === RoomObjectCategoryEnum.Floor && previewData.current.objectType === classId && previewData.current.objectData === objectData) return PREVIEW_OBJECT_ID;
 
         resetRoomPreview(false);
 
-        currentObjectType.current = classId;
-        currentObjectCategory.current = RoomObjectCategoryEnum.Wall;
-        currentObjectData.current = objectData;
+        previewData.current.objectType = classId;
+        previewData.current.objectCategory = RoomObjectCategoryEnum.Wall;
+        previewData.current.objectData = objectData;
 
-        if (room.addFurnitureWallByTypeId(PREVIEW_OBJECT_ID, classId, new Vector3d(0.5, 2.3, 1.8), direction, 0, objectData, -1, FurnitureUsagePolicyEnum.Nobody, -1, '', false)) {
-            prevAutoStateChangeTime.current = GetTickerTime();
-            autoStateChange.current = true;
+        if (!room.addFurnitureWallByTypeId(PREVIEW_OBJECT_ID, classId, new Vector3d(0.5, 2.3, 1.8), direction, 0, objectData, -1, FurnitureUsagePolicyEnum.Nobody, -1, '', false)) return -1;
 
-            updateRoomPreview();
+        previewData.current.autoStateChangeTime = GetTickerTime();
+        previewData.current.autoStateChange = true;
 
-            return PREVIEW_OBJECT_ID;
-        }
+        updateRoomPreview();
 
-        return -1;
+        return PREVIEW_OBJECT_ID;
     }
 
     const addAvatarIntoRoom = (figure: string, effect: number) => {
@@ -317,18 +329,18 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
 
         resetRoomPreview(false);
 
-        currentObjectType.current = 1;
-        currentObjectCategory.current = RoomObjectCategoryEnum.Unit;
-        currentObjectData.current = figure;
+        previewData.current.objectType = 1;
+        previewData.current.objectCategory = RoomObjectCategoryEnum.Unit;
+        previewData.current.objectData = figure;
 
-        if (room.addRoomObjectUser(PREVIEW_OBJECT_ID, new Vector3d(PREVIEW_OBJECT_LOCATION_X, PREVIEW_OBJECT_LOCATION_Y), new Vector3d(90), 135, RoomObjectUserType.User, figure)) {
-            prevAutoStateChangeTime.current = GetTickerTime();
-            autoStateChange.current = true;
+        if (!room.addRoomObjectUser(PREVIEW_OBJECT_ID, new Vector3d(PREVIEW_OBJECT_LOCATION_X, PREVIEW_OBJECT_LOCATION_Y), new Vector3d(90), 135, RoomObjectUserType.User, figure)) return -1;
 
-            room.updateRoomObjectUserGesture(PREVIEW_OBJECT_ID, 1);
-            room.updateRoomObjectUserEffect(PREVIEW_OBJECT_ID, effect);
-            room.updateRoomObjectUserPosture(PREVIEW_OBJECT_ID, 'std');
-        }
+        previewData.current.autoStateChangeTime = GetTickerTime();
+        previewData.current.autoStateChange = true;
+
+        room.updateRoomObjectUserGesture(PREVIEW_OBJECT_ID, 1);
+        room.updateRoomObjectUserEffect(PREVIEW_OBJECT_ID, effect);
+        room.updateRoomObjectUserPosture(PREVIEW_OBJECT_ID, 'std');
 
         updateRoomPreview();
 
@@ -355,9 +367,7 @@ export const useRoomPreviewer = (roomId: number, canvasRef: RefObject<HTMLCanvas
         if (!room) return;
         const ticker = GetTicker();
 
-        const tick = (ticker: Ticker) => {
-            render(ticker.lastTime);
-        }
+        const tick = (ticker: Ticker) => render(ticker.lastTime);
 
         ticker.add(tick);
 

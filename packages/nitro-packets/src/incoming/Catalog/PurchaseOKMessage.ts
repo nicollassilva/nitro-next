@@ -1,6 +1,6 @@
 import { ICatalogOffer, IIncomingPacket, IMessageDataWrapper } from '@nitrodevco/nitro-api';
 
-import { CatalogOfferParser } from './Data/CatalogOfferParser';
+import { CatalogOfferAsPurchasedParser } from './Data/CatalogOfferAsPurchasedParser';
 
 export type PurchaseOKMessageType = {
     offer: ICatalogOffer;
@@ -9,7 +9,7 @@ export type PurchaseOKMessageType = {
 export class PurchaseOKMessage implements IIncomingPacket<PurchaseOKMessageType> {
     public parse(wrapper: IMessageDataWrapper): PurchaseOKMessageType {
         return {
-            offer: CatalogOfferParser(wrapper)
+            offer: CatalogOfferAsPurchasedParser(wrapper)
         }
     }
 }

@@ -11,6 +11,7 @@ type Actions = {
     setCredits: (credits: number) => void,
     setEmeralds: (emeralds: number) => void,
     setSilver: (silver: number) => void,
+    setManyActivityPoints: (updates: Record<number, number>) => void,
     setActivityPoints: (type: number, amount: number) => void,
 };
 
@@ -28,6 +29,14 @@ export const createUserWalletSlice: StateCreator<UserWalletSlice, [], [], UserWa
     setCredits: (credits: number) => set({ credits }),
     setEmeralds: (emeralds: number) => set({ emeralds }),
     setSilver: (silver: number) => set({ silver }),
+    setManyActivityPoints: (updates: Record<number, number>) => set(x => {
+        const activityPoints = { ...x.activityPoints };
+        const keys = Object.keys(updates);
+
+        for (const key of keys) activityPoints[key] = updates[key];
+
+        return { activityPoints };
+    }),
     setActivityPoints: (type: number, amount: number) => set(x => {
         return {
             activityPoints: { ...x.activityPoints, [type]: amount }

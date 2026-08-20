@@ -40,6 +40,7 @@ export * from './room/selectors/session/useRoomSettingsSelector';
 export * from './room/selectors/useRoomCameraSelector';
 export * from './room/selectors/useRoomIsLandingViewVisible';
 export * from './room/selectors/useRoomSelector';
+export * from './room/selectors/useRoomStackingHeightMapSelector';
 export * from './room/store/RoomCameraSlice';
 export * from './room/store/RoomMouseSlice';
 export * from './room/store/RoomSelectedObjectSlice';

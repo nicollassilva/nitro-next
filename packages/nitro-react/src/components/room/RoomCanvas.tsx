@@ -4,6 +4,7 @@ import type { Ticker } from 'pixi.js';
 import { forwardRef, useEffect } from 'react';
 
 import { useConfigValue, useRoomMouseActions, useRoomSelector } from '#base/context';
+import { useRoomModifications } from '#base/handlers';
 import { useRoomCamera, useRoomMouse } from '#base/hooks';
 import { GetPixelRatio } from '#base/utils';
 
@@ -13,6 +14,8 @@ export const RoomCanvas = forwardRef<HTMLDivElement>((props, ref) => {
     const maxFPS = useConfigValue<number>('fps.limit') ?? 60;
     const { updateRoomCamera } = useRoomCamera();
     const { hasAndResetCursorUpdate, hasCursorOwners } = useRoomMouseActions();
+
+    useRoomModifications();
 
     useEffect(() => {
         if (!room) return;

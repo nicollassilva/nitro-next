@@ -381,6 +381,10 @@ export class Room implements IRoom {
         return offset;
     }
 
+    public getTileHeight(x: number, y: number): number {
+        return -1;
+    }
+
     public setRoomInstanceRenderingCanvasOffset(point: PointData): boolean {
         if (!this._canvas || !point) return false;
 
@@ -627,6 +631,10 @@ export class Room implements IRoom {
                 manager.removeObject(object.id);
             }
         }
+    }
+
+    public initializeTemporaryObjectsByType(type: string) {
+
     }
 
     public createRoomObjectFloor(id: number, type: string): IRoomObject | undefined {
@@ -1277,42 +1285,40 @@ export class Room implements IRoom {
     }
 
     public async getRoomObjectImage(objectId: number, category: RoomObjectCategoryEnum, direction: IVector3D, scale: RoomGeometryScaleType): Promise<ImageLike | undefined> {
-        let id = -1;
-        let type: string = '';
+        const roomObject = this.getRoomObject(objectId, category);
+
+        if (!roomObject) return undefined;
+
+        const id = roomObject.id;
+        const type: string = roomObject.type;
+
         let value: string = '';
         let data: IObjectData | undefined = undefined;
         let extras: number | undefined = undefined;
 
-        const roomObject = this.getRoomObject(objectId, category);
+        switch (category) {
+            case RoomObjectCategoryEnum.Floor:
+            case RoomObjectCategoryEnum.Wall: {
+                value = (roomObject.model.getValue<number>(RoomObjectVariableEnum.FurnitureColor).toString());
+                extras = roomObject.model.getValue<number>(RoomObjectVariableEnum.FurnitureExtras);
 
-        if (roomObject) {
-            id = roomObject.id;
-            type = roomObject.type;
+                const dataFormat = roomObject.model.getValue<ObjectDataFlagsEnum>(RoomObjectVariableEnum.FurnitureDataFormat);
 
-            switch (category) {
-                case RoomObjectCategoryEnum.Floor:
-                case RoomObjectCategoryEnum.Wall: {
-                    value = (roomObject.model.getValue<number>(RoomObjectVariableEnum.FurnitureColor).toString());
-                    extras = roomObject.model.getValue<number>(RoomObjectVariableEnum.FurnitureExtras);
+                if (dataFormat !== ObjectDataFlagsEnum.Legacy) {
+                    data = GetObjectDataForFlags(dataFormat);
 
-                    const dataFormat = roomObject.model.getValue<ObjectDataFlagsEnum>(RoomObjectVariableEnum.FurnitureDataFormat);
-
-                    if (dataFormat !== ObjectDataFlagsEnum.Legacy) {
-                        data = GetObjectDataForFlags(dataFormat);
-
-                        if (data) data.initializeFromRoomObjectModel(roomObject.model);
-                    }
-
-                    break;
+                    if (data) data.initializeFromRoomObjectModel(roomObject.model);
                 }
-                case RoomObjectCategoryEnum.Unit: {
-                    value = roomObject.model.getValue<string>(RoomObjectVariableEnum.Figure);
-                    break;
-                }
+
+                break;
+            }
+            case RoomObjectCategoryEnum.Unit: {
+                value = roomObject.model.getValue<string>(RoomObjectVariableEnum.Figure);
+                break;
             }
         }
 
-        return await GetRoomEngine().getGenericRoomObjectImage(type, value, direction, scale, extras, data);
+        return await GetRoomEngine().getGenericRoomObjectImage(type, value, direction, scale, undefined, extras, data);
     }
 
     public async getRoomObjectPetImage(typeId: number, paletteId: number, color: number, direction: IVector3D, scale: RoomGeometryScaleType, headOnly: boolean = false, customParts: IPetCustomPart[] = [], posture: string | undefined = undefined): Promise<ImageLike | undefined> {
@@ -1330,7 +1336,7 @@ export class Room implements IRoom {
             for (const part of customParts) value = `${value} ${part.layerId} ${part.partId} ${part.paletteId}`;
         }
 
-        return await GetRoomEngine().getGenericRoomObjectImage(type, value, direction, scale, 0, undefined, 0, 0, posture);
+        return await GetRoomEngine().getGenericRoomObjectImage(type, value, direction, scale, undefined, 0, undefined, 0, 0, posture);
     }
 
     public async setRoomOverlayIconSprite(objectId: number, category: RoomObjectCategoryEnum, realRoomObject: boolean, extra: string = '', posture: string = ''): Promise<void> {
@@ -1359,10 +1365,10 @@ export class Room implements IRoom {
 
                     image = await this.getRoomObjectPetImage(petFigureData.typeId, petFigureData.paletteId, petFigureData.color, new Vector3d(180), RoomGeometryScaleType.ZoomedIn, true, petFigureData.customParts, posture);
                 } else {
-                    image = await GetRoomEngine().getGenericRoomObjectImage(type!, extra, new Vector3d(180), RoomGeometryScaleType.ZoomedIn, 0, undefined, 0, 0, posture);
+                    image = await GetRoomEngine().getGenericRoomObjectImage(type!, extra, new Vector3d(180), RoomGeometryScaleType.ZoomedIn, undefined, 0, undefined, 0, 0, posture);
                 }
             } else {
-                image = await GetRoomEngine().getGenericRoomObjectImage(type!, colorIndex.toString(), new Vector3d(), RoomGeometryScaleType.Icon, 0, undefined, 0, 0, posture);
+                image = await GetRoomEngine().getGenericRoomObjectImage(type!, colorIndex.toString(), new Vector3d(), RoomGeometryScaleType.Icon, undefined, 0, undefined, 0, 0, posture);
             }
         }
 
@@ -1506,8 +1512,7 @@ export class Room implements IRoom {
         if (!this._legacyGeometry || !location) return undefined;
 
         let z = location.z;
-        const tileHeight = 0;
-        // TODO FIX const tileHeight = this._instance.furnitureStackingHeightMap.getTileHeight(location.x, location.y);
+        const tileHeight = this.getTileHeight(location.x, location.y);
         const wallHeight = this._legacyGeometry.getHeight(location.x, location.y);
 
         if (Math.abs(z - tileHeight) < 0.1 && Math.abs(tileHeight - wallHeight) < 0.1) {

@@ -1,6 +1,6 @@
-﻿import type { IImageResult } from './IImageResult';
+﻿import { ImageLike } from 'pixi.js';
 
 export interface IGetImageListener {
-    imageReady(result: IImageResult): void;
-    imageFailed(id: number): void;
+    imageReady(result: ImageLike): void;
+    imageFailed(): void;
 }

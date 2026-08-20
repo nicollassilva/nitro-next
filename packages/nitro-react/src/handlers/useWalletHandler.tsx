@@ -1,10 +1,10 @@
-import { CreditBalanceEventMessage, EmeraldBalanceMessage, HabboActivityPointNotificationMessage, SilverBalanceMessage } from "@nitrodevco/nitro-packets";
+import { ActivityPointsMessage, CreditBalanceEventMessage, EmeraldBalanceMessage, HabboActivityPointNotificationMessage, SilverBalanceMessage } from "@nitrodevco/nitro-packets";
 
 import { useUserWalletActions } from "#base/context";
 import { useMessageListener } from "#base/hooks";
 
 export const useWalletHandler = () => {
-    const { setCredits, setEmeralds, setSilver, setActivityPoints } = useUserWalletActions();
+    const { setCredits, setEmeralds, setSilver, setActivityPoints, setManyActivityPoints } = useUserWalletActions();
 
     useMessageListener(CreditBalanceEventMessage, data => {
         setCredits(data.balance);
@@ -21,4 +21,8 @@ export const useWalletHandler = () => {
     useMessageListener(HabboActivityPointNotificationMessage, data => {
         setActivityPoints(data.type, data.amount);
     });
+
+    useMessageListener(ActivityPointsMessage, data => {
+        setManyActivityPoints(data.pointsByCategoryId);
+    })
 }

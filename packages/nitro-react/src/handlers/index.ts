@@ -4,6 +4,7 @@ export * from './room/useRoomDataHandler';
 export * from './room/useRoomDirectoryHandler';
 export * from './room/useRoomFurnitureHandler';
 export * from './room/useRoomMappingHandler';
+export * from './room/useRoomModifications';
 export * from './room/useRoomPermissionsHandler';
 export * from './room/useRoomPetPackageHandler';
 export * from './room/useRoomPollHandler';
