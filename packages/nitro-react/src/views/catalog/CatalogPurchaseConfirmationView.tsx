@@ -1,5 +1,6 @@
 import { CatalogPricingTypeEnum } from "@nitrodevco/nitro-api";
 import { PurchaseFromCatalogComposer, PurchaseOKMessage } from "@nitrodevco/nitro-packets";
+import { useState } from "react";
 
 import { useCatalogActions, useCatalogSelectors, useTranslation, useWebSocketContext } from "#base/context";
 import { useCatalogOfferActions, useMessageListener } from "#base/hooks";
@@ -7,7 +8,10 @@ import { Border, Button, ButtonThick, Frame, NitroCurrencyIcon } from "#base/the
 
 import { CatalogOfferImageView } from "./CatalogOfferImageView";
 
+type PURCHASE_STATE = 'busy' | 'none';
+
 export const CatalogPurchaseConfirmationView = () => {
+    const [purchaseState, setPurchaseState] = useState<PURCHASE_STATE>('none');
     const { activePurchase } = useCatalogSelectors();
     const { setActivePurchase } = useCatalogActions();
     const { getOfferProduct } = useCatalogOfferActions();
@@ -17,6 +21,7 @@ export const CatalogPurchaseConfirmationView = () => {
     useMessageListener(PurchaseOKMessage, data => {
         if (!activePurchase?.offer || !data.offer || data.offer.id !== activePurchase.offer.offerId) return;
 
+        setPurchaseState('none');
         setActivePurchase(undefined);
     });
 
@@ -28,6 +33,8 @@ export const CatalogPurchaseConfirmationView = () => {
     if (!product) return null;
 
     const purchase = () => {
+        setPurchaseState('busy');
+
         send(new PurchaseFromCatalogComposer({
             pageId: offer.page?.pageId ?? -1,
             offerId: offer.offerId,
@@ -75,7 +82,7 @@ export const CatalogPurchaseConfirmationView = () => {
                 </div>
                 <div className="flex gap-2 size-full">
                     <Button variant="3" className="w-full" onClick={cancelPurchase}>{t('catalog.purchase_confirmation.cancel')}</Button>
-                    <ButtonThick variant="3" tintColor="#00aa00" className="w-full text-white" onClick={purchase}>{t('catalog.purchase_confirmation.buy')}</ButtonThick>
+                    <ButtonThick variant="3" tintColor="#00aa00" className="w-full text-white" onClick={purchase} disabled={purchaseState === 'busy'}>{t('catalog.purchase_confirmation.buy')}</ButtonThick>
                 </div>
             </div>
         </Frame >
