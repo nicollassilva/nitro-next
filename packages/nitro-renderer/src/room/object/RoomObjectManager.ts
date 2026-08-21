@@ -19,6 +19,10 @@ export class RoomObjectManager implements IRoomObjectManager {
         return this._objects.getWithIndex(index);
     }
 
+    public getObjectsByType(type: string): IAdvancedMap<number, IRoomObjectController> {
+        return this.getTypeMap(type);
+    }
+
     public createObject(id: number, stateCount: number, type: string): IRoomObjectController | undefined {
         return this.addObject(id, type, new RoomObject(id, stateCount, type));
     }

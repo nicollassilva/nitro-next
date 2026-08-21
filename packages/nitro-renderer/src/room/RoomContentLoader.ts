@@ -331,10 +331,12 @@ export class RoomContentLoader implements IRoomContentLoader {
 
                 this._events.get(type)?.dispatchEvent(new RoomContentLoadedEvent(RoomContentLoadedEvent.RCLE_SUCCESS, type));
 
-                GetRoomEngine().initalizeTemporaryObjectsByType(type);
+                GetRoomEngine().initalizeTemporaryObjectsByType(type, true);
             })
             .catch(_err => {
                 this._events.get(type)?.dispatchEvent(new RoomContentLoadedEvent(RoomContentLoadedEvent.RCLE_FAILURE, type));
+
+                GetRoomEngine().initalizeTemporaryObjectsByType(type, false);
             });
     }
 

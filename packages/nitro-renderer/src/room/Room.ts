@@ -13,6 +13,7 @@ import {
     IRoom,
     IRoomAreaSelectionManager,
     IRoomEventHandler,
+    IRoomFurnitureData,
     IRoomGeometry,
     IRoomMapData,
     IRoomObject,
@@ -113,10 +114,14 @@ export class Room implements IRoom {
         RoomObjectCategoryEnum.Room,
     ];
     private _skipContentProcessingForNextFrame: boolean = false;
+    private _skipFurnitureCreationForNextFrame: boolean = false;
     private _legacyGeometry: ILegacyWallGeometry | undefined = undefined;
     private _canvas: IRoomRenderingCanvas | undefined = undefined;
     private _areaSelection: IRoomAreaSelectionManager;
     private _isInitialized: boolean = false;
+
+    private _floorStack: Map<number, IRoomFurnitureData> = new Map();
+    private _wallStack: Map<number, IRoomFurnitureData> = new Map();
 
     constructor(roomId: number) {
         this._roomId = roomId;
@@ -420,7 +425,28 @@ export class Room implements IRoom {
     }
 
     public getRoomObject(objectId: number, category: RoomObjectCategoryEnum): IRoomObjectController | undefined {
-        return this.getRoomObjectManager(category).getObject(objectId);
+        let roomObject = this.getRoomObjectManager(category).getObject(objectId);
+
+        if (roomObject) return roomObject;
+
+        switch (category) {
+            case RoomObjectCategoryEnum.Floor: {
+                if (!this.addFurnitureFloorFromData(this._floorStack[objectId])) return undefined;
+
+                roomObject = this.getRoomObjectManager(category).getObject(objectId);
+
+                break;
+            }
+            case RoomObjectCategoryEnum.Wall: {
+                if (!this.addFurnitureWallFromData(this._wallStack[objectId])) return undefined;
+
+                roomObject = this.getRoomObjectManager(category).getObject(objectId);
+
+                break;
+            }
+        }
+
+        return roomObject;
     }
 
     public getRoomObjectByIndex(index: number, category: RoomObjectCategoryEnum): IRoomObjectController | undefined {
@@ -473,20 +499,16 @@ export class Room implements IRoom {
     }
 
     public removeRoomObject(objectId: number, category: RoomObjectCategoryEnum): void {
-        const manager = this.getRoomObjectManager(category);
+        const roomObject = this.getRoomObject(objectId, category);
 
-        if (!manager) return;
+        if (!roomObject) return;
 
-        const object = manager.getObject(objectId);
+        roomObject.tearDown();
 
-        if (!object) return;
+        this._objects.delete(roomObject.instanceId);
+        this._canvas?.removeFromCache(roomObject.instanceId);
 
-        object.tearDown();
-
-        this._objects.delete(object.instanceId);
-        this._canvas?.removeFromCache(object.instanceId);
-
-        manager.removeObject(objectId);
+        this.getRoomObjectManager(category)?.removeObject(objectId);
 
         this.dispatchEvent(
             new RoomEngineObjectEvent(RoomEngineObjectEvent.REMOVED, this._roomId, objectId, category),
@@ -698,31 +720,64 @@ export class Room implements IRoom {
         sizeZ: number = -1,
         typeId: number = -1,
     ): boolean {
-        const roomObject = this.createRoomObjectFloor(objectId, typeName);
+        this._floorStack[objectId] = {
+            objectId,
+            typeId,
+            typeName,
+            location,
+            direction,
+            state,
+            objectData,
+            extra,
+            expires,
+            usagePolicy,
+            ownerId,
+            ownerName,
+            realRoomObject,
+            sizeZ
+        };
+
+        this.addFurnitureFloorFromData(this._floorStack[objectId]);
+
+        delete this._floorStack[objectId];
+
+        return true;
+    }
+
+    public addFurnitureFloorFromData(data: IRoomFurnitureData): boolean {
+        if (!data) return false;
+
+        let typeName = data.typeName;
+
+        if (!data.typeName.length) {
+            typeName = GetRoomContentLoader().getFurnitureFloorNameForTypeId(data.typeId);
+        }
+
+        const roomObject = this.createRoomObjectFloor(data.objectId, typeName);
 
         if (roomObject) {
             roomObject.model.setValue(
                 RoomObjectVariableEnum.FurnitureColor,
-                GetRoomContentLoader().getFurnitureFloorColorIndex(typeId),
+                GetRoomContentLoader().getFurnitureFloorColorIndex(data.typeId),
             );
-            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureTypeId, typeId);
+            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureTypeId, data.typeId);
             roomObject.model.setValue(RoomObjectVariableEnum.FurnitureAdUrl, '');
-            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureRealRoomObject, realRoomObject ? 1 : 0);
-            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureExpiryTime, expires);
+            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureRealRoomObject, data.realRoomObject ? 1 : 0);
+            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureExpiryTime, data.expires);
             roomObject.model.setValue(RoomObjectVariableEnum.FurnitureExpirtyTimestamp, GetTickerTime());
-            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureUsagePolicy, usagePolicy);
-            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureOwnerId, ownerId);
-            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureOwnerName, ownerName);
+            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureUsagePolicy, data.usagePolicy);
+            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureOwnerId, data.ownerId);
+            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureOwnerName, data.ownerName);
         }
 
-        if (!this.updateRoomObjectFloor(objectId, location, direction, state, objectData, extra)) return false;
+        if (!this.updateRoomObjectFloor(data.objectId, data.location, data.direction, data.state, data.objectData, data.extra)) return false;
 
-        if (sizeZ >= 0) {
-            if (!this.updateRoomObjectFloorHeight(objectId, sizeZ)) return false;
+        if (data.sizeZ >= 0) {
+            if (!this.updateRoomObjectFloorHeight(data.objectId, data.sizeZ)) return false;
         }
 
         this.dispatchEvent(
-            new RoomEngineObjectEvent(RoomEngineObjectEvent.ADDED, this._roomId, objectId, RoomObjectCategoryEnum.Floor),
+            new RoomEngineObjectEvent(RoomEngineObjectEvent.ADDED, this._roomId, data.objectId, RoomObjectCategoryEnum.Floor),
         );
 
         return true;
@@ -741,32 +796,57 @@ export class Room implements IRoom {
         ownerName: string = '',
         realRoomObject: boolean = true,
     ): boolean {
-        const stuffData = new LegacyDataType();
+        const objectData = new LegacyDataType();
 
-        stuffData.setString(data);
+        objectData.setString(data);
 
-        const typeName = GetRoomContentLoader().getFurnitureWallNameForTypeId(typeId, stuffData.getLegacyString());
-        const roomObject = this.createRoomObjectWall(objectId, typeName);
+        this._wallStack[objectId] = {
+            objectId,
+            typeId,
+            typeName: GetRoomContentLoader().getFurnitureWallNameForTypeId(typeId, objectData.getLegacyString()),
+            location,
+            direction,
+            state,
+            objectData,
+            expires,
+            usagePolicy,
+            ownerId,
+            ownerName,
+            realRoomObject,
+            sizeZ: -1
+        };
 
-        if (roomObject) {
-            roomObject.model.setValue(
-                RoomObjectVariableEnum.FurnitureColor,
-                GetRoomContentLoader().getFurnitureWallColorIndex(typeId),
-            );
-            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureTypeId, typeId);
-            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureAdUrl, '');
-            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureRealRoomObject, realRoomObject ? 1 : 0);
-            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureExpiryTime, expires);
-            roomObject.model.setValue(RoomObjectVariableEnum.FigureExperienceTimestamp, GetTickerTime());
-            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureUsagePolicy, usagePolicy);
-            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureOwnerId, ownerId);
-            roomObject.model.setValue(RoomObjectVariableEnum.FurnitureOwnerName, ownerName);
-        }
+        this.addFurnitureWallFromData(this._wallStack[objectId]);
 
-        if (!this.updateRoomObjectWall(objectId, location, direction, state, stuffData.getLegacyString())) return false;
+        delete this._wallStack[objectId];
+
+        return true;
+    }
+
+    public addFurnitureWallFromData(data: IRoomFurnitureData): boolean {
+        if (!data) return false;
+
+        const roomObject = this.createRoomObjectWall(data.objectId, data.typeName);
+
+        if (!roomObject) return false;
+
+        roomObject.model.setValue(
+            RoomObjectVariableEnum.FurnitureColor,
+            GetRoomContentLoader().getFurnitureWallColorIndex(data.typeId),
+        );
+        roomObject.model.setValue(RoomObjectVariableEnum.FurnitureTypeId, data.typeId);
+        roomObject.model.setValue(RoomObjectVariableEnum.FurnitureAdUrl, '');
+        roomObject.model.setValue(RoomObjectVariableEnum.FurnitureRealRoomObject, data.realRoomObject ? 1 : 0);
+        roomObject.model.setValue(RoomObjectVariableEnum.FurnitureExpiryTime, data.expires);
+        roomObject.model.setValue(RoomObjectVariableEnum.FigureExperienceTimestamp, GetTickerTime());
+        roomObject.model.setValue(RoomObjectVariableEnum.FurnitureUsagePolicy, data.usagePolicy);
+        roomObject.model.setValue(RoomObjectVariableEnum.FurnitureOwnerId, data.ownerId);
+        roomObject.model.setValue(RoomObjectVariableEnum.FurnitureOwnerName, data.ownerName);
+
+        if (!this.updateRoomObjectWall(data.objectId, data.location, data.direction, data.state, data.objectData.getLegacyString())) return false;
 
         this.dispatchEvent(
-            new RoomEngineObjectEvent(RoomEngineObjectEvent.ADDED, this._roomId, objectId, RoomObjectCategoryEnum.Wall),
+            new RoomEngineObjectEvent(RoomEngineObjectEvent.ADDED, this._roomId, data.objectId, RoomObjectCategoryEnum.Wall),
         );
 
         return true;
@@ -1353,7 +1433,7 @@ export class Room implements IRoom {
                 type = roomContentLoader.getFurnitureFloorNameForTypeId(objectId);
                 colorIndex = roomContentLoader.getFurnitureFloorColorIndex(objectId);
             } else if (category === RoomObjectCategoryEnum.Wall) {
-                type = roomContentLoader.getFurnitureWallNameForTypeId(objectId);
+                type = roomContentLoader.getFurnitureWallNameForTypeId(objectId, extra);
                 colorIndex = roomContentLoader.getFurnitureWallColorIndex(objectId);
             }
 
