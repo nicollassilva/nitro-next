@@ -196,13 +196,23 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
         try {
             const ctor = incomingByHeader.current.get(wrapper.header);
 
-            if (!ctor) return;
+            if (!ctor) {
+                NitroLogger.packets('UnknownIncoming', wrapper.header);
+
+                return;
+            }
 
             const handlers = listeners.current.get(ctor);
 
-            if (!handlers?.length) return;
+            if (!handlers?.length) {
+                NitroLogger.packets('UnhandledIncoming', wrapper.header, ctor.name);
+
+                return;
+            }
 
             const parsed = new ctor().parse(wrapper);
+
+            NitroLogger.packets('IncomingEvent', wrapper.header, ctor.name, parsed);
 
             for (const handle of handlers) handle(parsed);
         } catch (err) {
