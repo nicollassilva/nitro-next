@@ -1,6 +1,7 @@
 import type { CatalogViewWindowParams } from '#base/views/catalog/CatalogView';
 import type { FriendListViewWindowParams } from '#base/views/friendlist/FriendListView';
 import type { InventoryViewWindowParams } from '#base/views/inventory/InventoryView';
+import type { NavigatorViewWindowParams } from '#base/views/navigator/NavigatorView';
 
 export type WindowRegistry = {
     catalog: CatalogViewWindowParams;
@@ -11,6 +12,8 @@ export type WindowRegistry = {
     messenger: NoWindowParams;
 
     inventory: InventoryViewWindowParams;
+
+    navigator: NavigatorViewWindowParams;
 };
 
 export type NoWindowParams = Record<string, unknown>;
