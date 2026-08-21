@@ -22,7 +22,7 @@ export const WebSocketContextProvider = ({ children }: ProviderProps) => {
     const [renderedPhase, setRenderedPhase] = useState<ConnectionPhase>('idle');
     const { incomingByHeader, incomingCtors, incomingHeaderByCtor, registerManyIncoming } = useCommunicationIncoming();
     const { outgoingHeaderByComposerName, registerManyOutgoing } = useCommunicationOutgoing();
-    const socketUrl = useConfigValue<string>('socketUrl') ?? '';
+    const socketUrl = useConfigValue<string>('socket.url') ?? '';
     const production = useConfigValue<string>('production.version') ?? '';
     const ws = useRef<WebSocket | undefined>(undefined);
     const wsBuffer = useRef<ArrayBuffer>(new ArrayBuffer(0));
